@@ -19,12 +19,12 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
 
             $table->decimal('price', 10, 2);
             $table->integer('stock_quantity')->default(0);
 
-            $table->string('category');
+            $table->string('category')->index();
 
             $table->enum('condition', ['new', 'handmade', 'quality_second_hand']);
 
