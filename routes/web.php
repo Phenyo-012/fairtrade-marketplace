@@ -18,6 +18,9 @@ Route::get('/products/create',
 Route::post('/products', 
     [ProductController::class, 'store'])->middleware('auth');
 
+Route::get('/products', 
+    [ProductController::class, 'index'])->middleware('auth');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

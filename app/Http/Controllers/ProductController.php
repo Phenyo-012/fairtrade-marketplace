@@ -39,4 +39,13 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Product created successfully.');
     }
+
+    public function index()
+    {
+        $sellerProfile = auth()->user()->sellerProfile;
+
+        $products = $sellerProfile->products;
+
+        return view('products.index', compact('products'));
+    }
 }
