@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AdminProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,6 +34,14 @@ Route::middleware(['auth','role:admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     });
+});
+
+Route::middleware(['auth','role:admin'])->group(function () {
+
+    Route::get('/admin/products', [AdminProductController::class, 'index']);
+
+    Route::post('/admin/products/{id}/approve', [AdminProductController::class, 'approve']);
+
 });
 
 Route::middleware(['auth','role:seller'])->group(function () {
