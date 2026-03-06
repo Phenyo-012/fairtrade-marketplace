@@ -24,6 +24,13 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
+            // Product being ordered
+            $table->foreignId('product_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->integer('quantity');
+
             $table->decimal('total_amount', 10, 2);
 
             $table->enum('status', [
@@ -38,6 +45,8 @@ return new class extends Migration
 
             // Unique delivery confirmation code
             $table->string('delivery_code')->unique();
+
+            $table->date('seller_deadline')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

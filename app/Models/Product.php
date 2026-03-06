@@ -17,6 +17,11 @@ class Product extends Model
         'condition'
     ];
 
+    public function seller()
+    {
+        return $this->belongsTo(SellerProfile::class);
+    }
+
     //
     public function sellerProfile()
     {

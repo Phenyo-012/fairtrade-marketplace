@@ -6,15 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+
+    protected $fillable = [
+        'buyer_id',
+        'seller_profile_id',
+        'product_id',
+        'quantity',
+        'total_amount',
+        'status',
+        'delivery_code',
+        'seller_deadline',
+    ];
+
     //
     public function buyer()
     {
         return $this->belongsTo(User::class, 'buyer_id');
     }
 
-    public function seller()
+    public function sellerProfile()
     {
-        return $this->belongsTo(User::class, 'seller_id');
+        return $this->belongsTo(SellerProfile::class);
     }
 
     public function product()

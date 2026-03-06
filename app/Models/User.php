@@ -52,6 +52,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(\App\Models\Role::class, 'role_user');
     }
+
+    public function isBuyer()
+    {
+        return $this->roles()->where('name', 'buyer')->exists();
+    }
     
 
     public function sellerProfile()
@@ -71,6 +76,7 @@ class User extends Authenticatable
         );
     }
 
+
     public function ordersPlaced()
     {
         return $this->hasMany(Order::class, 'buyer_id');
@@ -78,7 +84,14 @@ class User extends Authenticatable
 
     public function ordersReceived()
     {
-        return $this->hasMany(Order::class, 'seller_id');
+        return $this->hasManyThrough(
+            Order::class,
+            SellerProfile::class,
+            'user_id',
+            'seller_profile_id',
+            'id',
+            'id'
+        );
     }
 
     public function complianceFlags()

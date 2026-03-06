@@ -14,4 +14,26 @@
 
 <p>{{ $product->description }}</p>
 
+@if(auth()->check())
+
+<form method="POST" action="/products/{{ $product->id }}/buy">
+
+    @csrf
+
+    <label>Quantity:</label>
+
+    <input type="number"
+           name="quantity"
+           value="1"
+           min="1"
+           max="{{ $product->stock_quantity }}">
+
+    <button type="submit">
+        Buy Now
+    </button>
+
+</form>
+
+@endif
+
 </x-app-layout>
