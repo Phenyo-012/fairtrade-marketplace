@@ -13,6 +13,9 @@ Route::get('/products/{product}', [MarketplaceController::class, 'show']);
 
 Route::post('/products/{product}/buy', [OrderController::class, 'store'])
     ->middleware('auth');
+
+Route::get('/orders', [OrderController::class, 'index'])
+    ->middleware('auth');
     
 Route::get('/dashboard', function () {
     return view('dashboard');

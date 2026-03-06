@@ -9,6 +9,18 @@ use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
+
+    public function index()
+    {
+        $orders = auth()->user()
+            ->ordersPlaced()
+            ->with('product')
+            ->latest()
+            ->get();
+
+        return view('orders.index', compact('orders'));
+    }
+    
     public function store(Request $request, Product $product)
     {
         $user = auth()->user();
