@@ -14,4 +14,13 @@ class MarketplaceController extends Controller
 
         return view('marketplace.index', compact('products'));
     }
+
+    public function show(Product $product)
+    {
+        if (!$product->is_approved || !$product->is_active) {
+            abort(404);
+        }
+
+        return view('marketplace.show', compact('product'));
+    }
 }

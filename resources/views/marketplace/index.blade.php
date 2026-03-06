@@ -19,13 +19,23 @@
 
 <tr>
 
-<td>{{ $product->name }}</td>
+<td>
+    <a href="/products/{{ $product->id }}">
+    {{ $product->name }}
+    </a>
+</td>
 
-<td>{{ $product->sellerProfile->store_name }}</td>
+<td>
+    {{ $product->sellerProfile->store_name }}
+</td>
 
-<td>${{ $product->price }}</td>
+<td>
+    ${{ $product->price }}
+</td>
 
-<td>{{ $product->stock_quantity }}</td>
+<td>
+    {{ $product->stock_quantity }}
+</td>
 
 </tr>
 
