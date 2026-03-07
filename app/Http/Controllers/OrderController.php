@@ -20,6 +20,15 @@ class OrderController extends Controller
 
         return view('orders.index', compact('orders'));
     }
+
+    public function myOrders()
+    {
+        $orders = Order::where('buyer_id', auth()->id())
+            ->latest()
+            ->get();
+
+        return view('orders.my-orders', compact('orders'));
+    }
     
     public function store(Request $request, Product $product)
     {
@@ -58,7 +67,6 @@ class OrderController extends Controller
 
         $product->decrement('stock_quantity', $quantity);
 
-        return redirect('/orders/'.$order->id)
-            ->with('success', 'Order placed successfully.');
+        return view('orders.success', compact('order'));
     }
 }

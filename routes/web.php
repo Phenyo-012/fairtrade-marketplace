@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\MarketplaceController; 
 use App\Http\Controllers\OrderController; 
+use App\Http\Controllers\CourierController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MarketplaceController::class, 'index']);
@@ -16,6 +17,14 @@ Route::post('/products/{product}/buy', [OrderController::class, 'store'])
 
 Route::get('/orders', [OrderController::class, 'index'])
     ->middleware('auth');
+
+Route::get('/my-orders', [App\Http\Controllers\OrderController::class, 'myOrders'])
+    ->middleware('auth')
+    ->name('orders.my');
+
+Route::get('/courier/confirm-delivery', [CourierController::class, 'showForm']);
+
+Route::post('/courier/confirm-delivery', [CourierController::class, 'confirmDelivery']);
     
 Route::get('/dashboard', function () {
     return view('dashboard');
