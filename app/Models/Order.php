@@ -41,11 +41,11 @@ class Order extends Model
 
     public function dispute()
     {
-        return $this->hasOne(Dispute::class);
+        return $this->hasOne(\App\Models\Dispute::class);
     }
 
     public function review()
     {
-        return $this->hasOne(Review::class);
+        return $this->hasOne(\App\Models\Review::class);
     }
 }

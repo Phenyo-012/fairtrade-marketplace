@@ -6,6 +6,8 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\MarketplaceController; 
 use App\Http\Controllers\OrderController; 
 use App\Http\Controllers\CourierController;
+use App\Http\Controllers\DisputeController;
+use App\Http\Controllers\AdminDisputeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MarketplaceController::class, 'index']);
@@ -50,25 +52,47 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth','role:admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
-    });
+    })->name('admin.dashboard');
 });
 
 Route::middleware(['auth','role:admin'])->group(function () {
 
-    Route::get('/admin/products', [AdminProductController::class, 'index']);
+    Route::get('/admin/products', [AdminProductController::class, 'index'])
+        ->name('admin.products');
 
-    Route::post('/admin/products/{id}/approve', [AdminProductController::class, 'approve']);
-
+    Route::post('/admin/products/{id}/approve', [AdminProductController::class, 'approve'])
+        ->name('admin.products.approve');
 });
 
 Route::middleware(['auth','role:seller'])->group(function () {
     Route::get('/seller/dashboard', function () {
         return view('seller.dashboard');
-    });
+    })->name('seller.dashboard');
 });
 
 Route::middleware(['auth','role:buyer'])->group(function () {
     Route::get('/buyer/dashboard', function () {
         return view('buyer.dashboard');
-    });
+    })->name('buyer.dashboard');
+});
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/orders/{order}/dispute', [DisputeController::class, 'create'])
+        ->name('disputes.create');
+
+    Route::post('/orders/{order}/dispute', [DisputeController::class, 'store'])
+        ->name('disputes.store');
+});
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/admin/disputes', [AdminDisputeController::class, 'index'])
+        ->name('admin.disputes');
+
+    Route::get('/admin/disputes/{dispute}', [AdminDisputeController::class, 'show'])
+        ->name('admin.disputes.show');
+
+    Route::post('/admin/disputes/{dispute}/resolve', [AdminDisputeController::class, 'resolve'])
+        ->name('admin.disputes.resolve');
 });

@@ -53,6 +53,12 @@ class User extends Authenticatable
         return $this->belongsToMany(\App\Models\Role::class, 'role_user');
     }
 
+
+    public function hasRole($roleName)
+    {
+        return $this->roles->pluck('name')->contains($roleName);
+    }
+
     public function isBuyer()
     {
         return $this->roles()->where('name', 'buyer')->exists();
@@ -108,4 +114,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class, 'reviewee_id');
     }
+
+
 }

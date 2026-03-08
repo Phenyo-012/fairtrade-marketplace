@@ -3,10 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Dispute extends Model
 {
-    //
+    use SoftDeletes;
+
+    protected $fillable = [
+        'order_id',
+        'opened_by',
+        'reason',
+        'description',
+        'status',
+        'resolution_notes',
+        'resolved_by'
+    ];
+
     public function order()
     {
         return $this->belongsTo(Order::class);
@@ -21,4 +33,5 @@ class Dispute extends Model
     {
         return $this->belongsTo(User::class, 'resolved_by');
     }
+
 }

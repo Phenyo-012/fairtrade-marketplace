@@ -10,6 +10,7 @@
 <th class="p-2">Order ID</th>
 <th class="p-2">Status</th>
 <th class="p-2">Delivery Code</th>
+<th class="p-2">Actions</th>
 </tr>
 
 @foreach($orders as $order)
@@ -58,6 +59,26 @@
     <td class="p-2 font-bold text-green-700">
         {{ $order->delivery_code }}
     </td>
+
+    <td class="p-2">
+
+        @if($order->status !== 'disputed')
+
+            <a href="{{ route('disputes.create', $order) }}"
+               class="bg-red-500 text-black px-3 py-1 rounded text-sm">
+               Dispute Order 
+            </a>
+
+        @else
+
+            <span class="text-red-600 font-bold">
+                Dispute Open
+            </span>
+
+        @endif
+
+    </td>
+
 </tr>
 
 @endforeach
