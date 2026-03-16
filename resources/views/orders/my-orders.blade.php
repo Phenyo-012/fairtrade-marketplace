@@ -11,6 +11,7 @@
 <th class="p-2">Status</th>
 <th class="p-2">Delivery Code</th>
 <th class="p-2">Actions</th>
+<th class="p-2">Review</th>
 </tr>
 
 @foreach($orders as $order)
@@ -77,6 +78,23 @@
 
         @endif
 
+    </td>
+
+    <td class="p-2">
+
+        @if($order->status === 'delivered' && !$order->review)
+
+            <a href="{{ route('reviews.create', $order) }}"
+               class="bg-green-600 text-black px-3 py-1 rounded text-sm">
+               Write Review
+            </a>
+
+        @elseif($order->review)
+
+            <span class="text-green-600 font-bold">
+                Review Submitted        
+            </span>
+        @endif
     </td>
 
 </tr>

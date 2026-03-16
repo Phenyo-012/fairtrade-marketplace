@@ -18,11 +18,11 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->foreignId('reviewer_id')
+            $table->foreignId('buyer_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            $table->foreignId('reviewee_id')
+            $table->foreignId('sellerProfile_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
 

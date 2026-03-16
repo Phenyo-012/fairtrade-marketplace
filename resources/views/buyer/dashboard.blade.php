@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    Welcome Buyer. Browse and manage your orders here.
+                    Welcome {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}. Browse and manage your orders here.
                 </div>
             </div>
         </div>

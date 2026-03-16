@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CourierController;
 use App\Http\Controllers\DisputeController;
 use App\Http\Controllers\AdminDisputeController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MarketplaceController::class, 'index']);
@@ -95,4 +96,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/admin/disputes/{dispute}/resolve', [AdminDisputeController::class, 'resolve'])
         ->name('admin.disputes.resolve');
+});
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/orders/{order}/review',
+        [ReviewController::class,'create'])
+        ->name('reviews.create');
+
+    Route::post('/orders/{order}/review',
+        [ReviewController::class,'store'])
+        ->name('reviews.store');
+
 });
