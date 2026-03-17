@@ -31,7 +31,7 @@ class SellerProductController extends Controller
             'stock_quantity' => 'required|integer',
             'category' => 'required',
             'condition' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,gif|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         // Handle image upload

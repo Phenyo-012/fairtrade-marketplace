@@ -36,7 +36,7 @@ Search
 @if($product->image)
 <img src="{{ asset('storage/' . $product->image) }}"
      alt="{{ $product->name }}"
-     class="w-full h-40 object-cover mb-2 rounded">
+     class="w-full h-40 object-cover rounded mb-3 hover:scale-105 transition-transform">
 @endif
 
 <h3 class="font-bold text-lg">

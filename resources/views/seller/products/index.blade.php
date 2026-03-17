@@ -23,9 +23,9 @@
 <tr class="border-t">
 @if($product->image)
 <td class="p-2">
-<img src="{{ asset('storage/' . $product->image) }}"
-     alt="{{ $product->name }}"
-     class="w-20 h-20 object-cover rounded">
+   <img src="{{ asset('storage/' . $product->image) }}"
+      alt="{{ $product->name }}"
+      class="w-20 h-20 object-cover rounded">
 </td>
 @else
 <td class="p-2">No Image</td>

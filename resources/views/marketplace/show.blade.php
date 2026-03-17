@@ -5,7 +5,7 @@
 @if($product->image)
 <img src="{{ asset('storage/' . $product->image) }}"
      alt="{{ $product->name }}"
-     class="w-full max-h-96 object-cover mb-4 rounded">
+     class="w-full max-h-[500px] object-cover rounded-lg mb-6">
 @endif
 
 <h2 class="text-2xl font-bold mb-4">
