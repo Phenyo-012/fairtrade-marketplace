@@ -18,7 +18,7 @@
                     
                     @auth
 
-
+                    <!-- Buyer links -->
                     @if(Auth::user()->hasRole('buyer'))
                         <x-nav-link :href="route('buyer.dashboard')" :active="request()->routeIs('buyer.dashboard')">
                             {{ __('Dashboard') }}
@@ -28,12 +28,20 @@
                         </x-nav-link>
                     @endif
 
+                    <!-- Seller link -->
                     @if(Auth::user()->hasRole('seller'))
                         <x-nav-link :href="route('seller.dashboard')" :active="request()->routeIs('seller.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
+
+                        <!-- Add link to seller's products page -->
+                        <x-nav-link :href="route('seller.products.index')"
+                         :active="request()->routeIs('seller.products.*')">
+                            My Products
+                        </x-nav-link>
                     @endif
 
+                    <!-- Admin links -->
                     @if(Auth::user()->hasRole('admin'))
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __('Dashboard') }}
@@ -130,8 +138,15 @@
             @endif
 
             @if(Auth::user()->hasRole('seller'))
+                <<!-- Seller dashboard link -->
                 <x-responsive-nav-link :href="route('seller.dashboard')" :active="request()->routeIs('seller.dashboard')">
-                    {{ __('Seller Dashboard') }}
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+
+                <!-- Add link to seller's products page -->
+                <x-responsive-nav-link :href="route('seller.products.index')"
+                :active="request()->routeIs('seller.products.*')">
+                    My Products
                 </x-responsive-nav-link>
             @endif
 

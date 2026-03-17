@@ -1,39 +1,41 @@
 <x-app-layout>
 
-<h2>{{ $product->name }}</h2>
+<div class="max-w-4xl mx-auto mt-10">
 
-<p><strong>Seller:</strong> {{ $product->sellerProfile->store_name }}</p>
+@if($product->image)
+<img src="{{ asset('storage/' . $product->image) }}"
+     alt="{{ $product->name }}"
+     class="w-full max-h-96 object-cover mb-4 rounded">
+@endif
 
-<p><strong>Price:</strong> ${{ $product->price }}</p>
+<h2 class="text-2xl font-bold mb-4">
+{{ $product->name }}
+</h2>
 
-<p><strong>Stock:</strong> {{ $product->stock_quantity }}</p>
+<p class="text-gray-700 mb-4">
+{{ $product->description }}
+</p>
 
-<p><strong>Category:</strong> {{ $product->category }}</p>
+<p class="text-xl font-bold mb-4">
+${{ $product->price }}
+</p>
 
-<p><strong>Condition:</strong> {{ $product->condition }}</p>
-
-<p>{{ $product->description }}</p>
-
-@if(auth()->check())
+<p class="mb-4">
+Stock: {{ $product->stock_quantity }}
+</p>
 
 <form method="POST" action="/products/{{ $product->id }}/buy">
+@csrf
 
-    @csrf
+<input type="number" name="quantity" value="1"
+       class="border p-2 w-20 mb-3">
 
-    <label>Quantity:</label>
-
-    <input type="number"
-           name="quantity"
-           value="1"
-           min="1"
-           max="{{ $product->stock_quantity }}">
-
-    <button type="submit">
-        Buy Now
-    </button>
+<button class="bg-blue-600 text-white px-4 py-2 rounded">
+Buy Now
+</button>
 
 </form>
 
-@endif
+</div>
 
 </x-app-layout>

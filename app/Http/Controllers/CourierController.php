@@ -26,10 +26,18 @@ class CourierController extends Controller
             return back()->with('error', 'Invalid code or order not ready for delivery.');
         }
 
+        /* Step 1: mark delivered */
         $order->status = 'delivered';
         $order->delivered_at = now();
+
+        /* Step 2: release escrow */
+        $order->payment_status = 'released';
+
+        /* Step 3: complete order */
+        $order->status = 'completed';
+
         $order->save();
 
-        return back()->with('success', 'Delivery confirmed. Package may be handed to buyer.');
+        return back()->with('success', 'Delivery confirmed. Escrow released and order completed.');
     }
 }

@@ -16,6 +16,7 @@ class Order extends Model
         'status',
         'delivery_code',
         'seller_deadline',
+        'payment_status'
     ];
 
     //
