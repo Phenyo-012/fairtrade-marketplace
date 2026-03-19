@@ -1,67 +1,103 @@
 <x-app-layout>
 
-<div class="max-w-6xl mx-auto mt-10">
+<div class="bg-gray-100 min-h-screen py-10">
 
-<h2 class="text-2xl font-bold mb-6">My Products</h2>
+    <div class="max-w-7xl mx-auto px-4">
 
-<a href="{{ route('seller.products.create') }}"
-   class="bg-blue-600 text-white px-4 py-2 rounded mb-4 inline-block">
-   Add Product
-</a>
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">
+                My Products
+            </h2>
 
-<table class="w-full border">
+            <a href="{{ route('seller.products.create') }}"
+               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow">
+                + Add Product
+            </a>
+        </div>
 
-<tr class="bg-gray-200">
-<th class="p-2">Name</th>
-<th class="p-2">Price</th>
-<th class="p-2">Stock</th>
-<th class="p-2">Actions</th>
-</tr>
+        <!-- Product Grid -->
+        <div class="grid gap-4 mb-6 w-full
+                    grid-cols-1
+                    md:grid-cols-products-md
+                    lg:grid-cols-products-lg
+                    justify-center">
 
-@foreach($products as $product)
+            @forelse($products as $product)
 
-<tr class="border-t">
-@if($product->image)
-<td class="p-2">
-   <img src="{{ asset('storage/' . $product->image) }}"
-      alt="{{ $product->name }}"
-      class="w-20 h-20 object-cover rounded">
-</td>
-@else
-<td class="p-2">No Image</td>
-@endif
-<td class="p-2">{{ $product->name }}</td>
-<td class="p-2">${{ $product->price }}</td>
-<td class="p-2">{{ $product->stock_quantity }}</td>
+            <!-- Product Card -->
+            <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden text-sm h-[420px] flex flex-col">
 
-<td class="p-2 space-x-2">
+                <!-- Image -->
+                <div class="w-full h-48 overflow-hidden">
+                    @if($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}"
+                             alt="{{ $product->name }}"
+                             class="w-full h-full object-cover">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+                            No Image
+                        </div>
+                    @endif
+                </div>
 
-<a href="{{ route('seller.products.edit',$product) }}"
-   class="bg-yellow-500 text-black px-2 py-1 rounded">
-   Edit Listing
-</a>
+                <!-- Content -->
+                <div class="p-4 flex-1 flex flex-col justify-between">
 
-<form method="POST"
-      action="{{ route('seller.products.destroy',$product) }}"
-      class="inline">
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-lg text-black line-clamp-2">
+                            {{ $product->name }}
+                        </h3>
 
-@csrf
-@method('DELETE')
+                        <p class="text-gray-700 font-semibold text-sm">
+                            R{{ number_format($product->price, 2) }}
+                        </p>
 
-<button class="text-black px-2 py-1 rounded">
-Delete Listing
-</button>
+                        <!-- Stock Badge -->
+                        <span class="inline-block py-0.5 px-2 text-xs rounded-full
+                            @if($product->stock_quantity < 5)
+                                bg-red-100 text-red-700
+                            @else
+                                bg-green-100 text-green-700
+                            @endif">
+                            {{ $product->stock_quantity }} in stock
+                        </span>
+                    </div>
 
-</form>
+                    <!-- Actions -->
+                    <div class="flex gap-2 pt-4">
+                        <a href="{{ route('seller.products.edit', $product) }}"
+                           class="flex-1 text-center text-black font-semibold py-2 rounded-lg border">
+                            Edit
+                        </a>
 
-</td>
+                        <form method="POST"
+                              action="{{ route('seller.products.destroy', $product) }}"
+                              class="flex-1">
+                            @csrf
+                            @method('DELETE')
 
-</tr>
+                            <button class=" w-full flex-1 text-center text-black font-semibold py-2 rounded-lg border">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
 
-@endforeach
+                </div>
 
-</table>
+            </div>
 
+            @empty
+
+            <div class="col-span-full text-center text-gray-500">
+                No products yet.
+            </div>
+
+            @endforelse
+
+        </div>
+
+    </div>
 </div>
 
 </x-app-layout>

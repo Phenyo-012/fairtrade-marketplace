@@ -17,7 +17,7 @@
 </p>
 
 <p class="text-xl font-bold mb-4">
-${{ $product->price }}
+R{{ $product->price }}
 </p>
 
 <p class="mb-4">

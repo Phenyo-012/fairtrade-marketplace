@@ -3,10 +3,10 @@
 
 <div class="max-w-7xl mx-auto mt-10">
 
-<h2 class="text-2xl font-bold mb-6">Marketplace</h2>
+<!-- <h2 class="text-2xl font-bold mb-6">Marketplace</h2> -->
 
 <!-- Search -->
-<form method="GET" class="mb-6 flex gap-2">
+<form method="GET" class="mb-6 flex gap-2 mt-6">
 
 <input type="text" name="search"
        placeholder="Search products..."
@@ -48,7 +48,7 @@ Search
 </p>
 
 <p class="font-bold mt-2">
-${{ $product->price }}
+R{{ $product->price }}
 </p>
 
 <a href="/products/{{ $product->id }}"
