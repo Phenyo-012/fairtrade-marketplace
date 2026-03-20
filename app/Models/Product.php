@@ -33,4 +33,18 @@ class Product extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function getMainImageAttribute()
+    {
+        $image = $this->images->first();
+
+        return $image
+            ? asset('storage/' . $image->image_path)
+            : '/placeholder.png';
+    }
 }

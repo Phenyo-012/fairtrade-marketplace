@@ -10,7 +10,8 @@ class MarketplaceController extends Controller
     public function index(Request $request)
     {
         $query = Product::where('is_approved', true)
-                        ->where('is_active', true);
+                        ->where('is_active', true)
+                        ->with('images');
 
         // Search
         if ($request->filled('search')) {
@@ -41,6 +42,12 @@ class MarketplaceController extends Controller
             abort(404);
         }
 
-        return view('marketplace.show', compact('product'));
+        $related = Product::where('category', $product->category)
+        ->where('id', '!=', $product->id)
+        ->with('images')
+        ->take(4)
+        ->get();
+
+        return view('marketplace.show', compact('product', 'related'));
     }
 }

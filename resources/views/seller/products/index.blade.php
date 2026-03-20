@@ -30,12 +30,11 @@
 
                 <!-- Image -->
                 <div class="w-full h-48 overflow-hidden">
-                    @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}"
-                             alt="{{ $product->name }}"
-                             class="w-full h-full object-cover">
+                   @if($product->images->count())
+                        <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+                            class="w-full h-40 object-cover">
                     @else
-                        <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+                        <div class="w-full h-40 bg-gray-200 flex items-center justify-center">
                             No Image
                         </div>
                     @endif

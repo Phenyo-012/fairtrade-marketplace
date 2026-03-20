@@ -31,7 +31,8 @@ class SellerProductController extends Controller
             'stock_quantity' => 'required|integer',
             'category' => 'required',
             'condition' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+            'images' => 'required|array|max:5',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         // Handle image upload
@@ -51,11 +52,27 @@ class SellerProductController extends Controller
             $data['image'] = 'product_images/' . $filename;
         }
 
-        Product::create([
+        $product = Product::create([
             'seller_profile_id' => auth()->user()->sellerProfile->id,
-            ...$data,
-            'is_active' => false
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock_quantity' => $request->stock_quantity,
+            'category' => $request->category,
+            'condition' => $request->condition,
+            'is_active' => false,
         ]);
+
+        // Save images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('product_images', 'public');
+
+                $product->images()->create([
+                    'image_path' => $path
+                ]);
+            }
+        }
         return redirect()->route('seller.products.index')
             ->with('success','Product created.');
     }

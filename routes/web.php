@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminDisputeController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellerDashboardController;
 use App\Http\Controllers\SellerProductController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,16 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/orders/{order}/review', [ReviewController::class,'store'])
         ->name('reviews.store');
+
+    // Shopping Cart
+    Route::post('/cart/{product}', [CartController::class, 'add'])
+        ->name('cart.add');
+    Route::get('/cart', [CartController::class, 'index'])
+        ->name('cart.index');
+    Route::patch('/cart/{item}', [CartController::class, 'update'])
+        ->name('cart.update');
+    Route::delete('/cart/{item}', [CartController::class, 'destroy'])
+        ->name('cart.destroy');
 });
 
 /*

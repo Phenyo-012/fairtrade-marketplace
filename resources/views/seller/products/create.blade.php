@@ -9,7 +9,8 @@
 
 <div class="mt-4">
     <label>Product Image</label>
-    <input type="file" name="image" class="border p-2 w-full">
+    <input type="file" name="images[]" multiple required
+       class="border p-2 w-full">
 </div>
 
 <input name="name" placeholder="Name" class="border p-2 w-full mb-2">

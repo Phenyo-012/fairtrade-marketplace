@@ -23,8 +23,19 @@
                         <x-nav-link :href="route('buyer.dashboard')" :active="request()->routeIs('buyer.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
+
                         <x-nav-link :href="route('orders.my')" :active="request()->routeIs('orders.my')">
                             {{ __('My Orders') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')" class="relative">
+                            🛒 Cart
+                            @php
+                                $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
+                            @endphp
+                            @if($cartCount > 0)
+                                <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                            @endif
                         </x-nav-link>
                     @endif
 
@@ -39,6 +50,20 @@
                          :active="request()->routeIs('seller.products.*')">
                             My Products
                         </x-nav-link>
+
+                        <x-nav-link :href="route('orders.my')" :active="request()->routeIs('orders.my')">
+                            {{ __('My Orders') }}
+                        </x-nav-link>
+
+                         <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')" class="relative">
+                            🛒 Cart
+                            @php
+                                $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
+                            @endphp
+                            @if($cartCount > 0)
+                                <span class="absolute -top-1 -right-3 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                            @endif
+                        </x-nav-link>
                     @endif
 
                     <!-- Admin links -->
@@ -46,11 +71,23 @@
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
+
                         <x-nav-link :href="route('admin.disputes')" :active="request()->routeIs('admin.disputes.*')">
                             {{ __('Disputes') }}
                         </x-nav-link>
+                        
                         <x-nav-link :href="route('admin.products')" :active="request()->routeIs('admin.products.*')">
                             {{ __('Products') }}
+                        </x-nav-link>
+
+                         <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')" class="relative">
+                            🛒 Cart
+                            @php
+                                $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
+                            @endphp
+                            @if($cartCount > 0)
+                                <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                            @endif
                         </x-nav-link>
                     @endif
 
@@ -127,16 +164,28 @@
             </x-responsive-nav-link> --- IGNORE --->
 
             @auth
-
+            <!-- Buyer links -->
             @if(Auth::user()->hasRole('buyer'))
                 <x-responsive-nav-link :href="route('buyer.dashboard')" :active="request()->routeIs('buyer.dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
+
                 <x-responsive-nav-link :href="route('orders.my')" :active="request()->routeIs('orders.my')">
                     {{ __('My Orders') }}
                 </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')" class="relative">
+                    🛒 Cart
+                    @php
+                        $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
+                    @endphp
+                    @if($cartCount > 0)
+                        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                    @endif
+                </x-responsive-nav-link>
             @endif
 
+            <!-- Seller Links -->
             @if(Auth::user()->hasRole('seller'))
                 <<!-- Seller dashboard link -->
                 <x-responsive-nav-link :href="route('seller.dashboard')" :active="request()->routeIs('seller.dashboard')">
@@ -148,17 +197,44 @@
                 :active="request()->routeIs('seller.products.*')">
                     My Products
                 </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('orders.my')" :active="request()->routeIs('orders.my')">
+                    {{ __('My Orders') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')" class="relative">
+                    🛒 Cart
+                    @php
+                        $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
+                    @endphp
+                    @if($cartCount > 0)
+                        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                    @endif
+                </x-responsive-nav-link>
             @endif
 
+            <!-- Admin Links-->
             @if(Auth::user()->hasRole('admin'))
                 <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
+                
                 <x-responsive-nav-link :href="route('admin.disputes')" :active="request()->routeIs('admin.disputes.*')">
                     {{ __('Disputes') }}
                 </x-responsive-nav-link>
+
                 <x-responsive-nav-link :href="route('admin.products')" :active="request()->routeIs('admin.products.*')">
                     {{ __('Products') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')" class="relative">
+                    🛒 Cart
+                    @php
+                        $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
+                    @endphp
+                    @if($cartCount > 0)
+                        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                    @endif
                 </x-responsive-nav-link>
             @endif
 
