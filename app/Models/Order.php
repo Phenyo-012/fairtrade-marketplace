@@ -49,4 +49,9 @@ class Order extends Model
     {
         return $this->hasOne(\App\Models\Review::class);
     }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

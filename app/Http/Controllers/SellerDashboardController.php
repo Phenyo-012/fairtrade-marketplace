@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\OrderItem;
 
 class SellerDashboardController extends Controller
 {
@@ -15,60 +16,66 @@ class SellerDashboardController extends Controller
         $seller = Auth::user()->sellerProfile;
 
         // Seller product IDs
-        $products = Product::where('seller_profile_id', $seller->id)->pluck('id');
+        $productIds = Product::where('seller_profile_id', $seller->id)->pluck('id');
 
-        // ALL orders (for count)
-        $allOrders = Order::whereIn('product_id', $products)->get();
-
-        // ONLY completed orders (for revenue)
-        $completedOrders = Order::whereIn('product_id', $products)
-            ->where('status', 'completed')
+        $orderItems = OrderItem::whereIn('product_id', $productIds)
+            ->with(['order', 'product'])
             ->get();
 
-        $totalOrders = $allOrders->count();
-        $totalRevenue = $completedOrders->sum('total_amount');
-        $totalProducts = $products->count();
+        $totalOrders = $orderItems->pluck('order_id')->unique()->count();
 
-        // Reviews (based on completed orders)
-        $orderIds = $completedOrders->pluck('id');
+        $totalRevenue = $orderItems
+            ->filter(fn($item) => $item->order && $item->order->status === 'completed')
+            ->sum('subtotal');
 
-        $reviews = Review::whereIn('order_id', $orderIds)->get();
+        $totalProducts = $productIds->count();
+
+        $completedOrderIds = $orderItems
+            ->filter(fn($item) => $item->order && $item->order->status === 'completed')
+            ->pluck('order_id')
+            ->unique();
+
+        $reviews = Review::whereIn('order_id', $completedOrderIds)->get();
+
         $averageRating = $reviews->avg('rating') ?? 0;
 
-        // Recent data
-        $recentOrders = $allOrders->sortByDesc('created_at')->take(5);
+        $recentOrders = Order::whereIn('id', $orderItems->pluck('order_id')->unique())
+            ->latest()
+            ->take(5)
+            ->get();
+
         $recentReviews = $reviews->sortByDesc('created_at')->take(5);
 
-        // Charts (ONLY completed orders)
-        $revenueData = Order::whereIn('product_id', $products)
-            ->where('status', 'completed')
-            ->selectRaw('DATE(created_at) as date, SUM(total_amount) as total')
+        $revenueData = OrderItem::whereIn('product_id', $productIds)
+            ->whereHas('order', function ($q) {
+                $q->where('status', 'completed');
+            })
+            ->selectRaw('DATE(created_at) as date, SUM(subtotal) as total')
             ->groupBy('date')
             ->orderBy('date')
             ->get();
 
-        $orderData = Order::whereIn('product_id', $products)
+        $orderData = Order::whereIn('id', $orderItems->pluck('order_id')->unique())
             ->selectRaw('DATE(created_at) as date, COUNT(*) as total')
             ->groupBy('date')
             ->orderBy('date')
             ->get();
 
-        // Top products (completed sales only)
-        $topProducts = Order::whereIn('product_id', $products)
-            ->where('status', '!=', 'cancelled')
-            ->select('product_id', DB::raw('COUNT(*) as total_sales'))
+        $topProducts = OrderItem::whereIn('product_id', $productIds)
+            ->whereHas('order', function ($q) {
+                $q->where('status', '!=', 'cancelled');
+            })
+            ->select('product_id', DB::raw('SUM(quantity) as total_sales'))
             ->groupBy('product_id')
             ->orderByDesc('total_sales')
             ->with('product')
             ->take(5)
             ->get();
 
-        // Low stock
         $lowStockProducts = Product::where('seller_profile_id', $seller->id)
             ->where('stock_quantity', '<', 5)
             ->get();
 
-        // Commission
         $commissionRate = 0.05;
         $platformEarnings = $totalRevenue * $commissionRate;
         $sellerEarnings = $totalRevenue - $platformEarnings;

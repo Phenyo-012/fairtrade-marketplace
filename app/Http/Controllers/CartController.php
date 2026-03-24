@@ -30,12 +30,26 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1'
         ]);
 
+        // Prevent adding more than stock initially
+        if ($request->quantity > $product->stock_quantity) {
+            return back()->with('error', 'Not enough stock available');
+        }
+
         $item = CartItem::where('user_id', auth()->id())
             ->where('product_id', $product->id)
             ->first();
 
         if ($item) {
-            $item->increment('quantity', $request->quantity);
+            $newQty = $item->quantity + $request->quantity;
+
+            // Prevent exceeding stock when updating existing cart item
+            if ($newQty > $product->stock_quantity) {
+                return back()->with('error', 'Exceeds available stock');
+            }
+
+            $item->update([
+                'quantity' => $newQty
+            ]);
         } else {
             CartItem::create([
                 'user_id' => auth()->id(),
@@ -58,6 +72,11 @@ class CartController extends Controller
             abort(403);
         }
 
+        // Prevent exceeding stock
+        if ($request->quantity > $item->product->stock_quantity) {
+            return back()->with('error', 'Exceeds available stock');
+        }
+
         $item->update([
             'quantity' => $request->quantity
         ]);
@@ -75,5 +94,13 @@ class CartController extends Controller
         $item->delete();
 
         return back()->with('success', 'Item removed');
+    }
+
+    // CLEAR CART
+    public function clear()
+    {
+        CartItem::where('user_id', auth()->id())->delete();
+
+        return back()->with('success', 'Cart cleared');
     }
 }

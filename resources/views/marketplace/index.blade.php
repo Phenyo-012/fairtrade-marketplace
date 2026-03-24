@@ -36,11 +36,11 @@
          @if($product->images->count())
          <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
             alt="{{ $product->name }}"
-            class="w-full h-40 object-cover rounded mb-3 hover:scale-105 transition-transform">
+            class="w-full h-80 object-cover rounded mb-3 hover:scale-105 transition-transform">
 
          @else
          <img src="/placeholder.png" 
-               class="w-full h-40 object-cover rounded mb-3 hover:scale-105 transition-transform text-center"
+               class="w-full h-80 object-cover rounded mb-3 hover:scale-105 transition-transform text-center"
                alt="no image">
                            
          @endif

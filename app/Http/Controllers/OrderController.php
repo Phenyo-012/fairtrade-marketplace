@@ -24,6 +24,7 @@ class OrderController extends Controller
     public function myOrders()
     {
         $orders = Order::where('buyer_id', auth()->id())
+            ->with('items.product')
             ->latest()
             ->get();
 

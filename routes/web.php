@@ -14,6 +14,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellerDashboardController;
 use App\Http\Controllers\SellerProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,20 @@ Route::middleware('auth')->group(function () {
         ->name('cart.update');
     Route::delete('/cart/{item}', [CartController::class, 'destroy'])
         ->name('cart.destroy');
+    Route::delete('/cart', [CartController::class, 'clear'])
+        ->name('cart.clear');
+
+    // CHECKOUT ROUTES
+    Route::get('/checkout', [CheckoutController::class, 'index'])
+        ->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])
+        ->name('checkout.store');
+    Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])
+        ->name('checkout.success');
+
+    Route::get('/marketplace', [MarketplaceController::class, 'index'])
+        ->name('marketplace.index');
+        
 });
 
 /*

@@ -34,7 +34,7 @@
                                 $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
                             @endphp
                             @if($cartCount > 0)
-                                <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                                <span class="absolute -left-2 bg-red-500 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
                             @endif
                         </x-nav-link>
                     @endif
@@ -61,7 +61,7 @@
                                 $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
                             @endphp
                             @if($cartCount > 0)
-                                <span class="absolute -top-1 -right-3 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                                <span class="absolute -left-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
                             @endif
                         </x-nav-link>
                     @endif
@@ -86,7 +86,7 @@
                                 $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
                             @endphp
                             @if($cartCount > 0)
-                                <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                                <span class="absolute -left-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
                             @endif
                         </x-nav-link>
                     @endif
@@ -180,7 +180,7 @@
                         $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
                     @endphp
                     @if($cartCount > 0)
-                        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                        <span class="absolute -left-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
                     @endif
                 </x-responsive-nav-link>
             @endif
@@ -208,7 +208,7 @@
                         $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
                     @endphp
                     @if($cartCount > 0)
-                        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                        <span class="absolute -left-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
                     @endif
                 </x-responsive-nav-link>
             @endif
@@ -233,7 +233,7 @@
                         $cartCount = auth()->check() ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity') : 0;
                     @endphp
                     @if($cartCount > 0)
-                        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
+                        <span class="absolute -left-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
                     @endif
                 </x-responsive-nav-link>
             @endif
