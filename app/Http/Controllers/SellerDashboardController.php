@@ -15,56 +15,77 @@ class SellerDashboardController extends Controller
     {
         $seller = Auth::user()->sellerProfile;
 
-        // Seller product IDs
-        $productIds = Product::where('seller_profile_id', $seller->id)->pluck('id');
+        // Seller products
+        $products = Product::where('seller_profile_id', $seller->id)->pluck('id');
 
-        $orderItems = OrderItem::whereIn('product_id', $productIds)
-            ->with(['order', 'product'])
+        // Get ALL order items belonging to seller products
+        $orderItems = OrderItem::whereIn('product_id', $products)
+            ->with('order')
             ->get();
 
-        $totalOrders = $orderItems->pluck('order_id')->unique()->count();
+        // Orders (unique)
+        $orders = $orderItems->pluck('order')->unique('id');
 
-        $totalRevenue = $orderItems
-            ->filter(fn($item) => $item->order && $item->order->status === 'completed')
-            ->sum('subtotal');
+        // Completed order items (for revenue)
+        $completedItems = $orderItems->filter(function ($item) {
+            return $item->order->status === 'completed';
+        });
 
-        $totalProducts = $productIds->count();
+        // ========================
+        // STATS
+        // ========================
+        $totalOrders = $orders->count();
+        $totalRevenue = $completedItems->sum(function ($item) {
+            return $item->subtotal;
+        });
+        $totalProducts = $products->count();
 
-        $completedOrderIds = $orderItems
-            ->filter(fn($item) => $item->order && $item->order->status === 'completed')
-            ->pluck('order_id')
-            ->unique();
+        // ========================
+        // REVIEWS (FIXED)
+        // ========================
+        $orderItemIds = $orderItems->pluck('id');
 
-        $reviews = Review::whereIn('order_id', $completedOrderIds)->get();
+        $reviews = Review::whereIn('order_item_id', $orderItemIds)->get();
 
         $averageRating = $reviews->avg('rating') ?? 0;
 
-        $recentOrders = Order::whereIn('id', $orderItems->pluck('order_id')->unique())
-            ->latest()
-            ->take(5)
-            ->get();
-
+        // ========================
+        // RECENT DATA
+        // ========================
+        $recentOrders = $orders->sortByDesc('created_at')->take(5);
         $recentReviews = $reviews->sortByDesc('created_at')->take(5);
 
-        $revenueData = OrderItem::whereIn('product_id', $productIds)
-            ->whereHas('order', function ($q) {
-                $q->where('status', 'completed');
+        // ========================
+        // CHARTS
+        // ========================
+        $revenueData = $completedItems
+            ->groupBy(function ($item) {
+                return $item->order->created_at->format('Y-m-d');
             })
-            ->selectRaw('DATE(created_at) as date, SUM(subtotal) as total')
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
-
-        $orderData = Order::whereIn('id', $orderItems->pluck('order_id')->unique())
-            ->selectRaw('DATE(created_at) as date, COUNT(*) as total')
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
-
-        $topProducts = OrderItem::whereIn('product_id', $productIds)
-            ->whereHas('order', function ($q) {
-                $q->where('status', '!=', 'cancelled');
+            ->map(function ($items, $date) {
+                return [
+                    'date' => $date,
+                    'total' => $items->sum('subtotal')
+                ];
             })
+            ->values();
+
+        $orderData = $orders
+            ->groupBy(function ($order) {
+                return $order->created_at->format('Y-m-d');
+            })
+            ->map(function ($orders, $date) {
+                return [
+                    'date' => $date,
+                    'total' => $orders->count()
+                ];
+            })
+            ->values();
+
+        // ========================
+        // TOP PRODUCTS
+        // ========================
+        $topProducts = OrderItem::whereIn('product_id', $products)
             ->select('product_id', DB::raw('SUM(quantity) as total_sales'))
             ->groupBy('product_id')
             ->orderByDesc('total_sales')
@@ -72,10 +93,16 @@ class SellerDashboardController extends Controller
             ->take(5)
             ->get();
 
+        // ========================
+        // LOW STOCK
+        // ========================
         $lowStockProducts = Product::where('seller_profile_id', $seller->id)
             ->where('stock_quantity', '<', 5)
             ->get();
 
+        // ========================
+        // COMMISSION
+        // ========================
         $commissionRate = 0.05;
         $platformEarnings = $totalRevenue * $commissionRate;
         $sellerEarnings = $totalRevenue - $platformEarnings;

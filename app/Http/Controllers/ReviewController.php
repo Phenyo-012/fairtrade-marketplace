@@ -14,22 +14,33 @@ class ReviewController extends Controller
         return view('reviews.create', compact('order'));
     }
 
-    public function store(Request $request, Order $order)
+    public function store(Request $request, $orderItemId)
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'nullable|string'
         ]);
 
-        Review::create([
-            'order_id' => $order->id,
+        $item = \App\Models\OrderItem::with('order', 'product')->findOrFail($orderItemId);
+
+        // SECURITY: ensure buyer owns this order
+        if ($item->order->buyer_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // prevent duplicate reviews
+        if ($item->reviews()->exists()) {
+            return back()->with('error', 'You already reviewed this product.');
+        }
+
+        \App\Models\Review::create([
+            'order_id' => $item->order_id,
+            'order_item_id' => $item->id,
             'buyer_id' => auth()->id(),
-            'seller_id' => $order->seller_profile_id,
             'rating' => $request->rating,
             'comment' => $request->comment
         ]);
 
-        return redirect()->route('orders.my')
-            ->with('success','Review submitted.');
+        return back()->with('success', 'Review submitted.');
     }
 }

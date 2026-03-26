@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     protected $fillable = [
-        'order_id',
-        'buyer_id',
-        'seller_id',
-        'rating',
-        'comment'
+    'order_id',
+    'order_item_id',
+    'buyer_id',
+    'rating',
+    'comment'
     ];
 
     public function order()
@@ -27,5 +27,10 @@ class Review extends Model
     public function seller()
     {
         return $this->belongsTo(User::class,'seller_id');
+    }
+
+    public function orderItem()
+    {
+        return $this->belongsTo(OrderItem::class);
     }
 }

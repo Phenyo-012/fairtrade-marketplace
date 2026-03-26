@@ -46,14 +46,18 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     // Profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 
     // Orders
     Route::post('/products/{product}/buy', [OrderController::class, 'store']);
     Route::get('/orders', [OrderController::class, 'index']);
-    Route::get('/my-orders', [OrderController::class, 'myOrders'])->name('orders.my');
+    Route::get('/my-orders', [OrderController::class, 'myOrders'])
+        ->name('orders.my');
 
     // Buyer Disputes
     Route::get('/orders/{order}/dispute', [DisputeController::class, 'create'])
@@ -66,8 +70,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}/review', [ReviewController::class,'create'])
         ->name('reviews.create');
 
-    Route::post('/orders/{order}/review', [ReviewController::class,'store'])
-        ->name('reviews.store');
+    Route::post('/review/{orderItem}', [ReviewController::class, 'store'])
+        ->name('review.store');
 
     // Shopping Cart
     Route::post('/cart/{product}', [CartController::class, 'add'])

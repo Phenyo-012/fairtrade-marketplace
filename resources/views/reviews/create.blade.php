@@ -6,36 +6,40 @@
 Review Order #{{ $order->id }}
 </h2>
 
-<form method="POST" action="{{ route('reviews.store',$order) }}">
+@foreach($order->items as $item)
 
-@csrf
+<div class="border p-4 rounded mb-3">
 
-<label class="block mb-2">Rating</label>
+    <p class="font-semibold">{{ $item->product->name }}</p>
 
-<select name="rating" class="border p-2 w-full mb-4">
+    @if(!$item->reviews->count())
 
-<option value="5">⭐⭐⭐⭐⭐ (5)</option>
-<option value="4">⭐⭐⭐⭐ (4)</option>
-<option value="3">⭐⭐⭐ (3)</option>
-<option value="2">⭐⭐ (2)</option>
-<option value="1">⭐ (1)</option>
+    <form method="POST" action="{{ route('review.store', $item->id) }}">
+        @csrf
 
-</select>
+        <select name="rating" class="border p-2 mb-2">
+            <option value="5">5 ⭐</option>
+            <option value="4">4 ⭐</option>
+            <option value="3">3 ⭐</option>
+            <option value="2">2 ⭐</option>
+            <option value="1">1 ⭐</option>
+        </select>
 
-<label class="block mb-2">Comment</label>
+        <textarea name="comment" class="border p-2 w-full mb-2"></textarea>
 
-<textarea name="comment"
-          class="border p-2 w-full mb-4"
-          rows="4"
-          placeholder="Share your experience..."></textarea>
+        <button class="bg-blue-600 text-white px-3 py-1 rounded">
+            Submit Review
+        </button>
 
-<button class="bg-green-600 text-black px-4 py-2 rounded">
+    </form>
 
-Submit Review
+    @else
+        <p class="text-green-600 text-sm">Already reviewed</p>
+    @endif
 
-</button>
+</div>
 
-</form>
+@endforeach
 
 </div>
 
