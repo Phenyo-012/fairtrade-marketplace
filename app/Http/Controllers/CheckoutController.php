@@ -46,12 +46,16 @@ class CheckoutController extends Controller
             // Calculate total
             $totalAmount = $items->sum(fn($item) => $item->product->price * $item->quantity);
 
+            // Calculate Seller Deadline
+            $sellerDeadline = now()->addDays(5);
+
             // Create one order
             $order = Order::create([
                 'buyer_id' => auth()->id(),
                 'total_amount' => $totalAmount,
                 'status' => 'pending',
-                'delivery_code' => strtoupper(Str::random(8))
+                'delivery_code' => strtoupper(Str::random(8)),
+                'seller_deadline' => $sellerDeadline
             ]);
 
             // Create order items & reduce stock

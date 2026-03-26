@@ -15,6 +15,7 @@ use App\Http\Controllers\SellerDashboardController;
 use App\Http\Controllers\SellerProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SellerOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,12 @@ use App\Http\Controllers\CheckoutController;
 Route::get('/', [MarketplaceController::class, 'index']);
 Route::get('/products/{product}', [MarketplaceController::class, 'show']);
 
+// Courier
+Route::get('/courier/confirm-delivery', [CourierController::class, 'showForm'])
+    ->name('courier.form');
+
+Route::post('/courier/confirm-delivery', [CourierController::class, 'confirm'])
+    ->name('courier.confirm');
 /*
 |--------------------------------------------------------------------------
 | AUTHENTICATED USERS
@@ -47,10 +54,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/products/{product}/buy', [OrderController::class, 'store']);
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/my-orders', [OrderController::class, 'myOrders'])->name('orders.my');
-
-    // Courier
-    Route::get('/courier/confirm-delivery', [CourierController::class, 'showForm']);
-    Route::post('/courier/confirm-delivery', [CourierController::class, 'confirmDelivery']);
 
     // Buyer Disputes
     Route::get('/orders/{order}/dispute', [DisputeController::class, 'create'])
@@ -137,6 +140,16 @@ Route::middleware(['auth','role:seller'])->group(function () {
     // Product Manager
     Route::resource('seller/products', SellerProductController::class)
         ->names('seller.products');
+
+    Route::get('/seller/orders', [SellerOrderController::class, 'index'])
+        ->name('seller.orders.index');
+
+    Route::get('/seller/orders/{order}', [SellerOrderController::class, 'show'])
+        ->name('seller.orders.show');
+
+    Route::patch('/seller/orders/{order}/status', [SellerOrderController::class, 'updateStatus'])
+        ->name('seller.orders.updateStatus');
+
 });
 
 /*
