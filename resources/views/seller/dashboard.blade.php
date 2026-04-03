@@ -45,9 +45,19 @@
 
                 <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition mb-6">
                     <p class="text-sm text-gray-500">Average Rating</p>
-                    <p class="text-3xl font-bold mt-2">
-                        {{ number_format($averageRating,1) }} 
-                    </p>
+                    <div class="flex items-center gap-2">
+                        <div>
+                            @for($i = 1; $i <= 5; $i++)
+                                <span class="{{ $i <= floor($averageRating) ? 'text-yellow-400' : 'text-gray-300' }}">★</span>
+                            @endfor
+                        </div>
+                        <span class="text-lg font-bold">
+                            {{ $averageRating }}
+                        </span>
+                        <span class="text-sm text-gray-500">
+                            ({{ $totalReviews }} reviews)
+                        </span>
+                    </div>
                 </div>
 
             </div>

@@ -47,4 +47,21 @@ class Product extends Model
             ? asset('storage/' . $image->image_path)
             : '/placeholder.png';
     }
+
+    public function orderItems()
+    {
+        return $this->hasMany(\App\Models\OrderItem::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasManyThrough(
+            \App\Models\Review::class,
+            \App\Models\OrderItem::class,
+            'product_id',       // Foreign key on OrderItem
+            'order_item_id',    // Foreign key on Review
+            'id',               // Local key on Product
+            'id'                // Local key on OrderItem
+        );
+    }
 }

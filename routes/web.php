@@ -16,6 +16,7 @@ use App\Http\Controllers\SellerProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SellerOrderController;
+use App\Http\Controllers\ReviewVoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,10 @@ Route::get('/courier/confirm-delivery', [CourierController::class, 'showForm'])
 
 Route::post('/courier/confirm-delivery', [CourierController::class, 'confirm'])
     ->name('courier.confirm');
+
+Route::post('/reviews/{review}/vote', [ReviewVoteController::class, 'vote'])
+    ->name('reviews.vote')
+    ->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | AUTHENTICATED USERS

@@ -33,4 +33,9 @@ class Review extends Model
     {
         return $this->belongsTo(OrderItem::class);
     }
+
+    public function votes()
+{
+    return $this->hasMany(\App\Models\ReviewVote::class);
+}
 }

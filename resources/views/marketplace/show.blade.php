@@ -90,6 +90,78 @@
 
         </div>
 
+        <!-- REVIEWS SECTION -->
+        <div class="mt-16">
+
+            <form method="GET" class="mb-6 flex gap-2">
+
+                <select name="rating" class="border rounded p-2 text-sm">
+                    <option value="">All Ratings</option>
+                    <option value="5" {{ request('rating') == 5 ? 'selected' : '' }}>5★</option>
+                    <option value="4" {{ request('rating') == 4 ? 'selected' : '' }}>4★ & up</option>
+                    <option value="3" {{ request('rating') == 3 ? 'selected' : '' }}>3★ & up</option>
+                    <option value="2" {{ request('rating') == 2 ? 'selected' : '' }}>2★ & up</option>
+                    <option value="1" {{ request('rating') == 1 ? 'selected' : '' }}>1★ & up</option>
+                </select>
+
+                <button class="bg-gray-800 text-white px-3 py-2 rounded text-sm">
+                    Filter
+                </button>
+
+            </form>
+
+            <h3 class="text-xl font-bold mb-6">Customer Reviews</h3>
+
+            @forelse($reviews as $review)
+                <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
+
+                    <!-- Stars -->
+                    <div class="flex items-center gap-1 mb-2">
+                        @for($i = 1; $i <= 5; $i++)
+                            <span class="{{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}">★</span>
+                        @endfor
+                    </div>
+
+                    <!-- Comment -->
+                    <p class="text-gray-700 text-sm mb-2">
+                        {{ $review->comment }}
+                    </p>
+
+                    <!-- Date -->
+                    <p class="text-xs text-gray-400">
+                        {{ $review->created_at->diffForHumans() }}
+                    </p>
+
+                    <div class="flex items-center gap-4 mt-3 text-sm">
+
+                        <form method="POST" action="{{ route('reviews.vote', $review) }}">
+                            @csrf
+                            <input type="hidden" name="is_helpful" value="1">
+                            <button class="text-green-600">👍 Helpful</button>
+                        </form>
+
+                        <form method="POST" action="{{ route('reviews.vote', $review) }}">
+                            @csrf
+                            <input type="hidden" name="is_helpful" value="0">
+                            <button class="text-red-500">👎 Not Helpful</button>
+                        </form>
+
+                    </div>
+
+                </div>
+            @empty
+                <p class="text-gray-500">No reviews yet.</p>
+            @endforelse
+
+            <!-- Pagination -->
+            <div class="mt-6">
+                {{ $reviews->withQueryString()->links() }}
+
+                
+            </div>
+
+        </div>
+
         <!-- RELATED PRODUCTS -->
         <div class="mt-12">
             <h3 class="text-xl font-bold mb-4">Related Products</h3>

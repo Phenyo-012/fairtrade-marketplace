@@ -47,7 +47,8 @@ class SellerDashboardController extends Controller
 
         $reviews = Review::whereIn('order_item_id', $orderItemIds)->get();
 
-        $averageRating = $reviews->avg('rating') ?? 0;
+        $averageRating = round($reviews->avg('rating'), 1) ?? 0;
+        $totalReviews = $reviews->count();
 
         // ========================
         // RECENT DATA
@@ -111,6 +112,7 @@ class SellerDashboardController extends Controller
             'totalRevenue' => $totalRevenue,
             'totalOrders' => $totalOrders,
             'totalProducts' => $totalProducts,
+            'totalReviews' => $totalReviews,
             'averageRating' => $averageRating,
             'recentOrders' => $recentOrders,
             'recentReviews' => $recentReviews,

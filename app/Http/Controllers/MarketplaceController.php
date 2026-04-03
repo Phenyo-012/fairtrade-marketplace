@@ -11,7 +11,7 @@ class MarketplaceController extends Controller
     {
         $query = Product::where('is_approved', true)
                         ->where('is_active', true)
-                        ->with('images');
+                        ->with(['images', 'reviews']);
 
         // Search
         if ($request->filled('search')) {
@@ -42,12 +42,30 @@ class MarketplaceController extends Controller
             abort(404);
         }
 
-        $related = Product::where('category', $product->category)
-        ->where('id', '!=', $product->id)
-        ->with('images')
-        ->take(4)
-        ->get();
+        $reviewsQuery = \App\Models\Review::with('orderItem.product')
+            ->whereHas('orderItem', function ($q) use ($product) {
+                $q->where('product_id', $product->id);
+            });
 
-        return view('marketplace.show', compact('product', 'related'));
+        // ADD THIS BLOCK HERE (rating filter)
+        if (request()->filled('rating')) {
+            $reviewsQuery->where('rating', '>=', request('rating'));
+        }
+
+        $reviews = $reviewsQuery
+            ->latest()
+            ->paginate(5)
+            ->withQueryString(); // keeps filter in pagination
+
+        $related = Product::where('category', $product->category)
+                ->where('id', '!=', $product->id)
+                ->where('is_approved', true)
+                ->where('is_active', true)
+                ->with('images')
+                ->latest()
+                ->take(4)
+                ->get();
+
+        return view('marketplace.show', compact('product', 'reviews', 'related'));
     }
 }

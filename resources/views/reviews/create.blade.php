@@ -14,7 +14,7 @@ Review Order #{{ $order->id }}
 
     @if(!$item->reviews->count())
 
-    <form method="POST" action="{{ route('review.store', $item->id) }}">
+    <form method="POST" action="{{ route('review.store', $item->id) }}" enctype="multipart/form-data"   class="mt-3">
         @csrf
 
         <select name="rating" class="border p-2 mb-2">
@@ -26,6 +26,8 @@ Review Order #{{ $order->id }}
         </select>
 
         <textarea name="comment" class="border p-2 w-full mb-2"></textarea>
+
+        <input type="file" name="image" class="border p-2 w-full mb-2">
 
         <button class="bg-blue-600 text-white px-3 py-1 rounded">
             Submit Review

@@ -31,40 +31,54 @@
 
          @foreach($products as $product)
 
-         <div class="border p-4 rounded shadow-sm">
+            <div class="border p-4 rounded shadow-sm">
 
-         @if($product->images->count())
-         <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
-            alt="{{ $product->name }}"
-            class="w-full h-80 object-cover rounded mb-3 hover:scale-105 transition-transform">
+               @if($product->images->count())
+               <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+                  alt="{{ $product->name }}"
+                  class="w-full h-80 object-cover rounded mb-3 hover:scale-105 transition-transform">
 
-         @else
-         <img src="/placeholder.png" 
-               class="w-full h-80 object-cover rounded mb-3 hover:scale-105 transition-transform text-center"
-               alt="no image">
-                           
-         @endif
+               @else
+               <img src="/placeholder.png" 
+                     class="w-full h-80 object-cover rounded mb-3 hover:scale-105 transition-transform text-center"
+                     alt="no image">
+                                 
+               @endif
 
-         <h3 class="font-bold text-lg">
-         {{ $product->name }}
-         </h3>
+               <h3 class="font-bold text-lg">
+               {{ $product->name }}
+               </h3>
 
-         <p class="text-gray-600 text-sm">
-         {{ Str::limit($product->description, 60) }}
-         </p>
+               <p class="text-gray-600 text-sm">
+               {{ Str::limit($product->description, 60) }}
+               </p>
 
-         <p class="font-bold mt-2">
-         R{{ $product->price }}
-         </p>
+               <!-- Display product rating stars -->
+               @php
+                  $rating = round($product->reviews->avg('rating'), 1);
+               @endphp
 
-         <a href="/products/{{ $product->id }}"
-            class="block mt-3 text-black text-center py-1 rounded">
-            View
-         </a>
+               <div class="flex items-center gap-1 mt-1">
+                  @for($i = 1; $i <= 5; $i++)
+                     <span class="{{ $i <= floor($rating) ? 'text-yellow-400' : 'text-gray-300' }}">★</span>
+                  @endfor
+                  <span class="text-xs text-gray-500">
+                     ({{ number_format($rating, 1) }})
+                  </span>
+               </div>
 
-         </div>
+               <p class="font-bold mt-2">
+               R{{ $product->price }}
+               </p>
 
-      @endforeach
+               <a href="/products/{{ $product->id }}"
+                  class="block mt-3 text-black text-center py-1 rounded">
+                  View
+               </a>
+
+            </div>
+
+         @endforeach
 
       </div>
 

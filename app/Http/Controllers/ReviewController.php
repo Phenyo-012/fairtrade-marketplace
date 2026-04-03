@@ -21,16 +21,25 @@ class ReviewController extends Controller
             'comment' => 'nullable|string'
         ]);
 
-        $item = \App\Models\OrderItem::with('order', 'product')->findOrFail($orderItemId);
+        $item = \App\Models\OrderItem::with('order')->findOrFail($orderItemId);
 
-        // SECURITY: ensure buyer owns this order
+        //  ownership check
         if ($item->order->buyer_id !== auth()->id()) {
             abort(403);
         }
 
-        // prevent duplicate reviews
+        //  NEW RULE
+        if ($item->order->status !== 'delivered') {
+            return back()->with('error', 'You can only review after delivery.');
+        }
+
+        // prevent duplicates
         if ($item->reviews()->exists()) {
             return back()->with('error', 'You already reviewed this product.');
+        }
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('reviews', 'public');
         }
 
         \App\Models\Review::create([
@@ -38,7 +47,8 @@ class ReviewController extends Controller
             'order_item_id' => $item->id,
             'buyer_id' => auth()->id(),
             'rating' => $request->rating,
-            'comment' => $request->comment
+            'comment' => $request->comment,
+            'image' => $path ?? null
         ]);
 
         return back()->with('success', 'Review submitted.');
