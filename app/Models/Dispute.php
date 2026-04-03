@@ -13,7 +13,6 @@ class Dispute extends Model
         'order_id',
         'opened_by',
         'reason',
-        'description',
         'status',
         'resolution_notes',
         'resolved_by'

@@ -48,7 +48,8 @@ class ReviewController extends Controller
             'buyer_id' => auth()->id(),
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'image' => $path ?? null
+            'image' => $path ?? null,
+            'status' => 'pending'
         ]);
 
         return back()->with('success', 'Review submitted.');

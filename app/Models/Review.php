@@ -11,8 +11,12 @@ class Review extends Model
     'order_item_id',
     'buyer_id',
     'rating',
-    'comment'
+    'comment',
+    'image',
+    'status'
     ];
+
+  
 
     public function order()
     {
@@ -35,7 +39,7 @@ class Review extends Model
     }
 
     public function votes()
-{
-    return $this->hasMany(\App\Models\ReviewVote::class);
-}
+    {
+        return $this->hasMany(\App\Models\ReviewVote::class);
+    }
 }

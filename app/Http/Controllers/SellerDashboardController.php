@@ -49,6 +49,12 @@ class SellerDashboardController extends Controller
 
         $averageRating = round($reviews->avg('rating'), 1) ?? 0;
         $totalReviews = $reviews->count();
+        $ratingDistribution = $reviews
+            ->groupBy('rating')
+            ->map(function ($group) {
+                return $group->count();
+            });
+        $isTopRated = ($averageRating >= 4.5 && $totalReviews >= 10);
 
         // ========================
         // RECENT DATA
@@ -122,6 +128,8 @@ class SellerDashboardController extends Controller
             'lowStockProducts' => $lowStockProducts,
             'platformEarnings' => $platformEarnings,
             'sellerEarnings' => $sellerEarnings,
+            'isTopRated' => $isTopRated,
+            'ratingDistribution' => $ratingDistribution,
         ]);
     }
 }

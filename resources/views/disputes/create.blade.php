@@ -1,39 +1,38 @@
 <x-app-layout>
 
-<div class="max-w-2xl mx-auto mt-10">
+<div class="max-w-2xl mx-auto py-10 px-4">
 
-<h2 class="text-2xl font-bold mb-6">
-Open Dispute for Order #{{ $order->id }}
-</h2>
+    <div class="bg-white p-6 rounded-xl shadow">
 
-<form method="POST" action="{{ route('disputes.store', $order) }}">
+        <h2 class="text-xl font-bold mb-4">Open Dispute</h2>
 
-@csrf
+        <!-- ORDER INFO -->
+        <div class="mb-4 text-sm text-gray-600">
+            <p><strong>Order ID:</strong> #{{ $order->id }}</p>
+            <p><strong>Total:</strong> R{{ number_format($order->total_amount, 2) }}</p>
+        </div>
 
-<label class="block mb-2">Reason</label>
+        @if(session('error'))
+            <p class="text-red-500 mb-3">{{ session('error') }}</p>
+        @endif
 
-<select name="reason" class="border p-2 w-full mb-4">
+        <form method="POST" action="{{ route('disputes.store', $order) }}">
+            @csrf
 
-<option value="item_not_received">Item Not Received</option>
-<option value="damaged_item">Damaged Item</option>
-<option value="wrong_item">Wrong Item</option>
-<option value="other">Other</option>
+            <label class="block mb-2 font-semibold">Reason</label>
 
-</select>
+            <textarea name="reason"
+                class="w-full border rounded p-3 mb-4"
+                rows="5"
+                placeholder="Describe the issue..."
+                required></textarea>
 
-<label class="block mb-2">Describe the issue</label>
+            <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                Submit Dispute
+            </button>
+        </form>
 
-<textarea name="description"
-          class="border p-2 w-full mb-4"
-          rows="4"
-          placeholder="Provide details about the issue..."
-          required></textarea>
-
-<button class="bg-red-500 text-black px-4 py-2 rounded">
-Open Dispute
-</button>
-
-</form>
+    </div>
 
 </div>
 

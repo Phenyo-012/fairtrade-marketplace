@@ -15,6 +15,7 @@ class Order extends Model
         'total_amount',
         'status',
         'delivery_code',
+        'delivered_at',
         'seller_deadline',
         'payment_status'
     ];

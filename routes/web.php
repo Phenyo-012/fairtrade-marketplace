@@ -132,6 +132,22 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
     Route::post('/admin/disputes/{dispute}/resolve', [AdminDisputeController::class, 'resolve'])
         ->name('admin.disputes.resolve');
+
+    // Review Moderation
+    Route::get('/reviews', [\App\Http\Controllers\Admin\ReviewModerationController::class, 'index'])
+        ->name('admin.reviews');
+
+    Route::get('/reviews/archive', [\App\Http\Controllers\Admin\ReviewModerationController::class, 'archive'])
+        ->name('admin.reviews.archive');
+
+    Route::get('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewModerationController::class, 'show'])
+        ->name('admin.reviews.show');
+
+    Route::patch('/reviews/{review}/approve', [\App\Http\Controllers\Admin\ReviewModerationController::class, 'approve'])
+        ->name('admin.reviews.approve');
+
+    Route::patch('/reviews/{review}/reject', [\App\Http\Controllers\Admin\ReviewModerationController::class, 'reject'])
+        ->name('admin.reviews.reject');
 });
 
 /*

@@ -42,14 +42,39 @@ class MarketplaceController extends Controller
             abort(404);
         }
 
-        $reviewsQuery = \App\Models\Review::with('orderItem.product')
-            ->whereHas('orderItem', function ($q) use ($product) {
-                $q->where('product_id', $product->id);
-            });
+        $reviewsQuery = \App\Models\Review::with([
+            'orderItem.product',
+            'votes'
+        ])
+        ->where('status', 'approved')
+        ->whereHas('orderItem', function ($q) use ($product) {
+            $q->where('product_id', $product->id);
+        });
 
-        // ADD THIS BLOCK HERE (rating filter)
+        // rating filter
         if (request()->filled('rating')) {
             $reviewsQuery->where('rating', '>=', request('rating'));
+        }
+
+        // sorting
+        if (request()->filled('sort')) {
+
+            if (request('sort') === 'highest') {
+                $reviewsQuery->orderBy('rating', 'desc');
+            }
+
+            if (request('sort') === 'lowest') {
+                $reviewsQuery->orderBy('rating', 'asc');
+            }
+
+            if (request('sort') === 'helpful') {
+                $reviewsQuery->withCount(['votes as helpful_count' => function ($q) {
+                    $q->where('is_helpful', true);
+                }])->orderByDesc('helpful_count');
+            }
+
+        } else {
+            $reviewsQuery->latest();
         }
 
         $reviews = $reviewsQuery
@@ -66,6 +91,24 @@ class MarketplaceController extends Controller
                 ->take(4)
                 ->get();
 
-        return view('marketplace.show', compact('product', 'reviews', 'related'));
+        $ratingCounts = \App\Models\Review::selectRaw('rating, COUNT(*) as count')
+            ->whereHas('orderItem', function ($q) use ($product) {
+                $q->where('product_id', $product->id);
+            })
+            ->groupBy('rating')
+            ->pluck('count', 'rating');
+
+        $totalReviews = $ratingCounts->sum();
+
+        $ratingPercentages = [];
+
+        for ($i = 1; $i <= 5; $i++) {
+            $count = $ratingCounts[$i] ?? 0;
+            $ratingPercentages[$i] = $totalReviews > 0
+                ? round(($count / $totalReviews) * 100)
+                : 0;
+        }
+
+        return view('marketplace.show', compact('product', 'reviews', 'related' , 'ratingPercentages', 'totalReviews'));
     }
 }

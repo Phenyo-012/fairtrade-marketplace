@@ -2,37 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Dispute;
+use Illuminate\Http\Request;
 
 class DisputeController extends Controller
 {
+    // SHOW FORM
     public function create(Order $order)
     {
+        // SECURITY: only buyer can open dispute
+        if ($order->buyer_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // prevent duplicate disputes
+        if ($order->dispute) {
+            return redirect()->route('orders.my')
+                ->with('error', 'Dispute already exists for this order.');
+        }
+
         return view('disputes.create', compact('order'));
     }
 
+    // STORE DISPUTE
     public function store(Request $request, Order $order)
     {
+        if ($order->buyer_id !== auth()->id()) {
+            abort(403);
+        }
+
         $request->validate([
-            'reason' => 'required',
-            'description' => 'required|min:10'
+            'reason' => 'required|string|max:1000'
         ]);
 
-        $dispute = Dispute::create([
+        Dispute::create([
             'order_id' => $order->id,
             'opened_by' => auth()->id(),
             'reason' => $request->reason,
-            'description' => $request->description,
             'status' => 'open'
         ]);
 
-        // Update order status
-        $order->status = 'disputed';
-        $order->save();
+        // 🔴 IMPORTANT: mark order as disputed
+        $order->update([
+            'status' => 'disputed'
+        ]);
 
         return redirect()->route('orders.my')
-            ->with('success', 'Dispute opened successfully.');
+            ->with('success', 'Dispute submitted successfully.');
     }
 }

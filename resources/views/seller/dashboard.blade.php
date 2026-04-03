@@ -19,6 +19,15 @@
                 </p>
             </div>
 
+            
+                 @if($isTopRated)
+                    <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6 flex justify-between items-center">
+                        <div class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                            🏆 Top Rated Seller
+                        </div> 
+                    </div>
+                @endif
+
             <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
@@ -234,6 +243,20 @@
                         <p class="text-gray-500">No reviews yet.</p>
                     @endforelse
                 </div>
+            </div>
+
+            <!-- Rating Distribution -->
+            <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6">
+                <h3 class="font-semibold text-gray-700 mb-4">
+                    Rating Distribution
+                </h3>
+
+                @for($i = 5; $i >= 1; $i--)
+                    <div class="flex items-center gap-2 text-sm mb-1">
+                        <span class="w-10">{{ $i }}★</span>
+                        <span>{{ $ratingDistribution[$i] ?? 0 }}</span>
+                    </div>
+                @endfor
             </div>
 
         </div>

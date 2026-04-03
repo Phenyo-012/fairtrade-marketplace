@@ -94,6 +94,10 @@
                                 <span class="absolute -left-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
                             @endif
                         </x-nav-link>
+
+                        <x-nav-link :href="route('admin.reviews')" :active="request()->routeIs('admin.reviews.*')">
+                            {{ __('Reviews') }}
+                        </x-nav-link>
                     @endif
 
                     @endauth
@@ -245,6 +249,10 @@
                     @if($cartCount > 0)
                         <span class="absolute -left-2 bg-red-600 text-white text-xs rounded-full px-2">{{ $cartCount }}</span>
                     @endif
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('admin.reviews')" :active="request()->routeIs('admin.reviews.*')">
+                    {{ __('Reviews') }}
                 </x-responsive-nav-link>
             @endif
 

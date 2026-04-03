@@ -93,6 +93,35 @@
         <!-- REVIEWS SECTION -->
         <div class="mt-16">
 
+            <!-- RATING SUMMARY -->
+            <div class="bg-white p-6 rounded-xl shadow mb-8">
+
+                <h3 class="text-lg font-bold mb-4">Rating Breakdown</h3>
+
+                @for($i = 5; $i >= 1; $i--)
+                    <div class="flex items-center gap-3 mb-2">
+
+                        <span class="w-12 text-sm">{{ $i }}★</span>
+
+                        <div class="flex-1 bg-gray-200 h-3 rounded">
+                            <div class="bg-yellow-400 h-3 rounded"
+                                style="width: {{ $ratingPercentages[$i] ?? 0 }}%">
+                            </div>
+                        </div>
+
+                        <span class="text-sm text-gray-500 w-10 text-right">
+                            {{ $ratingPercentages[$i] ?? 0 }}%
+                        </span>
+
+                    </div>
+                @endfor
+
+                <p class="text-sm text-gray-500 mt-3">
+                    {{ $totalReviews }} total reviews
+                </p>
+
+            </div>
+
             <form method="GET" class="mb-6 flex gap-2">
 
                 <select name="rating" class="border rounded p-2 text-sm">
@@ -110,10 +139,29 @@
 
             </form>
 
+            <form method="GET" class="mb-6 flex gap-2">
+
+                <select name="sort" class="border rounded p-2 text-sm">
+                    <option value="">Sort Reviews</option>
+                    <option value="helpful" {{ request('sort') == 'helpful' ? 'selected' : '' }}>Most Helpful</option>
+                    <option value="highest" {{ request('sort') == 'highest' ? 'selected' : '' }}>Highest Rating</option>
+                    <option value="lowest" {{ request('sort') == 'lowest' ? 'selected' : '' }}>Lowest Rating</option>
+                </select>
+
+                <button class="bg-gray-800 text-white px-3 py-2 rounded text-sm">
+                    Apply
+                </button>
+
+            </form>
+
             <h3 class="text-xl font-bold mb-6">Customer Reviews</h3>
 
             @forelse($reviews as $review)
                 <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
+
+                    <span class="inline-block bg-green-100 text-green-700 text-xs px-2 py-1 rounded mb-2">
+                        Verified Purchase
+                    </span>
 
                     <!-- Stars -->
                     <div class="flex items-center gap-1 mb-2">
@@ -137,13 +185,17 @@
                         <form method="POST" action="{{ route('reviews.vote', $review) }}">
                             @csrf
                             <input type="hidden" name="is_helpful" value="1">
-                            <button class="text-green-600">👍 Helpful</button>
+                            <button class="text-green-600">
+                                👍 Helpful ({{ $review->votes->where('is_helpful', true)->count() }})
+                            </button>
                         </form>
 
                         <form method="POST" action="{{ route('reviews.vote', $review) }}">
                             @csrf
                             <input type="hidden" name="is_helpful" value="0">
-                            <button class="text-red-500">👎 Not Helpful</button>
+                            <button class="text-red-500">
+                                👎 Not Helpful ({{ $review->votes->where('is_helpful', false)->count() }})
+                            </button>
                         </form>
 
                     </div>
