@@ -2,60 +2,60 @@
 
 <div class="max-w-3xl mx-auto mt-10">
 
-<h2 class="text-2xl font-bold mb-4">
-Dispute #{{ $dispute->id }}
-</h2>
+      <h2 class="text-2xl font-bold mb-4">
+      Dispute #{{ $dispute->id }}
+      </h2>
 
-<div class="mb-4">
+      
+      <div class="mb-4">
 
-<strong>Order:</strong> {{ $dispute->order->id }}
+            <strong>Order:</strong> {{ $dispute->order->id }}
 
-</div>
+      </div>
+      
+      <div class="mb-4">
 
-<div class="mb-4">
+            <strong>Reason for dispute:</strong> 
+            <p>{{ $dispute->reason }}</p>
 
-<strong>Reason:</strong> {{ $dispute->reason }}
+      </div>
 
-</div>
+      
+      @if($dispute->seller_response)
+      <div class="mb-4">
+            <strong>Seller Response:</strong>
+            <p>{{ $dispute->seller_response }}</p>
+      </div>
+      @endif
 
-<div class="mb-4">
+      <form method="POST"
+            action="{{ route('admin.disputes.resolve', $dispute) }}">
 
-<strong>Description:</strong>
+            @csrf
 
-<p class="border p-3 mt-1">
-{{ $dispute->description }}
-</p>
+            <label class="block mb-2">Resolution Notes</label>
 
-</div>
+            <textarea name="resolution_notes"
+                  class="border p-2 w-full mb-4"
+                  rows="4"
+                  required></textarea>
 
-<form method="POST"
-      action="{{ route('admin.disputes.resolve', $dispute) }}">
+            <label class="block mb-2">Decision</label>
 
-@csrf
+            <select name="status" class="border p-2 w-full mb-4">
 
-<label class="block mb-2">Resolution Notes</label>
+                  <option value="resolved">Resolve Dispute</option>
+                  <option value="rejected">Reject Dispute</option>
 
-<textarea name="resolution_notes"
-          class="border p-2 w-full mb-4"
-          rows="4"
-          required></textarea>
+            </select>
 
-<label class="block mb-2">Decision</label>
+            <button class="bg-green-600 text-black px-4 py-2 rounded">
 
-<select name="status" class="border p-2 w-full mb-4">
+            Submit Decision
 
-<option value="resolved">Resolve Dispute</option>
-<option value="rejected">Reject Dispute</option>
+            </button>
 
-</select>
-
-<button class="bg-green-600 text-black px-4 py-2 rounded">
-
-Submit Decision
-
-</button>
-
-</form>
+      </form>
 
 </div>
 

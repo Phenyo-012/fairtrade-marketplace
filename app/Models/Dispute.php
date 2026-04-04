@@ -15,7 +15,9 @@ class Dispute extends Model
         'reason',
         'status',
         'resolution_notes',
-        'resolved_by'
+        'resolved_by',
+        'seller_response',
+        'seller_responded_at'
     ];
 
     public function order()

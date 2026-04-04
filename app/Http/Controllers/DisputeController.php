@@ -51,4 +51,17 @@ class DisputeController extends Controller
         return redirect()->route('orders.my')
             ->with('success', 'Dispute submitted successfully.');
     }
+
+    // SHOW DISPUTE DETAILS
+    public function show(Dispute $dispute)
+    {
+        // SECURITY: only buyer can view their dispute
+        if ($dispute->order->buyer_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $dispute->load('order', 'resolvedBy');
+
+        return view('disputes.show', compact('dispute'));
+    }
 }

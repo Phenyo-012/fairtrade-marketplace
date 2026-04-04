@@ -8,16 +8,26 @@ use Illuminate\Http\Request;
 class SellerOrderController extends Controller
 {
     // LIST ORDERS
-    public function index()
+    public function index(Request $request)
     {
         $sellerId = auth()->user()->sellerProfile->id;
 
-        $orders = Order::whereHas('items.product', function ($q) use ($sellerId) {
-                $q->where('seller_profile_id', $sellerId);
-            })
-            ->with(['items.product'])
-            ->latest()
-            ->get();
+        $query = Order::whereHas('items.product', function ($q) use ($sellerId) {
+            $q->where('seller_profile_id', $sellerId);
+        })->with(['items.product']);
+
+        // FILTER BY STATUS
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // SEARCH BY ORDER ID
+        if ($request->filled('search')) {
+            $query->where('id', $request->search);
+        }
+
+        // PAGINATION
+        $orders = $query->latest()->paginate(10)->withQueryString();
 
         return view('seller.orders.index', compact('orders'));
     }

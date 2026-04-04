@@ -63,11 +63,18 @@
 
     <td class="p-2">
 
-        @if($order->status !== 'disputed')
+        @if($order->dispute)
+
+            <a href="{{ route('disputes.show', $order->dispute) }}"
+                class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                View Dispute
+            </a>
+
+        @elseif($order->status !== 'disputed')
 
             <a href="{{ route('disputes.create', $order) }}"
-               class="bg-red-500 text-black px-3 py-1 rounded text-sm">
-               Dispute Order 
+                class="bg-red-500 text-white px-3 py-1 rounded text-sm">
+                Dispute Order
             </a>
 
         @else

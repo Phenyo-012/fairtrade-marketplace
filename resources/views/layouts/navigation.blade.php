@@ -69,6 +69,11 @@
                             :active="request()->routeIs('seller.orders.*')">
                             Order Management
                         </x-nav-link>
+
+                        <x-nav-link :href="route('seller.disputes.index')"
+                            :active="request()->routeIs('seller.disputes.*')">
+                            Disputes
+                        </x-nav-link>
                     @endif
 
                     <!-- Admin links -->
@@ -224,6 +229,11 @@
                 <x-responsive-nav-link :href="route('seller.orders.index')"
                     :active="request()->routeIs('seller.orders.*')">
                     Order Management
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('seller.disputes.index')"
+                    :active="request()->routeIs('seller.disputes.*')">
+                    Disputes
                 </x-responsive-nav-link>
             @endif
 

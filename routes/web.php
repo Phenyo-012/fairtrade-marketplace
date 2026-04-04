@@ -71,6 +71,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/dispute', [DisputeController::class, 'store'])
         ->name('disputes.store');
 
+    Route::get('/disputes/{dispute}', [DisputeController::class, 'show'])
+        ->name('disputes.show');
+    
+    Route::get('/seller/disputes', [\App\Http\Controllers\SellerDisputeController::class, 'index'])
+        ->name('seller.disputes.index');
+
+    Route::get('/seller/disputes/{dispute}', [\App\Http\Controllers\SellerDisputeController::class, 'show'])
+        ->name('seller.disputes.show');
+
+    Route::post('/seller/disputes/{dispute}/respond', [\App\Http\Controllers\SellerDisputeController::class, 'respond'])
+        ->name('seller.disputes.respond');
+
     // Reviews
     Route::get('/orders/{order}/review', [ReviewController::class,'create'])
         ->name('reviews.create');
