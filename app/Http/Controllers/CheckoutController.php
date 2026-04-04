@@ -102,7 +102,7 @@ class CheckoutController extends Controller
             abort(403);
         }
 
-        $order->load('items.product.images');
+        $order->load('orderItems.product.images');
 
         return view('checkout.success', compact('order'));
     }

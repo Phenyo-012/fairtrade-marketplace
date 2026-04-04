@@ -27,16 +27,16 @@ class SellerDashboardController extends Controller
         $orders = $orderItems->pluck('order')->unique('id');
 
         // Completed order items (for revenue)
-        $completedItems = $orderItems->filter(function ($item) {
-            return $item->order->status === 'completed';
+        $completedItems = $orderItems->filter(function ($orderItem) {
+            return $orderItem->order->status === 'completed';
         });
 
         // ========================
         // STATS
         // ========================
         $totalOrders = $orders->count();
-        $totalRevenue = $completedItems->sum(function ($item) {
-            return $item->subtotal;
+        $totalRevenue = $completedItems->sum(function ($orderItem) {
+            return $orderItem->subtotal;
         });
         $totalProducts = $products->count();
 
@@ -66,13 +66,13 @@ class SellerDashboardController extends Controller
         // CHARTS
         // ========================
         $revenueData = $completedItems
-            ->groupBy(function ($item) {
-                return $item->order->created_at->format('Y-m-d');
+            ->groupBy(function ($orderItem) {
+                return $orderItem->order->created_at->format('Y-m-d');
             })
-            ->map(function ($items, $date) {
+            ->map(function ($orderItems, $date) {
                 return [
                     'date' => $date,
-                    'total' => $items->sum('subtotal')
+                    'total' => $orderItems->sum('subtotal')
                 ];
             })
             ->values();
@@ -114,6 +114,30 @@ class SellerDashboardController extends Controller
         $platformEarnings = $totalRevenue * $commissionRate;
         $sellerEarnings = $totalRevenue - $platformEarnings;
 
+        // ========================
+        // SHIPPING PERFORMANCE
+        // ========================
+
+        $totalShipped = Order::whereHas('orderItems.product', function ($q) use ($seller) {
+                $q->where('seller_profile_id', $seller->id);
+            })
+            ->whereNotNull('shipped_at')
+            ->count();
+
+        $lateShipments = Order::whereHas('orderItems.product', function ($q) use ($seller) {
+                $q->where('seller_profile_id', $seller->id);
+            })
+            ->whereNotNull('shipped_at')
+            ->where('is_late', true)
+            ->count();
+
+        $onTimeShipments = $totalShipped - $lateShipments;
+
+        $onTimeRate = $totalShipped > 0
+            ? round(($onTimeShipments / $totalShipped) * 100)
+            : 100;
+
+
         return view('seller.dashboard', [
             'totalRevenue' => $totalRevenue,
             'totalOrders' => $totalOrders,
@@ -130,6 +154,9 @@ class SellerDashboardController extends Controller
             'sellerEarnings' => $sellerEarnings,
             'isTopRated' => $isTopRated,
             'ratingDistribution' => $ratingDistribution,
+            'onTimeRate' => $onTimeRate,
+            'lateShipments' => $lateShipments,
+            'totalShipped' => $totalShipped,
         ]);
     }
 }

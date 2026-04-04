@@ -21,20 +21,20 @@ class ReviewController extends Controller
             'comment' => 'nullable|string'
         ]);
 
-        $item = \App\Models\OrderItem::with('order')->findOrFail($orderItemId);
+        $orderItem = \App\Models\OrderItem::with('order')->findOrFail($orderItemId);
 
         //  ownership check
-        if ($item->order->buyer_id !== auth()->id()) {
+        if ($orderItem->order->buyer_id !== auth()->id()) {
             abort(403);
         }
 
         //  NEW RULE
-        if ($item->order->status !== 'delivered') {
+        if (!$orderItem->order->canBeReviewed()) {
             return back()->with('error', 'You can only review after delivery.');
         }
 
         // prevent duplicates
-        if ($item->reviews()->exists()) {
+        if ($orderItem->reviews()->exists()) {
             return back()->with('error', 'You already reviewed this product.');
         }
 
@@ -43,8 +43,8 @@ class ReviewController extends Controller
         }
 
         \App\Models\Review::create([
-            'order_id' => $item->order_id,
-            'order_item_id' => $item->id,
+            'order_id' => $orderItem->order_id,
+            'order_item_id' => $orderItem->id,
             'buyer_id' => auth()->id(),
             'rating' => $request->rating,
             'comment' => $request->comment,

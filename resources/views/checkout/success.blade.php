@@ -26,8 +26,8 @@
 
                 <div class="space-y-4">
 
-                    @foreach($order->items as $item)
-                        @php $image = $item->product->images->first(); @endphp
+                    @foreach($order->orderItems as $orderItem)
+                        @php $image = $orderItem->product->images->first(); @endphp
 
                         <div class="flex items-center gap-4 border-b pb-4">
 
@@ -42,22 +42,22 @@
                             <!-- Info -->
                             <div class="flex-1">
                                 <p class="font-semibold text-gray-800">
-                                    {{ $item->product->name }}
+                                    {{ $orderItem->product->name }}
                                 </p>
 
                                 <p class="text-sm text-gray-500">
-                                    Quantity: {{ $item->quantity }}
+                                    Quantity: {{ $orderItem->quantity }}
                                 </p>
 
                                 <p class="text-sm text-gray-500">
-                                    Unit Price: R{{ number_format($item->unit_price, 2) }}
+                                    Unit Price: R{{ number_format($orderItem->unit_price, 2) }}
                                 </p>
                             </div>
 
                             <!-- Subtotal -->
                             <div class="text-right">
                                 <p class="font-bold text-gray-800">
-                                    R{{ number_format($item->subtotal, 2) }}
+                                    R{{ number_format($orderItem->subtotal, 2) }}
                                 </p>
                             </div>
 

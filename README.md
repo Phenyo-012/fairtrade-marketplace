@@ -96,6 +96,18 @@ The platform consists of three primary interfaces:
 
 - Full product management (add/edit/delete)
 
+#### Deadline Handling
+
+- Before shipment:
+
+  - The system dynamically checks if the current time exceeds `seller_deadline`
+
+- After shipment:
+
+  - Deadline evaluation is no longer active
+  
+  - `is_late` becomes a stored snapshot value
+
 ### Marketplace
 
 - Product browsing with:
@@ -126,11 +138,51 @@ The platform consists of three primary interfaces:
 
 - Cart badge in the navigation menu showing total items
 
+### Reviews
+
+- Buyers can leave a review only if:
+
+  - They are the order owner
+
+  - The order status is `delivered` or `completed`
+
+  - A review has not already been submitted
+
+- Reviews are restricted to one per order
+
 ### Admin Features
 
 - Admin dashboard
 
 - Manage products, disputes, and user roles
+
+### Authorization Rules
+
+- Sellers can only manage orders that include their products
+
+- Buyers can only review their own orders
+
+- Duplicate reviews are prevented at both UI and backend levels
+
+## Order Lifecycle
+
+Orders follow this status flow:
+
+- pending → awaiting_shipment → shipped → delivered → completed
+
+### Shipping Rules
+
+- When an order is marked as `shipped`:
+
+  - `shipped_at` is recorded
+
+  - `is_late` is calculated and stored
+
+  - Deadline tracking stops affecting the order afterward
+
+- After shipment:
+
+  - Late status is frozen and no longer recalculated
 
 ## Status
 

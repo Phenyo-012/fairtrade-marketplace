@@ -19,14 +19,32 @@
                 </p>
             </div>
 
-            
-                 @if($isTopRated)
-                    <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6 flex justify-between items-center">
-                        <div class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-                            🏆 Top Rated Seller
-                        </div> 
-                    </div>
-                @endif
+        
+            @if($isTopRated)
+                <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6 flex justify-between items-center">
+                    <div class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                        🏆 Top Rated Seller
+                    </div> 
+                </div>
+            @endif
+
+            <div class="bg-white p-6 rounded-xl shadow">
+                <h3 class="text-lg font-semibold mb-2">Shipping Performance</h3>
+
+                <p class="text-3xl font-bold text-blue-600">
+                    {{ $onTimeRate }}%
+                </p>
+
+                <p class="text-sm text-gray-500">
+                    On-time shipping rate
+                </p>
+
+                <div class="mt-3 text-sm">
+                    <p>📦 Total shipped: {{ $totalShipped }}</p>
+                    <p class="text-red-500">⚠ Late shipments: {{ $lateShipments }}</p>
+                </div>
+            </div>
+                
 
             <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">

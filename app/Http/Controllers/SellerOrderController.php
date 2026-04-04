@@ -12,9 +12,9 @@ class SellerOrderController extends Controller
     {
         $sellerId = auth()->user()->sellerProfile->id;
 
-        $query = Order::whereHas('items.product', function ($q) use ($sellerId) {
+        $query = Order::whereHas('orderItems.product', function ($q) use ($sellerId) {
             $q->where('seller_profile_id', $sellerId);
-        })->with(['items.product']);
+        })->with(['orderItems.product']);
 
         // FILTER BY STATUS
         if ($request->filled('status')) {
@@ -38,7 +38,7 @@ class SellerOrderController extends Controller
         $sellerId = auth()->user()->sellerProfile->id;
 
         // Filter ONLY seller's items
-        $items = $order->items()
+        $orderItems = $order->orderItems()
             ->whereHas('product', function ($q) use ($sellerId) {
                 $q->where('seller_profile_id', $sellerId);
             })
@@ -46,11 +46,11 @@ class SellerOrderController extends Controller
             ->get();
 
         // If seller has no items in this order → block access
-        if ($items->isEmpty()) {
+        if ($orderItems->isEmpty()) {
             abort(403);
         }
 
-        return view('seller.orders.show', compact('order', 'items'));
+        return view('seller.orders.show', compact('order', 'orderItems'));
     }
 
     // UPDATE STATUS
@@ -58,8 +58,7 @@ class SellerOrderController extends Controller
     {
         $sellerId = auth()->user()->sellerProfile->id;
 
-        // Ensure seller owns at least one item in this order
-        $ownsOrder = $order->items()
+        $ownsOrder = $order->orderItems()
             ->whereHas('product', function ($q) use ($sellerId) {
                 $q->where('seller_profile_id', $sellerId);
             })
@@ -69,22 +68,42 @@ class SellerOrderController extends Controller
             abort(403);
         }
 
-        // LOCK FINAL STATES
         $lockedStatuses = ['delivered', 'completed', 'disputed', 'cancelled'];
 
         if (in_array($order->status, $lockedStatuses)) {
             return back()->with('error', 'This order can no longer be updated.');
         }
 
-        // Validate allowed transitions
         $request->validate([
             'status' => 'required|in:awaiting_shipment,shipped'
         ]);
 
-        $order->update([
-            'status' => $request->status
-        ]);
+        // ========================
+        // WHEN SHIPPING
+        // ========================
+        if ($request->status === 'shipped') {
 
+            $isLate = false;
+
+            if ($order->seller_deadline && now()->gt($order->seller_deadline)) {
+                $isLate = true;
+            }
+
+            $order->update([
+                'status' => 'shipped',
+                'shipped_at' => now(),   
+                'is_late' => $isLate     
+            ]);
+
+            } 
+            
+            else {
+                $order->update([
+                    'status' => $request->status
+                ]);
+            }
+ 
         return back()->with('success', 'Order status updated.');
     }
+    
 }

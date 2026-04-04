@@ -6,7 +6,8 @@
 Review Order #{{ $order->id }}
 </h2>
 
-@foreach($order->items as $item)
+@foreach($order->orderItems as $orderItem)
+    @php $item = $orderItem; @endphp
 
 <div class="border p-4 rounded mb-3">
 

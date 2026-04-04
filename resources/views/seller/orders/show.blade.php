@@ -18,11 +18,18 @@
         <div class="bg-white rounded-xl shadow p-6 mb-6">
             <h3 class="font-semibold mb-4">Your Items</h3>
 
-            @foreach($items as $item)
+
+            @if($order->is_late && $order->status !== 'shipped')
+                <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+                    ⚠ This order is late! Please ship it as soon as possible.
+                </div>
+            @endif
+
+            @foreach($order->orderItems as $item)
                 <div class="flex justify-between border-b py-3">
                     <div>
                         <p class="font-medium">{{ $item->product->name }}</p>
-                        @if($order->seller_deadline && $order->status !== 'shipped')
+                        @if($order->seller_deadline && $order->status !== 'shipped' && $order->status !== 'delivered' && $order->status !== 'completed' && $order->status !== 'cancelled'  && $order->status !== 'disputed')
                             <div class="bg-yellow-100 text-yellow-800 p-3 rounded mb-4 mt-4">
                                 You must ship this order within:
                                 <span class="countdown font-bold"

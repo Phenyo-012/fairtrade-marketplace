@@ -45,7 +45,7 @@
                         </p>
 
                         {{-- TIMER --}}
-                        @if($order->seller_deadline && $order->status !== 'shipped')
+                        @if($order->seller_deadline && $order->status !== 'shipped' && $order->status !== 'delivered' && $order->status !== 'completed' && $order->status !== 'cancelled'  && $order->status !== 'disputed')
                             <p class="text-sm mt-1">
                                  Ship within:
                                 <span class="countdown font-bold"
@@ -55,6 +55,12 @@
                         @elseif($order->status === 'shipped')
                             <p class="text-green-600 text-sm mt-1">
                                  Shipped
+                            </p>
+                        @endif
+
+                        @if($order->is_late)
+                            <p class="text-red-600 text-sm mt-1">
+                                ⚠ Late Shipment
                             </p>
                         @endif
                     </div>

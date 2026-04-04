@@ -13,6 +13,17 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('orders:auto-complete')->hourly();
+
+        $schedule->call(function () {
+
+        \App\Models\Order::whereNull('shipped_at')
+                ->whereNotIn('status', ['cancelled', 'completed', 'disputed'])
+                ->where('seller_deadline', '<', now())
+                ->update([
+                    'is_late' => true
+                ]);
+
+        })->everyFiveMinutes();
     }
 
     /**

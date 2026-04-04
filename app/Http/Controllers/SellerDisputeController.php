@@ -25,8 +25,8 @@ class SellerDisputeController extends Controller
         $seller = auth()->user()->sellerProfile;
 
         // SECURITY: only seller of product can access
-        $allowed = $dispute->order->orderItems->contains(function ($item) use ($seller) {
-            return $item->product->seller_profile_id === $seller->id;
+        $allowed = $dispute->order->orderItems->contains(function ($orderItem) use ($seller) {
+            return $orderItem->product->seller_profile_id === $seller->id;
         });
 
         if (!$allowed) {
@@ -40,8 +40,8 @@ class SellerDisputeController extends Controller
     {
         $seller = auth()->user()->sellerProfile;
 
-        $allowed = $dispute->order->orderItems->contains(function ($item) use ($seller) {
-            return $item->product->seller_profile_id === $seller->id;
+        $allowed = $dispute->order->orderItems->contains(function ($orderItem) use ($seller) {
+            return $orderItem->product->seller_profile_id === $seller->id;
         });
 
         if (!$allowed) {
