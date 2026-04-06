@@ -11,8 +11,8 @@ class SellerProfile extends Model
         'store_name',
         'logo',
         'about',
-        'identity_verified',
         'verification_status',
+        'verification_notes',
     ];
 
 

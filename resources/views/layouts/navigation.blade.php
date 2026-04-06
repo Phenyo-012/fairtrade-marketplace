@@ -119,6 +119,11 @@
                             <x-dropdown-link :href="route('store.show', Auth::user()->sellerProfile->id)">
                                 My Store
                             </x-dropdown-link>
+
+                            <!-- MY ORDERS -->
+                            <x-dropdown-link :href="route('orders.my')">
+                                My Orders
+                            </x-dropdown-link>
                         @endif
 
                         @if(Auth::user()->hasRole('admin'))
@@ -136,6 +141,11 @@
 
                             <x-dropdown-link :href="route('admin.reviews')">
                                 Reviews
+                            </x-dropdown-link>
+                            
+                            <!-- APPROVE SELLER APPLICATIONS -->
+                            <x-dropdown-link :href="route('admin.sellers')">
+                                Seller Applications
                             </x-dropdown-link>
                         @endif
 

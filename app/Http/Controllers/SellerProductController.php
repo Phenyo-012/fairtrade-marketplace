@@ -10,6 +10,10 @@ class SellerProductController extends Controller
 {
     public function index()
     {
+        if (auth()->user()->sellerProfile->verification_status !== 'approved') {
+            abort(403);
+        }        
+
         $sellerProfile = auth()->user()->sellerProfile;
 
         $products = Product::where('seller_profile_id', $sellerProfile->id)->get();
@@ -19,11 +23,20 @@ class SellerProductController extends Controller
 
     public function create()
     {
+        if (auth()->user()->sellerProfile->verification_status !== 'approved') {
+            abort(403);
+        }
+
         return view('seller.products.create');
     }
 
     public function store(Request $request)
     {
+        if (auth()->user()->sellerProfile->verification_status !== 'approved') {
+            abort(403);
+        }
+
+
         $data = $request->validate([
             'name' => 'required',
             'description' => 'required',

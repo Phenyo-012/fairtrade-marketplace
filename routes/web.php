@@ -20,6 +20,10 @@ use App\Http\Controllers\ReviewVoteController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SellerStoreController;
 use App\Http\Controllers\SellerProfileController;
+use App\Http\Controllers\Admin\SellerVerificationController;
+use App\Http\Controllers\Admin\ReviewModerationController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -135,6 +139,12 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/seller/store/update', [SellerProfileController::class, 'update'])
         ->name('seller.store.update');
+
+    
+    // Pending Verification Page
+    Route::get('/seller/pending', function () {
+        return view('seller.pending');
+    })->name('seller.pending')->middleware('auth');
 });
 
 /*
@@ -143,7 +153,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth','role:admin'])->group(function () {
+Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
     // Admin Dashboard
     Route::get('/admin/dashboard', function () {
@@ -182,6 +192,16 @@ Route::middleware(['auth','role:admin'])->group(function () {
 
     Route::patch('/reviews/{review}/reject', [\App\Http\Controllers\Admin\ReviewModerationController::class, 'reject'])
         ->name('admin.reviews.reject');
+
+    Route::get('/sellers', [SellerVerificationController::class, 'index'])
+        ->name('admin.sellers');
+
+    Route::post('/sellers/{seller}/approve', [SellerVerificationController::class, 'approve'])
+        ->name('admin.sellers.approve');
+
+    Route::post('/sellers/{seller}/reject', [SellerVerificationController::class, 'reject'])
+        ->name('admin.sellers.reject');
+
 });
 
 /*
@@ -190,7 +210,7 @@ Route::middleware(['auth','role:admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth','role:seller'])->group(function () {
+Route::middleware(['auth','role:seller', 'seller.approved'])->group(function () {
 
     // Seller Dashboard
     Route::get('/seller/dashboard', [SellerDashboardController::class, 'index'])
@@ -215,8 +235,6 @@ Route::middleware(['auth','role:seller'])->group(function () {
     // seller reviews page
     Route::get('/store/{seller}/reviews', [StoreController::class, 'reviews'])
         ->name('store.reviews');
-
-    
 
 });
 
