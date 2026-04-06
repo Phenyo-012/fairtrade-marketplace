@@ -62,6 +62,11 @@
                   </span>
                </div>
 
+               <span class="text-xs px-2 py-1 rounded 
+                  {{ $product->condition == 'new' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+                  {{ ucfirst(str_replace('_', ' ', $product->condition)) }}
+               </span>
+
                <p class="font-bold mt-2">
                R{{ $product->price }}
                </p>

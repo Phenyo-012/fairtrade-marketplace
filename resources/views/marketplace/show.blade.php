@@ -59,6 +59,11 @@
                     {{ $product->name }}
                 </h2>
 
+                <span class="text-xs px-2 py-1 rounded 
+                  {{ $product->condition == 'new' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+                  {{ ucfirst(str_replace('_', ' ', $product->condition)) }}
+               </span>
+
                 <p class="text-gray-600 text-sm">
                     {{ $product->description }}
                 </p>
@@ -80,7 +85,7 @@
                         class="border rounded w-16 text-center">
                     <button type="button" onclick="increaseQty()" class="px-3 py-1 bg-gray-200 rounded">+</button>
                 </div>
-
+                
                 <button class="w-full bg-blue-600 text-white py-2 rounded mt-6">
                     Add to Cart
                 </button>

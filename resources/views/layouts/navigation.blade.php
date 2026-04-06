@@ -1,30 +1,57 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex items-center justify-between h-16">
 
             <!-- LEFT SIDE -->
             <div class="flex items-center gap-4">
-
-                <!-- CATEGORY BURGER -->
-                <button class="text-2xl">☰</button>
-
+    
                 <!-- LOGO -->
                 <a href="{{ url('/') }}">
                     <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                 </a>
 
-                <!-- SEARCH BAR -->
-                <form action="{{ route('marketplace.index') }}" method="GET" class="hidden sm:block">
-                    <input type="text" name="search"
-                        placeholder="Search products..."
-                        class="border rounded px-3 py-1 w-64">
-                </form>
+                <!-- CATEGORY BURGER -->
+                <div x-data="{ openCategories: false }" class="relative">
+
+                    <button @click="openCategories = !openCategories" 
+                        class="text-2xl font-sans text-lg ">
+                        ☰ Categories
+                    </button>
+
+                    <div x-show="openCategories"
+                        @click.outside="openCategories = false"
+                        class="absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-xl p-3 z-50">
+
+                        @foreach(config('categories') as $main => $subs)
+                            <div class="mb-3">
+                                <p class="font-semibold text-gray-800">{{ $main }}</p>
+
+                                @foreach($subs as $sub)
+                                    <a href="{{ route('marketplace.index', ['category' => $sub]) }}"
+                                    class="block text-sm text-gray-600 hover:text-black ml-2">
+                                        {{ $sub }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endforeach
+
+                    </div>
+                </div>
 
             </div>
 
+            <!-- CENTER SEARCH -->
+            <div class="hidden sm:flex flex-1 justify-center">
+                <form action="{{ route('marketplace.index') }}" method="GET" class="w-full max-w-xl">
+                    <input type="text" name="search"
+                        placeholder="Search products..."
+                        class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-2xl">
+                </form>
+            </div>
+
             <!-- RIGHT SIDE -->
-            <div class="hidden sm:flex sm:items-center gap-4">
+            <div class="hidden sm:flex items-center gap-4">
 
                 <!-- SUPPORT ICON -->
                 <a href="#" class="text-xl">💬</a>
@@ -55,14 +82,12 @@
 
                     <x-slot name="content">
 
-                        <!-- PROFILE -->
                         <x-dropdown-link :href="route('profile.edit')">
                             Profile
                         </x-dropdown-link>
 
                         <hr>
 
-                        <!-- BUYER -->
                         @if(Auth::user()->hasRole('buyer') && !Auth::user()->sellerProfile)
                             <x-dropdown-link :href="route('buyer.dashboard')">
                                 Buyer Dashboard
@@ -77,7 +102,6 @@
                             </x-dropdown-link>
                         @endif
 
-                        <!-- SELLER -->
                         @if(Auth::user()->hasRole('seller'))
                             <x-dropdown-link :href="route('seller.dashboard')">
                                 Seller Dashboard
@@ -100,7 +124,6 @@
                             </x-dropdown-link>
                         @endif
 
-                        <!-- ADMIN -->
                         @if(Auth::user()->hasRole('admin'))
                             <x-dropdown-link :href="route('admin.dashboard')">
                                 Admin Dashboard
@@ -121,7 +144,6 @@
 
                         <hr>
 
-                        <!-- LOGOUT -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-dropdown-link :href="route('logout')"

@@ -24,13 +24,21 @@
 <input name="stock_quantity" type="number"
        placeholder="Stock" class="border p-2 w-full mb-2">
 
-<input name="category" placeholder="Category"
-       class="border p-2 w-full mb-2">
+<select name="category" class="w-full border rounded p-2 mb-4">
+    <option value="">Select Category</option>
+
+    @foreach(config('categories') as $main => $subs)
+        <optgroup label="{{ $main }}">
+            @foreach($subs as $sub)
+                <option value="{{ $sub }}">{{ $sub }}</option>
+            @endforeach
+        </optgroup>
+    @endforeach
+</select>
 
 <select name="condition" class="border p-2 w-full mb-4">
 <option value="new">New</option>
-<option value="handmade">Handmade</option>
-<option value="quality_second_hand">Second Hand</option>
+<option value="second_hand">Second Hand</option>
 </select>
 
 <button class="bg-blue-600 text-white px-4 py-2 rounded">
