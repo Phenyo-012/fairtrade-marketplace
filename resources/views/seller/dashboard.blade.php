@@ -19,14 +19,67 @@
                 </p>
             </div>
 
-        
-            @if($isTopRated)
+            <!-- SELLER NAVIGATION BUTTONS -->
+
+            <div class="bg-white p-6 rounded-2xl shadow mb-4 mt-6">
+                <h3 class="text-lg font-semibold text-gray-700">
+                    Quick Actions
+                </h3>
+
+                <p class="text-gray-500 mt-1">
+                    Use these shortcuts to quickly access important sections of your seller dashboard.
+                </p>
+                <div class="text-sm text-gray-500 mb-2 mb-6 mt-6 flex gap-4">
+                
+                    <!-- EDIT STORE-->
+                    <a href="{{ route('seller.store.edit') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                        Edit Store
+                    </a>
+                    <!-- VIEW STORE -->
+                    <a href="{{ route('store.show', Auth::user()->sellerProfile->id) }}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                        View Store
+                    </a>
+                    <!-- ORDER MANAGEMENT -->
+                    <a href="{{ route('seller.orders.index') }}" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">
+                        Order Management
+                    </a>
+                    <!-- PRODUCT MANAGEMENT -->
+                    <a href="{{ route('seller.products.index') }}" class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition">
+                        Product Management
+                    </a>
+                    <!-- DISPUTE MANAGEMENT -->
+                    <a href="{{ route('seller.disputes.index') }}" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                        Disputes
+                    </a>
+
+                </div>
+
+            </div>
+            
+            @if($averageRating >= 4.8)
                 <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6 flex justify-between items-center">
                     <div class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
                         🏆 Top Rated Seller
                     </div> 
                 </div>
             @endif
+
+            @if($onTimeRate >= 95)
+                <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6 flex justify-between items-center">
+                    <div class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+                        🚀 Fast Shipper
+                    </div>
+                </div>
+            @endif
+
+            @if($totalReviews >= 250)
+                <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6 flex justify-between items-center">
+                    <div class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                        🌟 Popular Seller
+                    </div>
+                </div>
+            @endif
+            
 
             <div class="bg-white p-6 rounded-xl shadow">
                 <h3 class="text-lg font-semibold mb-2">Shipping Performance</h3>
@@ -79,7 +132,7 @@
                             @endfor
                         </div>
                         <span class="text-lg font-bold">
-                            {{ $averageRating }}
+                            {{ number_format($averageRating, 1) }}
                         </span>
                         <span class="text-sm text-gray-500">
                             ({{ $totalReviews }} reviews)

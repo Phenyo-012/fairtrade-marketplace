@@ -86,6 +86,12 @@
                 </button>
                 </form>
 
+                <!-- CLICKABLE GO TO SELLER STORE CARD -->
+                <a href="{{ route('store.show', $product->seller_profile_id) }}"
+                   class="block bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded mt-6 text-center">
+                    View Seller Store
+                </a>
+
             </div>
 
         </div>

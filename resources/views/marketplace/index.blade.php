@@ -8,11 +8,6 @@
       <!-- Search -->
       <form method="GET" class="mb-6 flex gap-2 mt-6">
 
-         <input type="text" name="search"
-               placeholder="Search products..."
-               value="{{ request('search') }}"
-               class="border p-2 w-full">
-
          <select name="category" class="border p-2">
             <option value="">All Categories</option>
             <option value="electronics">Electronics</option>

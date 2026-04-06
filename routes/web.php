@@ -17,6 +17,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SellerOrderController;
 use App\Http\Controllers\ReviewVoteController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\SellerStoreController;
+use App\Http\Controllers\SellerProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,26 +96,45 @@ Route::middleware('auth')->group(function () {
     // Shopping Cart
     Route::post('/cart/{product}', [CartController::class, 'add'])
         ->name('cart.add');
+
     Route::get('/cart', [CartController::class, 'index'])
         ->name('cart.index');
+
     Route::patch('/cart/{item}', [CartController::class, 'update'])
         ->name('cart.update');
+
     Route::delete('/cart/{item}', [CartController::class, 'destroy'])
         ->name('cart.destroy');
+
     Route::delete('/cart', [CartController::class, 'clear'])
         ->name('cart.clear');
 
     // CHECKOUT ROUTES
     Route::get('/checkout', [CheckoutController::class, 'index'])
         ->name('checkout.index');
+
     Route::post('/checkout', [CheckoutController::class, 'store'])
         ->name('checkout.store');
+
     Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])
         ->name('checkout.success');
 
     Route::get('/marketplace', [MarketplaceController::class, 'index'])
         ->name('marketplace.index');
         
+    // SELLER STORE SETUP
+    Route::get('/become-seller', [SellerProfileController::class, 'create'])
+        ->name('seller.setup');
+
+    Route::post('/become-seller', [SellerProfileController::class, 'store'])
+        ->name('seller.store');
+
+    // EDIT SELLER STORE
+    Route::get('/seller/store/edit', [SellerProfileController::class, 'edit'])
+        ->name('seller.store.edit');
+
+    Route::post('/seller/store/update', [SellerProfileController::class, 'update'])
+        ->name('seller.store.update');
 });
 
 /*
@@ -186,6 +208,30 @@ Route::middleware(['auth','role:seller'])->group(function () {
 
     Route::patch('/seller/orders/{order}/status', [SellerOrderController::class, 'updateStatus'])
         ->name('seller.orders.updateStatus');
+
+    Route::get('/store/{seller}', [StoreController::class, 'show'])
+        ->name('store.show');
+
+    // seller reviews page
+    Route::get('/store/{seller}/reviews', [StoreController::class, 'reviews'])
+        ->name('store.reviews');
+
+    
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| SELLER APPLICATION ROUTES
+|--------------------------------------------------------------------------
+*/  
+Route::middleware(['auth', 'not.seller'])->group(function () {
+
+    Route::get('/become-seller', [SellerProfileController::class, 'create'])
+        ->name('seller.setup');
+
+    Route::post('/become-seller', [SellerProfileController::class, 'store'])
+        ->name('seller.store');
 
 });
 
