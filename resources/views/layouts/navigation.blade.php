@@ -12,32 +12,7 @@
                 </a>
 
                 <!-- CATEGORY BURGER -->
-                <div x-data="{ openCategories: false }" class="relative">
-
-                    <button @click="openCategories = !openCategories" 
-                        class="text-2xl font-sans text-lg ">
-                        ☰ Categories
-                    </button>
-
-                    <div x-show="openCategories"
-                        @click.outside="openCategories = false"
-                        class="absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-xl p-3 z-50">
-
-                        @foreach(config('categories') as $main => $subs)
-                            <div class="mb-3">
-                                <p class="font-semibold text-gray-800">{{ $main }}</p>
-
-                                @foreach($subs as $sub)
-                                    <a href="{{ route('marketplace.index', ['category' => $sub]) }}"
-                                    class="block text-sm text-gray-600 hover:text-black ml-2">
-                                        {{ $sub }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        @endforeach
-
-                    </div>
-                </div>
+                <x-category-menu />
 
             </div>
 
@@ -54,11 +29,24 @@
             <div class="hidden sm:flex items-center gap-4">
 
                 <!-- SUPPORT ICON -->
-                <a href="#" class="text-xl">💬</a>
+                <a href="#" class="text-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="none" stroke="#060606" stroke-dasharray="62" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3c0.5 0 2.5
+                             4.5 2.5 5c0 1 -1.5 2 -2 3c-0.5 1 0.5 2 1.5 3c0.39 0.39 2 2 3 1.5c1 -0.5 2 -2 3 -2c0.5 0 5 2 5 2.5c0 2 -1.5 3.5 -3 4c-1.5 0.5 -2.5 0.5 
+                             -4.5 0c-2 -0.5 -3.5 -1 -6 -3.5c-2.5 -2.5 -3 -4 -3.5 -6c-0.5 -2 -0.5 -3 0 -4.5c0.5 -1.5 2 -3 4 -3Z">
+                            <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="62;0"/>
+                        </path>
+                    </svg>
+                </a>
 
                 <!-- CART ICON -->
                 <a href="{{ route('cart.index') }}" class="relative text-xl">
-                    🛒
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M2.316 3.25a.75.75 0 1 0 0 1.5h1.181a.75.75 0 0 1 .743.646l1.254 8.917a2.25 2.25 0 0 0 2.228 1.937h10.344a.75.75 
+                            0 0 0 0-1.5H7.722a.75.75 0 0 1-.743-.646l-.12-.853h10.852a2.25 2.25 0 0 0 2.15-1.583l1.921-6.188a.75.75 0 0 0-.716-.972H5.516A2.25 2.25 0 
+                            0 0 3.498 3.25zm3.525 2.758h14.207l-1.62 5.215a.75.75 0 0 1-.717.527H6.648zM7.784 17.75a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m6.786 
+                            1.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0"/>
+                    </svg>
                     @php
                         $cartCount = auth()->check()
                             ? \App\Models\CartItem::where('user_id', auth()->id())->sum('quantity')
@@ -76,7 +64,16 @@
                 <x-dropdown align="right" width="56">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-600 bg-white hover:text-gray-800">
-                            {{ Auth::user()->first_name }}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <g fill="none" stroke="#060606" stroke-dasharray="28" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                    <path d="M4 21v-1c0 -3.31 2.69 -6 6 -6h4c3.31 0 6 2.69 6 6v1">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.74s" values="28;0"/>
+                                    </path>
+                                    <path stroke-dashoffset="28" d="M12 11c-2.21 0 -4 -1.79 -4 -4c0 -2.21 1.79 -4 4 -4c2.21 0 4 1.79 4 4c0 2.21 -1.79 4 -4 4Z">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.74s" dur="0.74s" to="0"/>
+                                    </path>
+                                </g>
+                            </svg>
                         </button>
                     </x-slot>
 
