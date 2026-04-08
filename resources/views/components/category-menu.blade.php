@@ -8,7 +8,7 @@
     <!-- BURGER BUTTON -->
     <button @click="open = !open"
         class="text-xl px-3 py-2 hover:bg-gray-100 rounded">
-        ☰
+        ☰ 
     </button>
 
     <!-- DROPDOWN PANEL -->

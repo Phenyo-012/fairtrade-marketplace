@@ -8,7 +8,9 @@
     
                 <!-- LOGO -->
                 <a href="{{ url('/') }}">
-                    <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <img src="{{ asset('images/fairTrade-logo.png') }}"
+                        alt="FairTrade Logo" 
+                        class="block h-10 w-auto fill-current text-gray-800" />
                 </a>
 
                 <!-- CATEGORY BURGER -->
@@ -17,7 +19,7 @@
             </div>
 
             <!-- CENTER SEARCH -->
-            <div class="hidden sm:flex flex-1 justify-center">
+            <div class="hidden sm:flex flex-1 justify-center rounded-2xl">
                 <form action="{{ route('marketplace.index') }}" method="GET" class="w-full max-w-xl">
                     <input type="text" name="search"
                         placeholder="Search products..."
@@ -165,7 +167,7 @@
 
                 @guest
                     <a href="{{ route('login') }}" class="text-gray-700">Login</a>
-                    <a href="{{ route('register') }}" class="bg-black text-white px-3 py-1 rounded">
+                    <a href="{{ route('register') }}" class="bg-black text-white px-3 py-1 rounded-2xl">
                         Register
                     </a>
                 @endguest
@@ -175,7 +177,16 @@
             <!-- MOBILE HAMBURGER -->
             <div class="flex items-center sm:hidden">
                 <button @click="open = !open" class="text-gray-500">
-                    ☰
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <g fill="none" stroke="#060606" stroke-dasharray="28" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="M4 21v-1c0 -3.31 2.69 -6 6 -6h4c3.31 0 6 2.69 6 6v1">
+                                  <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.74s" values="28;0"/>
+                            </path>
+                            <path stroke-dashoffset="28" d="M12 11c-2.21 0 -4 -1.79 -4 -4c0 -2.21 1.79 -4 4 -4c2.21 0 4 1.79 4 4c0 2.21 -1.79 4 -4 4Z">
+                                 <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.74s" dur="0.74s" to="0"/>
+                            </path>
+                         </g>
+                    </svg>
                 </button>
             </div>
 
