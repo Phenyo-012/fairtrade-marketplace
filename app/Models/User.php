@@ -115,5 +115,10 @@ class User extends Authenticatable
         return $this->hasMany(Review::class, 'reviewee_id');
     }
 
+    public function wishlist()
+    {
+        return $this->belongsToMany(Product::class, 'wishlists');
+    }
+
 
 }

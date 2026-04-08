@@ -97,6 +97,11 @@
                     View Seller Store
                 </a>
 
+                <!-- ADD TO WISHLIST -->
+                <a href="{{ route('wishlist.toggle', $product) }}"
+                    class="block bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded mt-6 text-center">
+                    Add to Wishlist
+                </a>
             </div>
 
         </div>
@@ -112,7 +117,19 @@
                 @for($i = 5; $i >= 1; $i--)
                     <div class="flex items-center gap-3 mb-2">
 
-                        <span class="w-12 text-sm">{{ $i }}★</span>
+                        <p>
+                            {{ $i }}
+                        </p>
+                        <span class="w-12 text-sm">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                              <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                 0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                 <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                 <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
+                              </path>
+                           </svg>
+                        </span>
 
                         <div class="flex-1 bg-gray-200 h-3 rounded">
                             <div class="bg-yellow-400 h-3 rounded"
@@ -170,14 +187,23 @@
             @forelse($reviews as $review)
                 <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
 
-                    <span class="inline-block bg-green-100 text-green-700 text-xs px-2 py-1 rounded mb-2">
+                    <span class="inline-block bg-green-100 text-black-700 text-xs px-2 py-1 rounded mb-2">
                         Verified Purchase
                     </span>
 
                     <!-- Stars -->
                     <div class="flex items-center gap-1 mb-2">
                         @for($i = 1; $i <= 5; $i++)
-                            <span class="{{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}">★</span>
+                            <span class="{{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                    <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                        0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                        <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
+                                    </path>
+                                </svg>
+                            </span>
                         @endfor
                     </div>
 
@@ -197,7 +223,10 @@
                             @csrf
                             <input type="hidden" name="is_helpful" value="1">
                             <button class="text-green-600">
-                                👍 Helpful ({{ $review->votes->where('is_helpful', true)->count() }})
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
+                                        stroke-width="2" d="M7 11l5 -8l3 1l-1 6h7v3l-3 7h-11h-4v-9h4v9"/>
+                                </svg> Helpful ({{ $review->votes->where('is_helpful', true)->count() }})
                             </button>
                         </form>
 
@@ -205,7 +234,10 @@
                             @csrf
                             <input type="hidden" name="is_helpful" value="0">
                             <button class="text-red-500">
-                                👎 Not Helpful ({{ $review->votes->where('is_helpful', false)->count() }})
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
+                                        stroke-width="2" d="M7 4h11l3 7v3h-7l1 6l-3 1l-5 -8h-4v-9h4v9"/>
+                                </svg> Not Helpful ({{ $review->votes->where('is_helpful', false)->count() }})
                             </button>
                         </form>
 
@@ -235,10 +267,10 @@
                        class="bg-white p-3 rounded-xl shadow-sm hover:shadow-md transition">
                         @if($image)
                             <img src="{{ asset('storage/' . $image->image_path) }}"
-                                 class="w-full h-40 object-cover rounded mb-2">
+                                 class="w-full h-auto object-cover rounded mb-2">
                         @else
                             <img src="/placeholder.png"
-                                 class="w-full h-40 object-cover rounded mb-2">
+                                 class="w-full h-auto object-cover rounded mb-2">
                         @endif
                         <p class="font-semibold text-sm text-gray-800">{{ $item->name }}</p>
                         <p class="text-blue-600 font-bold">R{{ number_format($item->price, 2) }}</p>

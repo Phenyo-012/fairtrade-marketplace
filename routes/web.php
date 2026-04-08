@@ -22,6 +22,7 @@ use App\Http\Controllers\SellerStoreController;
 use App\Http\Controllers\SellerProfileController;
 use App\Http\Controllers\Admin\SellerVerificationController;
 use App\Http\Controllers\Admin\ReviewModerationController;
+use App\Http\Controllers\WishlistController;
 
 
 
@@ -67,7 +68,9 @@ Route::middleware('auth')->group(function () {
 
     // Orders
     Route::post('/products/{product}/buy', [OrderController::class, 'store']);
+
     Route::get('/orders', [OrderController::class, 'index']);
+
     Route::get('/my-orders', [OrderController::class, 'myOrders'])
         ->name('orders.my');
 
@@ -145,6 +148,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/seller/pending', function () {
         return view('seller.pending');
     })->name('seller.pending')->middleware('auth');
+
+    // WISHLIST 
+    Route::get('/wishlist', [WishlistController::class, 'index'])
+        ->name('wishlist.index');
+
+    Route::post('/wishlist/{product}', [WishlistController::class, 'toggle'])
+        ->name('wishlist.toggle');
+
+    Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])
+        ->name('wishlist.destroy');
 });
 
 /*

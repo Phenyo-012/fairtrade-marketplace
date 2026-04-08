@@ -22,7 +22,7 @@
             <div class="hidden sm:flex flex-1 justify-center rounded-2xl">
                 <form action="{{ route('marketplace.index') }}" method="GET" class="w-full max-w-xl">
                     <input type="text" name="search"
-                        placeholder="Search products..."
+                        placeholder="Search for anything..."
                         class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-2xl">
                 </form>
             </div>
@@ -30,6 +30,17 @@
             <!-- RIGHT SIDE -->
             <div class="hidden sm:flex items-center gap-4">
 
+                <a href="{{ route('wishlist.index') }}" :active="request()->routeIs('wishlist.*')">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-dasharray="30" stroke-linecap="round" 
+                            stroke-linejoin="round" stroke-width="2" d="M12 8c0 0 0 0 -0.76 -1c-0.88 -1.16 
+                            -2.18 -2 -3.74 -2c-2.49 0 -4.5 2.01 -4.5 4.5c0 0.93 0.28 1.79 0.76 2.5c0.81 1.21 
+                            8.24 9 8.24 9M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 
+                            4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9">
+                            <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="30;0"/>
+                        </path>
+                    </svg>
+                </a>
                 <!-- SUPPORT ICON -->
                 <a href="#" class="text-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
