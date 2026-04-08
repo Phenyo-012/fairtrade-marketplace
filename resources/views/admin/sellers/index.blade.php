@@ -1,37 +1,137 @@
 <x-app-layout>
 
-<div class="max-w-5xl mx-auto mt-10">
+<div class="bg-gray-100 min-h-screen py-10">
 
-    <h2 class="text-2xl font-bold mb-6">Seller Verification</h2>
+    <div class="max-w-7xl mx-auto px-4">
 
-    @foreach($sellers as $seller)
-        <div class="bg-white p-4 rounded shadow mb-4">
+        <h2 class="text-2xl font-bold mb-6">
+            Seller Applications
+        </h2>
 
-            <p class="font-semibold">{{ $seller->store_name }}</p>
-            <p class="text-sm text-gray-500">{{ $seller->about }}</p>
+        <!-- FILTERS -->
+        <div class="flex gap-3 mb-6">
 
-            <div class="mt-3 flex gap-2">
+            <a href="{{ route('admin.sellers.index') }}"
+               class="px-4 py-2 rounded {{ !$status ? 'bg-black text-white' : 'bg-white' }}">
+                All
+            </a>
 
-                <form method="POST" action="/admin/sellers/{{ $seller->id }}/approve">
-                    @csrf
-                    <button class="bg-green-600 text-white px-3 py-1 rounded">
-                        Approve
-                    </button>
-                </form>
+            <a href="?status=pending"
+               class="px-4 py-2 rounded {{ $status == 'pending' ? 'bg-black text-white' : 'bg-white' }}">
+                Pending
+            </a>
 
-                <form method="POST" action="/admin/sellers/{{ $seller->id }}/reject">
-                    @csrf
-                    <input type="text" name="notes" placeholder="Reason"
-                           class="border p-1 mr-2">
-                    <button class="bg-red-600 text-white px-3 py-1 rounded">
-                        Reject
-                    </button>
-                </form>
+            <a href="?status=rejected"
+               class="px-4 py-2 rounded {{ $status == 'rejected' ? 'bg-black text-white' : 'bg-white' }}">
+                Rejected
+            </a>
 
-            </div>
+            <a href="?status=approved"
+               class="px-4 py-2 rounded {{ $status == 'approved' ? 'bg-black text-white' : 'bg-white' }}">
+                Approved
+            </a>
 
         </div>
-    @endforeach
+
+        @if(session('success'))
+            <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if($sellers->isEmpty())
+            <div class="bg-white p-6 rounded-xl shadow text-center">
+                <p class="text-gray-500">No seller applications found.</p>
+            </div>
+        @else
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            @foreach($sellers as $seller)
+
+                <div class="bg-white rounded-xl shadow p-5 flex flex-col hover:shadow-md transition">
+
+                    <!-- LOGO -->
+                    <div class="w-16 h-16 flex-shrink-0 overflow-hidden rounded-full bg-gray-100 border">
+                        @if($seller->logo)
+                            <img src="{{ asset('storage/' . $seller->logo) }}"
+                                class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center text-gray-500 font-bold">
+                                {{ strtoupper(substr($seller->store_name, 0, 1)) }}
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- USER INFO -->
+                    <h3 class="font-bold text-lg text-gray-800">
+                        {{ $seller->store_name }}
+                    </h3>
+
+                    <p class="text-sm text-gray-500">
+                        Owner: {{ $seller->user->first_name }} {{ $seller->user->last_name }}
+                    </p>
+
+                    <p class="text-sm text-gray-400">
+                        {{ $seller->user->email }}
+                    </p>
+
+                    <!-- STATUS -->
+                    <div class="mt-3">
+                        <span class="px-2 py-1 text-xs rounded
+                            @if($seller->verification_status == 'pending') bg-yellow-100 text-yellow-700
+                            @elseif($seller->verification_status == 'approved') bg-green-100 text-green-700
+                            @else bg-red-100 text-red-700
+                            @endif
+                        ">
+                            {{ ucfirst($seller->verification_status) }}
+                        </span>
+                    </div>
+
+                    <!-- NOTES -->
+                    @if($seller->verification_notes)
+                        <p class="text-xs text-gray-500 mt-2">
+                            Note: {{ $seller->verification_notes }}
+                        </p>
+                    @endif
+
+                    <!-- ACTIONS -->
+                    <div class="mt-auto pt-4 space-y-2">
+
+                        <!-- APPROVE (works for rejected too) -->
+                        @if($seller->verification_status !== 'approved')
+                        <form method="POST" action="{{ route('admin.sellers.approve', $seller->id) }}">
+                            @csrf
+                            <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
+                                Approve
+                            </button>
+                        </form>
+                        @endif
+
+                        <!-- REJECT -->
+                        @if($seller->verification_status !== 'rejected')
+                        <form method="POST" action="{{ route('admin.sellers.reject', $seller->id) }}">
+                            @csrf
+                            <input type="text" name="notes" placeholder="Reason (optional)"
+                                   class="w-full border rounded p-2 mb-2 text-sm">
+
+                            <button class="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition">
+                                Reject
+                            </button>
+                        </form>
+                        @endif
+
+                    </div>
+
+                </div>
+
+            @endforeach
+
+        </div>
+
+        @endif
+
+    </div>
 
 </div>
 

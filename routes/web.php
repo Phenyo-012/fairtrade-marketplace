@@ -174,20 +174,20 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     })->name('admin.dashboard');
 
     // Product Approval
-    Route::get('/admin/products', [AdminProductController::class, 'index'])
+    Route::get('/products', [AdminProductController::class, 'index'])
         ->name('admin.products');
 
-    Route::post('/admin/products/{id}/approve', [AdminProductController::class, 'approve'])
+    Route::post('/products/{id}/approve', [AdminProductController::class, 'approve'])
         ->name('admin.products.approve');
 
     // Admin Disputes Management
-    Route::get('/admin/disputes', [AdminDisputeController::class, 'index'])
+    Route::get('/disputes', [AdminDisputeController::class, 'index'])
         ->name('admin.disputes');
 
-    Route::get('/admin/disputes/{dispute}', [AdminDisputeController::class, 'show'])
+    Route::get('/disputes/{dispute}', [AdminDisputeController::class, 'show'])
         ->name('admin.disputes.show');
 
-    Route::post('/admin/disputes/{dispute}/resolve', [AdminDisputeController::class, 'resolve'])
+    Route::post('/disputes/{dispute}/resolve', [AdminDisputeController::class, 'resolve'])
         ->name('admin.disputes.resolve');
 
     // Review Moderation
@@ -206,8 +206,9 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::patch('/reviews/{review}/reject', [\App\Http\Controllers\Admin\ReviewModerationController::class, 'reject'])
         ->name('admin.reviews.reject');
 
+    // SELLER VERIFICATION
     Route::get('/sellers', [SellerVerificationController::class, 'index'])
-        ->name('admin.sellers');
+        ->name('admin.sellers.index');
 
     Route::post('/sellers/{seller}/approve', [SellerVerificationController::class, 'approve'])
         ->name('admin.sellers.approve');

@@ -54,11 +54,36 @@
 
                 <!-- CART ICON -->
                 <a href="{{ route('cart.index') }}" class="relative text-xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M2.316 3.25a.75.75 0 1 0 0 1.5h1.181a.75.75 0 0 1 .743.646l1.254 8.917a2.25 2.25 0 0 0 2.228 1.937h10.344a.75.75 
+                   <svg xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24">
+
+                        <path
+                            fill="currentColor"
+                            fill-opacity="0"
+                            stroke="currentColor"
+                            stroke-width="0.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-dasharray="230"
+                            stroke-dashoffset="230"
+                            d="M2.316 3.25a.75.75 0 1 0 0 1.5h1.181a.75.75 0 0 1 .743.646l1.254 8.917a2.25 2.25 0 0 0 2.228 1.937h10.344a.75.75 
                             0 0 0 0-1.5H7.722a.75.75 0 0 1-.743-.646l-.12-.853h10.852a2.25 2.25 0 0 0 2.15-1.583l1.921-6.188a.75.75 0 0 0-.716-.972H5.516A2.25 2.25 0 
                             0 0 3.498 3.25zm3.525 2.758h14.207l-1.62 5.215a.75.75 0 0 1-.717.527H6.648zM7.784 17.75a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m6.786 
-                            1.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0"/>
+                            1.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0">
+
+                            <animate attributeName="stroke-dashoffset"
+                                    values="260;0"
+                                    dur="1.1s"
+                                    fill="freeze"/>
+
+                            <animate attributeName="fill-opacity"
+                                    begin="1.1s"
+                                    dur="0.6s"
+                                    to="1"
+                                    fill="freeze"/>
+                        </path>
                     </svg>
                     @php
                         $cartCount = auth()->check()
@@ -157,7 +182,7 @@
                             </x-dropdown-link>
                             
                             <!-- APPROVE SELLER APPLICATIONS -->
-                            <x-dropdown-link :href="route('admin.sellers')">
+                            <x-dropdown-link :href="route('admin.sellers.index')">
                                 Seller Applications
                             </x-dropdown-link>
                         @endif

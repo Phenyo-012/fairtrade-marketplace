@@ -10,7 +10,7 @@
         <div class="max-w-7xl mx-auto px-4 space-y-8">
 
             <!-- Welcome -->
-            <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6">
+            <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-5">
                 <h3 class="text-lg font-semibold text-gray-700">
                     Welcome {{ Auth::user()->first_name }} {{ Auth::user()->last_name }} 👋
                 </h3>
@@ -123,14 +123,31 @@
                     </p>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition mb-6">
-                    <p class="text-sm text-gray-500">Average Rating</p>
-                    <div class="flex items-center gap-2">
-                        <div>
-                            @for($i = 1; $i <= 5; $i++)
-                                <span class="{{ $i <= floor($averageRating) ? 'text-yellow-400' : 'text-gray-300' }}">★</span>
-                            @endfor
-                        </div>
+                <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition ">
+                    <p class="text-sm text-gray-500 mb-1">Average Rating</p>
+                    <div class="flex items-center gap-1">
+                        @for($i = 1; $i <= 5; $i++)
+                            <span class="{{ $i <= floor($averageRating) ? 'text-yellow-400' : 'text-gray-300' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        fill-opacity="0"
+                                        stroke="currentColor"
+                                        stroke-dasharray="66"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 3l2.35 5.76l6.21 0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                        <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
+                                    </path>
+                                </svg>
+                            </span>
+                        @endfor
+                    </div>
+                    <div class="mt-1 flex items-center gap-2">
                         <span class="text-lg font-bold">
                             {{ number_format($averageRating, 1) }}
                         </span>
@@ -303,9 +320,26 @@
                 <div class="space-y-4">
                     @forelse($recentReviews as $review)
                         <div class="border rounded-xl p-4">
-                            <p class="text-yellow-500 font-semibold">
-                                {{ $review->rating }} ⭐
-                            </p>
+                            <div class="flex items-center text-yellow-500 font-semibold gap-1">
+                                <span>{{ $review->rating }}</span>
+
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        fill-opacity="0"
+                                        stroke="currentColor"
+                                        stroke-dasharray="66"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 3l2.35 5.76l6.21 0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                        <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
+                                    </path>
+                                </svg>
+                            </div>
                             <p class="text-gray-600 mt-1">
                                 {{ $review->comment }}
                             </p>
@@ -324,8 +358,33 @@
 
                 @for($i = 5; $i >= 1; $i--)
                     <div class="flex items-center gap-2 text-sm mb-1">
-                        <span class="w-10">{{ $i }}★</span>
-                        <span>{{ $ratingDistribution[$i] ?? 0 }}</span>
+
+                        <!-- rating + star -->
+                        <div class="flex items-center gap-1 w-10 mb-1">
+                            <span>{{ $i }}</span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                class="text-yellow-500">
+                                <path fill="currentColor"
+                                    fill-opacity="0"
+                                    stroke="currentColor"
+                                    stroke-dasharray="66"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 3l2.35 5.76l6.21 0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                    <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
+                                </path>
+                            </svg>
+                        </div>
+
+                        <!-- count -->
+                        <span>Reviews: {{ $ratingDistribution[$i] ?? 0 }}</span>
+
                     </div>
                 @endfor
             </div>

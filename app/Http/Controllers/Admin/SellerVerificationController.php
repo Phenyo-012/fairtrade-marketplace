@@ -10,11 +10,22 @@ use App\Models\User;
 class SellerVerificationController extends Controller
 {
 
-    public function index()
+   public function index(Request $request)
     {
-        $sellers = SellerProfile::where('verification_status', 'pending')->get();
+        $status = $request->get('status'); // pending | rejected | approved
 
-        return view('admin.sellers.index', compact('sellers'));
+        $query = SellerProfile::with('user');
+
+        if ($status) {
+            $query->where('verification_status', $status);
+        } else {
+            // default: show pending + rejected
+            $query->whereIn('verification_status', ['pending', 'rejected']);
+        }
+
+        $sellers = $query->latest()->get();
+
+        return view('admin.sellers.index', compact('sellers', 'status'));
     }
 
     public function approve(SellerProfile $seller)
