@@ -85,11 +85,6 @@
                      {{ $product->name }}
                </h3>
 
-               <!-- DESCRIPTION -->
-               <p class="text-gray-600 text-sm">
-                     {{ Str::limit($product->description, 60) }}
-               </p>
-
                <!-- RATING -->
                @php
                      $rating = round($product->reviews->avg('rating'), 1);

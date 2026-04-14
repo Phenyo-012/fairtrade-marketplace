@@ -88,6 +88,24 @@
                         </span>
                     </div>
 
+                    <div class="mt-3">
+
+                        <p class="text-sm font-semibold">Documents:</p>
+
+                        <div class="flex gap-4 mt-2">
+
+                            <a href="{{ asset('storage/' . $seller->id_document) }}" target="_blank">
+                                <img src="{{ asset('storage/' . $seller->id_document) }}" class="w-24 rounded border">
+                            </a>
+
+                            <a href="{{ asset('storage/' . $seller->selfie_document) }}" target="_blank">
+                                <img src="{{ asset('storage/' . $seller->selfie_document) }}" class="w-24 rounded border">
+                            </a>
+
+                        </div>
+
+                    </div>
+
                     <!-- NOTES -->
                     @if($seller->verification_notes)
                         <p class="text-xs text-gray-500 mt-2">

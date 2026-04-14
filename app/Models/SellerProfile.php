@@ -13,6 +13,11 @@ class SellerProfile extends Model
         'about',
         'verification_status',
         'verification_notes',
+        'id_document',
+        'selfie_document',
+        'kyc_submitted',
+        'onboarding_step'
+
     ];
 
 

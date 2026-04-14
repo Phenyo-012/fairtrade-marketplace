@@ -162,6 +162,13 @@
                             <x-dropdown-link :href="route('orders.my')">
                                 My Orders
                             </x-dropdown-link>
+
+                            @if(Auth::user()->sellerProfile && Auth::user()->sellerProfile->onboarding_step < 3)
+                                <x-dropdown-link :href="route('seller.onboarding')"
+                                    class="text-yellow-600 font-semibold">
+                                    Complete Setup
+                                </x-dropdown-link>
+                            @endif
                         @endif
 
                         @if(Auth::user()->hasRole('admin'))

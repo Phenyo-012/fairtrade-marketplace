@@ -21,6 +21,18 @@ class EnsureSellerIsVerified
             abort(403);
         }
 
+       if (!$user->sellerProfile) {
+            return redirect()->route('seller.setup');
+        }
+
+        if ($user->sellerProfile->onboarding_step < 3) {
+            return redirect()->route('seller.onboarding');
+        }
+
+        // if (!$user->sellerProfile->kyc_submitted) {
+        //     return redirect()->route('seller.kyc');
+        // }
+
         if ($user->sellerProfile->verification_status !== 'approved') {
             return redirect()->route('seller.pending');
         }

@@ -143,7 +143,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/seller/store/update', [SellerProfileController::class, 'update'])
         ->name('seller.store.update');
 
-    
     // Pending Verification Page
     Route::get('/seller/pending', function () {
         return view('seller.pending');
@@ -158,6 +157,20 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])
         ->name('wishlist.destroy');
+
+    /* Route::get('/seller/verify', [SellerProfileController::class, 'showKyc'])
+        ->name('seller.kyc');
+
+    Route::post('/seller/verify', [SellerProfileController::class, 'submitKyc'])
+        ->name('seller.kyc.submit'); */
+
+    // SELLER ONBOARDING
+    Route::get('/seller/onboarding', [SellerProfileController::class, 'onboarding'])
+        ->name('seller.onboarding');
+
+    Route::post('/seller/onboarding/store', [SellerProfileController::class, 'storeStep']);
+
+    Route::post('/seller/onboarding/kyc', [SellerProfileController::class, 'kycStep']);
 });
 
 /*
