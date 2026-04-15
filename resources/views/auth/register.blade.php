@@ -62,5 +62,26 @@
                 {{ __('Register') }}
             </x-primary-button>
         </div>
+
+        <div class="mt-4">
+            <label class="flex items-center">
+                <input type="checkbox" name="terms" required class="mr-2">
+                I agree to the 
+                <a href="{{ route('terms') }}" class="text-blue-600 underline ml-1">
+                    Terms of Service
+                </a>
+            </label>
+        </div>
+
+        <div class="mt-4">
+            <label class="flex items-center">
+                <input type="checkbox" name="privacy" required class="mr-2">
+                I agree to the 
+                <a href="{{ route('privacy') }}" class="text-blue-600 underline ml-1">
+                    Privacy Policy
+                </a>
+            </label>
+        </div>
+
     </form>
 </x-guest-layout>

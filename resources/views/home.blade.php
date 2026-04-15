@@ -1,68 +1,96 @@
-@php use Illuminate\Support\Str; @endphp
 <x-app-layout>
 
-   <div class="max-w-7xl mx-auto mt-10">
+<div class="bg-gray-100 min-h-screen py-6">
 
-      <!-- <h2 class="text-2xl font-bold mb-6">Marketplace</h2> -->
+    <!-- HERO WRAPPER (CONSTRAIN WIDTH) -->
+    <div class="max-w-5xl mx-auto px-4">
 
-      <!-- FILTER -->
-      <form method="GET" class="mb-6 flex gap-2 mt-6">
+        <!-- HERO BANNER -->
+        <div x-data="{ active: 0 }"
+             x-init="setInterval(() => active = (active + 1) % 3, 6000)"
+             class="relative overflow-hidden rounded-2xl shadow">
 
-        <div class="relative inline-block" id="categoryMenu">
+            <div class="h-40 md:h-48 relative">
 
-         <!-- Trigger Button -->
-         <button
-            type="button"
-            id="categoryTrigger"
-            class="flex items-center justify-between border border-gray-400 px-4 py-2 rounded-2xl w-60 bg-white hover:bg-gray-50"
-            aria-haspopup="true"
-            aria-expanded="false">
+                <!-- Slide 1 -->
+                <div x-show="active === 0"
+                    class="absolute inset-0 flex items-center px-6 bg-cover bg-center w-6000"
+                    style="background-image: url('{{ asset('images/flag.jpg') }}');">
 
-            <span>
-                  Category:
-                  <span id="selectedCategory">All Categories</span>
-            </span>
+                    <!-- DARK OVERLAY (for readability) -->
+                    <div class="absolute inset-0 bg-black/50"></div>
 
-            <!-- Caret -->
-            <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24">
-                  <path d="M7 10l5 5 5-5z"/>
-            </svg>
-         </button>
+                    <!-- CONTENT -->
+                    <div class="relative text-white">
+                        <h1 class="text-2xl md:text-3xl font-bold">
+                            Support Local Sellers
+                        <p class="text-sm opacity-80 mt-1">
+                            Empowering small businesses
+                        </p>
+                    </div>
 
-         <!-- Dropdown Menu -->
-         <div
-            id="categoryDropdown"
-            class="hidden absolute right-0 mt-2 w-60 bg-white border rounded-xl shadow-lg z-50">
+                </div>
 
-            <button class="menu-item block w-full text-left px-4 py-2 hover:bg-gray-100" data-value="">
-                  All Categories
-            </button>
+                <!-- Slide 2 -->
+                <div x-show="active === 1"
+                     class="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 text-white flex items-center px-6">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">Discover Handmade Goods</h1>
+                        <p class="text-sm opacity-80 mt-1">Unique, one-of-a-kind products</p>
+                    </div>
+                </div>
 
-            <button class="menu-item block w-full text-left px-4 py-2 hover:bg-gray-100" data-value="electronics">
-                  Electronics
-            </button>
+                <!-- Slide 3 -->
+                <div x-show="active === 2"
+                     class="absolute inset-0 bg-gradient-to-r from-purple-500 to-purple-700 text-white flex items-center px-6">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">Fair Prices, Real Impact</h1>
+                        <p class="text-sm opacity-80 mt-1">Transparent and ethical trade</p>
+                    </div>
+                </div>
 
-            <button class="menu-item block w-full text-left px-4 py-2 hover:bg-gray-100" data-value="fashion">
-                  Fashion
-            </button>
+            </div>
 
-            <button class="menu-item block w-full text-left px-4 py-2 hover:bg-gray-100" data-value="home">
-                  Home
-            </button>
+        </div>
+    </div>
 
-         </div>
+    <!-- MAIN CONTENT -->
+    <div class="max-w-7xl mx-auto px-4 py-10">
 
-         <!-- Hidden input (replaces select) -->
-         <input type="hidden" name="category" id="categoryInput">
+        <!-- TOP STORES -->
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-bold">Top Stores</h2>
+        </div>
 
-      </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 mb-12">
+            @foreach($topStores as $store)
+                <a href="{{ route('store.show', $store->id) }}"
+                   class="bg-white p-4 rounded-2xl shadow-sm hover:shadow-lg transition text-center relative group">
 
-      </form>
+                    @if($loop->first)
+                        <span class="absolute top-2 left-2 text-xs bg-yellow-400 px-2 py-1 rounded font-semibold">
+                            ⭐ Top Seller
+                        </span>
+                    @endif
 
-      <!-- Products Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <img src="{{ $store->logo ? asset('storage/'.$store->logo) : '/default-store.png' }}"
+                         class="h-16 w-16 rounded-full mx-auto mb-3 object-cover group-hover:scale-105 transition">
 
-         @foreach($products as $product)
+                    <p class="font-semibold text-gray-800 group-hover:text-blue-600">
+                        {{ $store->store_name }}
+                    </p>
+                </a>
+            @endforeach
+        </div>
+
+        <!-- FEATURED PRODUCTS -->
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-bold">Featured Products</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+         @foreach($featuredProducts as $product)
 
          <a href="/products/{{ $product->id }}" 
             class="relative group block bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden group hover:scale-105">
@@ -146,38 +174,7 @@
 
       </div>
 
-      <!-- Pagination -->
-      <div class="mt-6">
-      {{ $products->links() }}
-      </div>
+    </div>
+</div>
 
-   </div>
-
-   <script>
-   const trigger = document.getElementById("categoryTrigger");
-   const dropdown = document.getElementById("categoryDropdown");
-   const selectedText = document.getElementById("selectedCategory");
-   const hiddenInput = document.getElementById("categoryInput");
-
-   // Toggle menu
-   trigger.addEventListener("click", () => {
-      dropdown.classList.toggle("hidden");
-   });
-
-   // Select option
-   document.querySelectorAll(".menu-item").forEach(item => {
-      item.addEventListener("click", () => {
-         selectedText.textContent = item.textContent;
-         hiddenInput.value = item.dataset.value;
-         dropdown.classList.add("hidden");
-      });
-   });
-
-   // Close when clicking outside
-   document.addEventListener("click", e => {
-      if (!document.getElementById("categoryMenu").contains(e.target)) {
-         dropdown.classList.add("hidden");
-      }
-   });
-   </script>
 </x-app-layout>

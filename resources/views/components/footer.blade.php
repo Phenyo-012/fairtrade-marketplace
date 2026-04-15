@@ -7,7 +7,7 @@
             <!-- WEBSITE LOGO -->
             <div class="flex items-center justify-center mb-4">
                 <a href="{{ url('/') }}" class="text-2xl font-bold text-black mb-4 inline-block">
-                    <img src="{{ asset('images/fairTrade-logo.png') }}"
+                    <img src="{{ asset('images/fairTrade-logo2.png') }}"
                         alt="FairTrade Logo"
                         class="h-20 w-auto inline-block mr-2">
                 </a>
@@ -24,9 +24,9 @@
         <div>
             <h4 class="text-black font-semibold mb-3">Marketplace</h4>
             <ul class="space-y-2 text-sm">
-                <li><a href="/" class="hover:text-black">Home</a></li>
-                <li><a href="/marketplace" class="hover:text-black">Browse Products</a></li>
-                <li><a href="/cart" class="hover:text-black">Cart</a></li>
+                <li><a href="/" class="text-gray-500 hover:text-gray-700">Home</a></li>
+                <li><a href="/marketplace" class="text-gray-500 hover:text-gray-700">Browse Products</a></li>
+                <li><a href="/cart" class="text-gray-500 hover:text-gray-700">Cart</a></li>
             </ul>
         </div>
 
@@ -34,9 +34,9 @@
         <div>
             <h4 class="text-black font-semibold mb-3">For Sellers</h4>
             <ul class="space-y-2 text-sm">
-                <li><a href="/become-seller" class="hover:text-black">Become a Seller</a></li>
-                <li><a href="/seller/dashboard" class="hover:text-black">Seller Dashboard</a></li>
-                <li><a href="/seller/orders" class="hover:text-black">Manage Orders</a></li>
+                <li><a href="/become-seller" class="text-gray-500 hover:text-gray-700">Become a Seller</a></li>
+                <li><a href="/seller/dashboard" class="text-gray-500 hover:text-gray-700">Seller Dashboard</a></li>
+                <li><a href="/seller/orders" class="text-gray-500 hover:text-gray-700">Manage Orders</a></li>
             </ul>
         </div>
 
@@ -44,9 +44,21 @@
         <div>
             <h4 class="text-black font-semibold mb-3">Legal</h4>
             <ul class="space-y-2 text-sm">
-                <li><a href="#" class="hover:text-black">Terms of Service</a></li>
-                <li><a href="#" class="hover:text-black">Privacy Policy</a></li>
-                <li><a href="#" class="hover:text-black">Refund Policy</a></li>
+                <li>
+                    <a href="{{ route('terms') }}" class="text-gray-500 hover:text-gray-700">
+                        Terms of Service
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('privacy') }}" class="text-gray-500 hover:text-gray-700">
+                        Privacy Policy
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('refund') }}" class="text-gray-500 hover:text-gray-700">Refund Policy
+                        
+                    </a>
+                </li>
             </ul>
         </div>
 

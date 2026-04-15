@@ -52,6 +52,8 @@ class ReviewController extends Controller
             'status' => 'pending'
         ]);
 
+        Cache::forget('top_stores');
+
         return back()->with('success', 'Review submitted.');
     }
 }

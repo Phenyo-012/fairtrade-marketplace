@@ -1,16 +1,16 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+        <div class="flex items-center justify-between h-20">
 
             <!-- LEFT SIDE -->
             <div class="flex items-center gap-4">
     
                 <!-- LOGO -->
-                <a href="{{ url('/') }}">
-                    <img src="{{ asset('images/fairTrade-logo.png') }}"
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('images/fairTrade-logo2.png') }}"
                         alt="FairTrade Logo" 
-                        class="block h-10 w-auto fill-current text-gray-800" />
+                        class="block h-20 w-auto fill-current text-gray-800 mt-4 mb-4" />
                 </a>
 
                 <!-- CATEGORY BURGER -->

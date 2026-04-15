@@ -23,6 +23,7 @@ use App\Http\Controllers\SellerProfileController;
 use App\Http\Controllers\Admin\SellerVerificationController;
 use App\Http\Controllers\Admin\ReviewModerationController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\HomeController;
 
 
 
@@ -31,20 +32,41 @@ use App\Http\Controllers\WishlistController;
 | PUBLIC ROUTES
 |--------------------------------------------------------------------------
 */
+    Route::get('/', [HomeController::class, 'index'])
+        ->name('home');
 
-Route::get('/', [MarketplaceController::class, 'index']);
-Route::get('/products/{product}', [MarketplaceController::class, 'show']);
+    Route::get('/marketplace', [MarketplaceController::class, 'index'])
+        ->name('marketplace');
 
-// Courier
-Route::get('/courier/confirm-delivery', [CourierController::class, 'showForm'])
-    ->name('courier.form');
+    Route::get('/marketplace', [MarketplaceController::class, 'index'])
+        ->name('marketplace.index');
 
-Route::post('/courier/confirm-delivery', [CourierController::class, 'confirm'])
-    ->name('courier.confirm');
+    Route::get('/products/{product}', [MarketplaceController::class, 'show']);
 
-Route::post('/reviews/{review}/vote', [ReviewVoteController::class, 'vote'])
-    ->name('reviews.vote')
-    ->middleware('auth');
+    // Courier
+    Route::get('/courier/confirm-delivery', [CourierController::class, 'showForm'])
+        ->name('courier.form');
+
+    Route::post('/courier/confirm-delivery', [CourierController::class, 'confirm'])
+        ->name('courier.confirm');
+
+    Route::post('/reviews/{review}/vote', [ReviewVoteController::class, 'vote'])
+        ->name('reviews.vote')
+        ->middleware('auth');
+
+   Route::get('/store/{seller}', [StoreController::class, 'show'])
+        ->name('store.show');
+
+    // seller reviews page
+    Route::get('/store/{seller}/reviews', [StoreController::class, 'reviews'])
+        ->name('store.reviews');
+
+    Route::view('/terms', 'legal.terms')->name('terms');
+
+    Route::view('/privacy', 'legal.privacy')->name('privacy');
+
+    Route::view('/refund', 'legal.refund')->name('refund');
+        
 /*
 |--------------------------------------------------------------------------
 | AUTHENTICATED USERS
@@ -126,9 +148,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])
         ->name('checkout.success');
 
-    Route::get('/marketplace', [MarketplaceController::class, 'index'])
-        ->name('marketplace.index');
-        
     // SELLER STORE SETUP
     Route::get('/become-seller', [SellerProfileController::class, 'create'])
         ->name('seller.setup');
@@ -255,13 +274,6 @@ Route::middleware(['auth','role:seller', 'seller.approved'])->group(function () 
 
     Route::patch('/seller/orders/{order}/status', [SellerOrderController::class, 'updateStatus'])
         ->name('seller.orders.updateStatus');
-
-    Route::get('/store/{seller}', [StoreController::class, 'show'])
-        ->name('store.show');
-
-    // seller reviews page
-    Route::get('/store/{seller}/reviews', [StoreController::class, 'reviews'])
-        ->name('store.reviews');
 
 });
 
