@@ -9,7 +9,7 @@
         <h2 class="text-2xl font-bold">Pending Reviews</h2>
 
         <a href="{{ route('admin.reviews.archive') }}"
-        class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition">
+        class="bg-gray-800 text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition">
             View Archive
         </a>
 
@@ -17,7 +17,7 @@
 
     @foreach($reviews as $review)
         <a href="{{ route('admin.reviews.show', $review) }}">
-            <div class="bg-white p-4 rounded shadow mb-4 hover:shadow-md transition cursor-pointer">
+            <div class="bg-white p-4 rounded-xl shadow mb-4 hover:shadow-md transition cursor-pointer">
 
                 <p class="font-semibold">
                     {{ $review->orderItem->product->name }}

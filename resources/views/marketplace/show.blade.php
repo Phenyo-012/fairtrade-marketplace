@@ -59,7 +59,7 @@
                         {{ $product->name }}
                     </h2>
 
-                    <span class="text-xs px-2 py-1 rounded 
+                    <span class="text-xs px-2 py-1 rounded-xl 
                     {{ $product->condition == 'new' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
                     {{ ucfirst(str_replace('_', ' ', $product->condition)) }}
                 </span>
@@ -80,10 +80,10 @@
                         @csrf
 
                         <div class="flex items-center gap-3">
-                            <button type="button" onclick="decreaseQty()" class="px-3 py-1 bg-gray-200 rounded">-</button>
+                            <button type="button" onclick="decreaseQty()" class="px-3 py-1 bg-gray-200 rounded-xl">-</button>
                             <input id="qty" type="number" name="quantity" value="1"
-                                class="border rounded w-16 text-center">
-                            <button type="button" onclick="increaseQty()" class="px-3 py-1 bg-gray-200 rounded">+</button>
+                                class="border rounded-xl w-16 text-center">
+                            <button type="button" onclick="increaseQty()" class="px-3 py-1 bg-gray-200 rounded-xl">+</button>
                         </div>
                         
                         <button class="w-full bg-blue-600 text-white py-2 rounded-xl mt-6">
@@ -131,8 +131,8 @@
                             </svg>
                             </span>
 
-                            <div class="flex-1 bg-gray-200 h-3 rounded">
-                                <div class="bg-yellow-400 h-3 rounded"
+                            <div class="flex-1 bg-gray-200 h-3 rounded-xl">
+                                <div class="bg-yellow-400 h-3 rounded-xl"
                                     style="width: {{ $ratingPercentages[$i] ?? 0 }}%">
                                 </div>
                             </div>
@@ -152,7 +152,7 @@
 
                 <form method="GET" class="mb-6 flex gap-2">
 
-                    <select name="rating" class="border rounded p-2 text-sm">
+                    <select name="rating" class="border rounded-xl p-2 text-sm">
                         <option value="">All Ratings</option>
                         <option value="5" {{ request('rating') == 5 ? 'selected' : '' }}>5★</option>
                         <option value="4" {{ request('rating') == 4 ? 'selected' : '' }}>4★ & up</option>
@@ -161,7 +161,7 @@
                         <option value="1" {{ request('rating') == 1 ? 'selected' : '' }}>1★ & up</option>
                     </select>
 
-                    <button class="bg-gray-800 text-white px-3 py-2 rounded text-sm">
+                    <button class="bg-gray-800 text-white px-3 py-2 rounded-xl text-sm">
                         Filter
                     </button>
 
@@ -169,14 +169,14 @@
 
                 <form method="GET" class="mb-6 flex gap-2">
 
-                    <select name="sort" class="border rounded p-2 text-sm">
+                    <select name="sort" class="border rounded-xl p-2 text-sm">
                         <option value="">Sort Reviews</option>
                         <option value="helpful" {{ request('sort') == 'helpful' ? 'selected' : '' }}>Most Helpful</option>
                         <option value="highest" {{ request('sort') == 'highest' ? 'selected' : '' }}>Highest Rating</option>
                         <option value="lowest" {{ request('sort') == 'lowest' ? 'selected' : '' }}>Lowest Rating</option>
                     </select>
 
-                    <button class="bg-gray-800 text-white px-3 py-2 rounded text-sm">
+                    <button class="bg-gray-800 text-white px-3 py-2 rounded-xl text-sm">
                         Apply
                     </button>
 
@@ -187,7 +187,7 @@
                 @forelse($reviews as $review)
                     <div class="bg-white p-4 rounded-xl shadow-sm mb-4">
 
-                        <span class="inline-block bg-green-100 text-black-700 text-xs px-2 py-1 rounded mb-2">
+                        <span class="inline-block bg-green-100 text-black-700 text-xs px-2 py-1 rounded-xl mb-2">
                             Verified Purchase
                         </span>
 
@@ -267,10 +267,10 @@
                         class="bg-white p-3 rounded-xl shadow-sm hover:shadow-md transition">
                             @if($image)
                                 <img src="{{ asset('storage/' . $image->image_path) }}"
-                                    class="w-full h-auto object-cover rounded mb-2">
+                                    class="w-full h-auto object-cover rounded-xl mb-2">
                             @else
                                 <img src="/placeholder.png"
-                                    class="w-full h-auto object-cover rounded mb-2">
+                                    class="w-full h-auto object-cover rounded-xl mb-2">
                             @endif
                             <p class="font-semibold text-sm text-gray-800">{{ $item->name }}</p>
                             <p class="text-blue-600 font-bold">R{{ number_format($item->price, 2) }}</p>
@@ -285,7 +285,7 @@
     <!-- LIGHTBOX MODAL -->
     <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
         <div class="relative max-w-3xl w-full">
-            <img id="lightboxImage" class="w-full max-h-[80vh] object-contain rounded shadow-lg">
+            <img id="lightboxImage" class="w-full max-h-[80vh] object-contain rounded-xl shadow-lg">
             <button onclick="closeLightbox()" 
                     class="absolute top-2 right-2 text-white text-3xl font-bold bg-black/50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/70 transition">
                 &times;

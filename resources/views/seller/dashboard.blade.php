@@ -32,23 +32,23 @@
                 <div class="text-sm text-gray-500 mb-6 mt-6 flex gap-4">
                 
                     <!-- EDIT STORE-->
-                    <a href="{{ route('seller.store.edit') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                    <a href="{{ route('seller.store.edit') }}" class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition">
                         Edit Store
                     </a>
                     <!-- VIEW STORE -->
-                    <a href="{{ route('store.show', Auth::user()->sellerProfile->id) }}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                    <a href="{{ route('store.show', Auth::user()->sellerProfile->id) }}" class="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition">
                         View Store
                     </a>
                     <!-- ORDER MANAGEMENT -->
-                    <a href="{{ route('seller.orders.index') }}" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">
+                    <a href="{{ route('seller.orders.index') }}" class="px-4 py-2 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition">
                         Order Management
                     </a>
                     <!-- PRODUCT MANAGEMENT -->
-                    <a href="{{ route('seller.products.index') }}" class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition">
+                    <a href="{{ route('seller.products.index') }}" class="px-4 py-2 bg-yellow-600 text-white rounded-xl hover:bg-yellow-700 transition">
                         Product Management
                     </a>
                     <!-- DISPUTE MANAGEMENT -->
-                    <a href="{{ route('seller.disputes.index') }}" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                    <a href="{{ route('seller.disputes.index') }}" class="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition">
                         Disputes
                     </a>
 

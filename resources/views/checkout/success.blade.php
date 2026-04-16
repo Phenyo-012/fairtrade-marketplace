@@ -22,7 +22,7 @@
                             </p>
                         </div>
 
-                        <span class="text-sm bg-gray-200 px-3 py-1 rounded">
+                        <span class="text-sm bg-gray-200 px-3 py-1 rounded-xl">
                             {{ ucfirst(str_replace('_',' ', $order->status)) }}
                         </span>
                     </div>
@@ -34,10 +34,10 @@
                             <!-- IMAGE -->
                             @if($item->product->images->count())
                                 <img src="{{ asset('storage/'.$item->product->images->first()->image_path) }}"
-                                    class="w-16 h-16 object-cover rounded">
+                                    class="w-16 h-16 object-cover rounded-xl">
                             @else
                                 <img src="/placeholder.png"
-                                    class="w-16 h-16 object-cover rounded">
+                                    class="w-16 h-16 object-cover rounded-xl">
                             @endif
 
                             <!-- INFO -->
@@ -65,7 +65,7 @@
             @endforeach
 
             <a href="{{ route('orders.my') }}"
-            class="block text-center bg-black text-white py-3 rounded mt-6">
+            class="block text-center bg-black text-white py-3 rounded-xl mt-6">
                 View My Orders
             </a>
 

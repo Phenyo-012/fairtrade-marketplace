@@ -4,17 +4,17 @@
 
         <h1 class="text-2xl font-bold mb-6">All Orders</h1>
 
-        <form method="GET" class="bg-white p-4 rounded shadow mb-6 grid md:grid-cols-5 gap-3">
+        <form method="GET" class="bg-white p-4 rounded-xl shadow mb-6 grid md:grid-cols-5 gap-3">
 
             <!-- SEARCH -->
             <input type="text"
                 name="search"
                 value="{{ request('search') }}"
                 placeholder="Order ID"
-                class="border p-2 rounded">
+                class="border p-2 rounded-xl">
 
             <!-- STATUS -->
-            <select name="status" class="border p-2 rounded">
+            <select name="status" class="border p-2 rounded-xl">
                 <option value="">All Status</option>
                 <option value="pending">Pending</option>
                 <option value="awaiting_shipment">Awaiting</option>
@@ -35,21 +35,21 @@
             <input type="date"
                 name="from"
                 value="{{ request('from') }}"
-                class="border p-2 rounded">
+                class="border p-2 rounded-xl">
 
             <!-- TO -->
             <input type="date"
                 name="to"
                 value="{{ request('to') }}"
-                class="border p-2 rounded">
+                class="border p-2 rounded-xl">
 
             <!-- BUTTONS -->
-            <button class="bg-blue-600 text-white rounded px-4">
+            <button class="bg-blue-600 text-white rounded-xl px-4">
                 Filter
             </button>
 
             <a href="{{ route('admin.orders.index') }}"
-            class="text-center bg-gray-200 rounded px-4 py-2">
+            class="text-center bg-gray-200 rounded-xl px-4 py-2">
                 Reset
             </a>
 
@@ -57,7 +57,7 @@
 
         @foreach($orders as $order)
             <a href="{{ route('admin.orders.show', $order) }}"
-            class="block bg-white p-4 rounded shadow mb-3 hover:bg-gray-50">
+            class="block bg-white p-4 rounded-xl shadow mb-3 hover:bg-gray-50">
 
                 <div class="flex justify-between">
                     <div>

@@ -10,8 +10,8 @@
             <span>Review</span>
         </div>
 
-        <div class="w-full bg-gray-200 h-2 rounded">
-            <div class="bg-blue-600 h-2 rounded"
+        <div class="w-full bg-gray-200 h-2 rounded-xl">
+            <div class="bg-blue-600 h-2 rounded-xl"
                  :style="'width:' + (step * 33) + '%'">
             </div>
         </div>
@@ -30,7 +30,7 @@
             <textarea name="about" placeholder="About your store"
                       class="border p-2 w-full mb-3"></textarea>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded-xl">
                 Continue
             </button>
         </form>
@@ -46,7 +46,7 @@
             <input type="file" name="id_document" class="mb-3" required>
             <input type="file" name="selfie_document" class="mb-3" required>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded-xl">
                 Submit Verification
             </button>
         </form>
@@ -56,12 +56,12 @@
     <div x-show="step === 3">
         <h2 class="text-xl font-bold mb-4">Under Review</h2>
 
-        <div class="bg-yellow-100 p-4 rounded text-yellow-700">
+        <div class="bg-yellow-100 p-4 rounded-xl text-yellow-700">
             Your documents are being reviewed by our team.
         </div>
 
         <a href="/seller/dashboard"
-           class="mt-4 inline-block bg-gray-800 text-white px-4 py-2 rounded">
+           class="mt-4 inline-block bg-gray-800 text-white px-4 py-2 rounded-xl">
             Go to Dashboard
         </a>
     </div>

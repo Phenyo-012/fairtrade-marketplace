@@ -30,7 +30,7 @@ Review Order #{{ $order->id }}
 
         <input type="file" name="image" class="border p-2 w-full mb-2 mt-4 rounded-lg">
 
-        <button class="bg-blue-600 text-white px-3 py-1 rounded mt-4">
+        <button class="bg-blue-600 text-white px-3 py-1 rounded-xl mt-4">
             Submit Review
         </button>
 

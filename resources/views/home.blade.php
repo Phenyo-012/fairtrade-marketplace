@@ -68,25 +68,25 @@
                    class="bg-white p-4 rounded-2xl shadow-sm hover:shadow-lg transition text-center relative group">
 
                     @if($loop->first)
-                        <span class="absolute top-2 left-2 text-xs bg-yellow-400 px-2 py-1 rounded font-semibold">
+                        <span class="absolute top-2 left-2 text-xs bg-yellow-400 px-2 py-1 rounded-xl font-semibold">
                             Top Seller
                         </span>
                     @endif
 
                     @if($loop->iteration == 2)
-                        <span class="absolute top-2 left-2 text-xs bg-gray-400 px-2 py-1 rounded font-semibold">
+                        <span class="absolute top-2 left-2 text-xs bg-gray-400 px-2 py-1 rounded-xl font-semibold">
                             2nd Place
                         </span>
                     @endif
 
                     @if($loop->iteration == 3)
-                        <span class="absolute top-2 left-2 text-xs bg-yellow-700 px-2 py-1 rounded font-semibold">
+                        <span class="absolute top-2 left-2 text-xs bg-yellow-700 px-2 py-1 rounded-xl font-semibold">
                             3rd Place
                         </span>
                     @endif
 
                     @if($loop->iteration > 3)
-                        <span class="absolute top-2 left-2 text-xs bg-gray-300 px-2 py-1 rounded font-semibold">
+                        <span class="absolute top-2 left-2 text-xs bg-gray-300 px-2 py-1 rounded-xl font-semibold">
                             {{ $loop->iteration }}th Place
                         </span>
                     @endif
@@ -155,7 +155,7 @@
                </div>
 
                <!-- CONDITION -->
-               <span class="text-xs px-2 py-1 rounded inline-block mt-1
+               <span class="text-xs px-2 py-1 rounded-xl inline-block mt-1
                      {{ $product->condition == 'new' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
                      {{ ucfirst(str_replace('_', ' ', $product->condition)) }}
                </span>

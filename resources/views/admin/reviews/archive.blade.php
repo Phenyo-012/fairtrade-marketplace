@@ -11,7 +11,7 @@
 
     @foreach($reviews as $review)
         <a href="{{ route('admin.reviews.show', $review) }}">
-            <div class="bg-white p-4 rounded shadow mb-4 hover:shadow-md">
+            <div class="bg-white p-4 rounded-xl shadow mb-4 hover:shadow-md">
 
                 <p class="font-semibold">
                     {{ $review->orderItem->product->name }}

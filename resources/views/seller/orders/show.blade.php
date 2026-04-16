@@ -9,26 +9,26 @@
 
             {{-- SUCCESS --}}
             @if(session('success'))
-                <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
+                <div class="bg-green-100 text-green-700 p-3 rounded-xl mb-4">
                     {{ session('success') }}
                 </div>
             @endif
 
             {{-- GLOBAL STATUS ALERTS (SHOW ONLY ONCE) --}}
             @if($order->is_late && $order->status !== 'shipped')
-                <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+                <div class="bg-red-100 text-red-700 p-3 rounded-xl mb-4">
                     ⚠ This order is late! Please ship it as soon as possible.
                 </div>
             @endif
 
             @if($order->status === 'shipped')
-                <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
+                <div class="bg-green-100 text-green-800 p-3 rounded-xl mb-4">
                     This order has been shipped
                 </div>
             @endif
 
             @if($order->seller_deadline && !in_array($order->status, ['shipped','delivered','completed','cancelled','disputed']))
-                <div class="bg-yellow-100 text-yellow-800 p-3 rounded mb-4">
+                <div class="bg-yellow-100 text-yellow-800 p-3 rounded-xl mb-4">
                     You must ship this order within:
                     <span class="countdown font-bold"
                         data-deadline="{{ $order->seller_deadline }}">
@@ -115,7 +115,7 @@
                         @csrf
                         @method('PATCH')
 
-                        <select name="status" class="border rounded p-2 w-full mb-4">
+                        <select name="status" class="border rounded-xl p-2 w-full mb-4">
                             <option value="awaiting_shipment"
                                 {{ $order->status === 'awaiting_shipment' ? 'selected' : '' }}>
                                 Awaiting shipment
@@ -127,7 +127,7 @@
                             </option>
                         </select>
 
-                        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700">
                             Update Status
                         </button>
                     </form>

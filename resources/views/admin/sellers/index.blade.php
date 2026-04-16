@@ -12,29 +12,29 @@
         <div class="flex gap-3 mb-6">
 
             <a href="{{ route('admin.sellers.index') }}"
-               class="px-4 py-2 rounded {{ !$status ? 'bg-black text-white' : 'bg-white' }}">
+               class="px-4 py-2 rounded-xl {{ !$status ? 'bg-black text-white' : 'bg-white' }}">
                 All
             </a>
 
             <a href="?status=pending"
-               class="px-4 py-2 rounded {{ $status == 'pending' ? 'bg-black text-white' : 'bg-white' }}">
+               class="px-4 py-2 rounded-xl {{ $status == 'pending' ? 'bg-black text-white' : 'bg-white' }}">
                 Pending
             </a>
 
             <a href="?status=rejected"
-               class="px-4 py-2 rounded {{ $status == 'rejected' ? 'bg-black text-white' : 'bg-white' }}">
+               class="px-4 py-2 rounded-xl {{ $status == 'rejected' ? 'bg-black text-white' : 'bg-white' }}">
                 Rejected
             </a>
 
             <a href="?status=approved"
-               class="px-4 py-2 rounded {{ $status == 'approved' ? 'bg-black text-white' : 'bg-white' }}">
+               class="px-4 py-2 rounded-xl {{ $status == 'approved' ? 'bg-black text-white' : 'bg-white' }}">
                 Approved
             </a>
 
         </div>
 
         @if(session('success'))
-            <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
+            <div class="bg-green-100 text-green-700 p-3 rounded-xl mb-4">
                 {{ session('success') }}
             </div>
         @endif
@@ -78,7 +78,7 @@
 
                     <!-- STATUS -->
                     <div class="mt-3">
-                        <span class="px-2 py-1 text-xs rounded
+                        <span class="px-2 py-1 text-xs rounded-xl
                             @if($seller->verification_status == 'pending') bg-yellow-100 text-yellow-700
                             @elseif($seller->verification_status == 'approved') bg-green-100 text-green-700
                             @else bg-red-100 text-red-700
@@ -95,11 +95,11 @@
                         <div class="flex gap-4 mt-2">
 
                             <a href="{{ asset('storage/' . $seller->id_document) }}" target="_blank">
-                                <img src="{{ asset('storage/' . $seller->id_document) }}" class="w-24 rounded border">
+                                <img src="{{ asset('storage/' . $seller->id_document) }}" class="w-24 rounded-xl border">
                             </a>
 
                             <a href="{{ asset('storage/' . $seller->selfie_document) }}" target="_blank">
-                                <img src="{{ asset('storage/' . $seller->selfie_document) }}" class="w-24 rounded border">
+                                <img src="{{ asset('storage/' . $seller->selfie_document) }}" class="w-24 rounded-xl border">
                             </a>
 
                         </div>
@@ -120,7 +120,7 @@
                         @if($seller->verification_status !== 'approved')
                         <form method="POST" action="{{ route('admin.sellers.approve', $seller->id) }}">
                             @csrf
-                            <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
+                            <button class="w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition">
                                 Approve
                             </button>
                         </form>
@@ -131,9 +131,9 @@
                         <form method="POST" action="{{ route('admin.sellers.reject', $seller->id) }}">
                             @csrf
                             <input type="text" name="notes" placeholder="Reason (optional)"
-                                   class="w-full border rounded p-2 mb-2 text-sm">
+                                   class="w-full border rounded-xl p-2 mb-2 text-sm">
 
-                            <button class="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition">
+                            <button class="w-full bg-red-500 text-white py-2 rounded-xl hover:bg-red-600 transition">
                                 Reject
                             </button>
                         </form>

@@ -24,7 +24,7 @@
 <input name="stock_quantity" type="number"
        placeholder="Stock" class="border p-2 w-full mb-2">
 
-<select name="category" class="w-full border rounded p-2 mb-4">
+<select name="category" class="w-full border rounded-xl p-2 mb-4">
     <option value="">Select Category</option>
 
     @foreach(config('categories') as $main => $subs)
@@ -41,7 +41,7 @@
 <option value="second_hand">Second Hand</option>
 </select>
 
-<button class="bg-blue-600 text-white px-4 py-2 rounded">
+<button class="bg-blue-600 text-white px-4 py-2 rounded-xl">
 Save Product Listing
 </button>
 

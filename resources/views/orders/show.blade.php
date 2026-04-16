@@ -127,7 +127,7 @@
                         @csrf
                         <input type="hidden" name="quantity" value="1">
 
-                        <button class="mt-2 text-xs bg-gray-100 px-3 py-1 rounded hover:bg-gray-200">
+                        <button class="mt-2 text-xs bg-gray-100 px-3 py-1 rounded-xl hover:bg-gray-200">
                             Buy Again
                         </button>
                     </form>
@@ -186,20 +186,20 @@
 
             @if($order->dispute)
                 <a href="{{ route('disputes.show', $order->dispute) }}"
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700">
                     View Dispute
                 </a>
 
             @elseif($order->status !== 'disputed')
                 <a href="{{ route('disputes.create', $order) }}"
-                class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600">
                     Dispute Order
                 </a>
             @endif
 
             @if($order->canBeReviewed())
                 <a href="{{ route('reviews.create', $order) }}"
-                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
                     Write Review
                 </a>
 

@@ -109,7 +109,7 @@
                </div>
 
                <!-- CONDITION -->
-               <span class="text-xs px-2 py-1 rounded inline-block mt-1
+               <span class="text-xs px-2 py-1 rounded-xl inline-block mt-1
                      {{ $product->condition == 'new' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
                      {{ ucfirst(str_replace('_', ' ', $product->condition)) }}
                </span>

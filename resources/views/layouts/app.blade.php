@@ -31,13 +31,13 @@
             <main>
 
                 @if(session('success'))
-                    <div class="max-w-7xl mx-auto mt-4 bg-green-100 text-green-700 p-3 rounded">
+                    <div class="max-w-7xl mx-auto mt-4 bg-green-100 text-green-700 p-3 rounded-xl">
                         {{ session('success') }}
                     </div>
                 @endif
 
                 @if(session('error'))
-                    <div class="max-w-7xl mx-auto mt-4 bg-red-100 text-red-700 p-3 rounded">
+                    <div class="max-w-7xl mx-auto mt-4 bg-red-100 text-red-700 p-3 rounded-xl">
                         {{ session('error') }}
                     </div>
                 @endif

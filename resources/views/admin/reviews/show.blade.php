@@ -27,7 +27,7 @@
 
         @if($review->image)
             <img src="{{ asset('storage/' . $review->image) }}"
-                 class="w-40 h-40 object-cover mt-4 rounded">
+                 class="w-40 h-40 object-cover mt-4 rounded-xl">
         @endif
 
         @if($review->status === 'pending')
@@ -36,7 +36,7 @@
             <form method="POST" action="{{ route('admin.reviews.approve', $review) }}">
                 @csrf
                 @method('PATCH')
-                <button class="bg-green-600 text-white px-4 py-2 rounded">
+                <button class="bg-green-600 text-white px-4 py-2 rounded-xl">
                     Approve
                 </button>
             </form>
@@ -44,7 +44,7 @@
             <form method="POST" action="{{ route('admin.reviews.reject', $review) }}">
                 @csrf
                 @method('PATCH')
-                <button class="bg-red-500 text-white px-4 py-2 rounded">
+                <button class="bg-red-500 text-white px-4 py-2 rounded-xl">
                     Reject
                 </button>
             </form>

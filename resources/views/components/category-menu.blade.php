@@ -7,7 +7,7 @@
 
     <!-- BURGER BUTTON -->
     <button @click="open = !open"
-        class="text-xl px-3 py-2 hover:bg-gray-100 rounded">
+        class="text-xl px-3 py-2 hover:bg-gray-100 rounded-xl">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
             viewBox="0 0 24 24">
                 <g fill="none" stroke="#000" stroke-linecap="round" 

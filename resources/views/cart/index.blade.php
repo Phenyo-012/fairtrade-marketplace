@@ -8,7 +8,7 @@
             <div class="bg-white p-10 rounded-xl shadow text-center">
                 <p class="text-gray-500 mb-4">Your cart is empty.</p>
 
-                <a href="/" class="bg-blue-600 text-white px-4 py-2 rounded">
+                <a href="/" class="bg-blue-600 text-white px-4 py-2 rounded-xl">
                     Continue Shopping
                 </a>
             </div>
@@ -24,9 +24,9 @@
 
                         <div class="bg-white rounded-xl shadow p-4 flex flex-col md:flex-row gap-4">
                             <!-- Image -->
-                            <div class="w-24 h-24 flex-shrink-0 overflow-hidden rounded">
+                            <div class="w-24 h-24 flex-shrink-0 overflow-hidden rounded-xl">
                                 <img src="{{ $image ? asset('storage/' . $image->image_path) : '/placeholder.png' }}"
-                                    class="w-full h-full object-cover rounded hover:scale-105 transition-transform">
+                                    class="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform">
                             </div>
 
                             <!-- Product Info -->
@@ -44,7 +44,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="number" name="quantity"  value="{{ $item->quantity }}" min="1" max="{{ $item->product->stock_quantity }}"
-                                            class="w-16 border rounded text-center">
+                                            class="w-16 border rounded-xl text-center">
                                         <button type="submit" 
                                             class="text-blue-600 text-sm hover:underline"
                                             onclick="this.innerText='Updating...'">

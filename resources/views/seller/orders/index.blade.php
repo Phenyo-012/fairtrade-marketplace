@@ -12,10 +12,10 @@
                 name="search"
                 placeholder="Order ID"
                 value="{{ request('search') }}"
-                class="border rounded px-3 py-2">
+                class="border rounded-xl px-3 py-2">
 
             <!-- STATUS FILTER -->
-            <select name="status" class="border rounded px-3 py-2">
+            <select name="status" class="border rounded-xl px-3 py-2">
                 <option value="">All Status</option>
                 <option value="pending" @selected(request('status')=='pending')>Pending</option>
                 <option value="awaiting_shipment" @selected(request('status')=='awaiting_shipment')>Awaiting Shipment</option>
@@ -26,7 +26,7 @@
                 <option value="disputed" @selected(request('status')=='disputed')>Disputed</option>
             </select>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded-xl">
                 Filter
             </button>
 
@@ -65,7 +65,7 @@
                         @endif
                     </div>
 
-                    <span class="text-sm px-3 py-1 rounded bg-gray-200">
+                    <span class="text-sm px-3 py-1 rounded-xl bg-gray-200">
                         {{ ucfirst($order->status) }}
                     </span>
 

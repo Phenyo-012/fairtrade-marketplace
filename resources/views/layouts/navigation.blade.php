@@ -247,7 +247,7 @@
         <form action="{{ route('marketplace.index') }}" method="GET" class="mb-3">
             <input type="text" name="search"
                 placeholder="Search..."
-                class="w-full border rounded px-3 py-2">
+                class="w-full border rounded-xl px-3 py-2">
         </form>
 
         @auth

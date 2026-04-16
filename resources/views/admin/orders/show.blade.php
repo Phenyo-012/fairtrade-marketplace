@@ -7,7 +7,7 @@
     </h1>
 
     <!-- ORDER INFO -->
-    <div class="bg-white p-6 rounded shadow mb-6">
+    <div class="bg-white p-6 rounded-xl shadow mb-6">
 
         <p><strong>Status:</strong> {{ ucfirst($order->status) }}</p>
         <p><strong>Total:</strong> R{{ number_format($order->total_amount, 2) }}</p>
@@ -40,7 +40,7 @@
     </div>
 
     <!-- ITEMS -->
-    <div class="bg-white p-6 rounded shadow mb-6">
+    <div class="bg-white p-6 rounded-xl shadow mb-6">
 
         <h2 class="font-bold mb-4">Order Items</h2>
 
@@ -52,7 +52,7 @@
                 <img src="{{ $item->product->images->first()
                     ? asset('storage/'.$item->product->images->first()->image_path)
                     : '/placeholder.png' }}"
-                    class="w-16 h-16 object-cover rounded">
+                    class="w-16 h-16 object-cover rounded-xl">
 
                 <div class="flex-1">
                     <p class="font-semibold">{{ $item->product->name }}</p>
@@ -70,7 +70,7 @@
     </div>
 
     <!-- ADMIN ACTIONS -->
-    <div class="bg-white p-6 rounded shadow">
+    <div class="bg-white p-6 rounded-xl shadow">
 
         <h2 class="font-bold mb-4">Admin Actions</h2>
 
@@ -80,7 +80,7 @@
                 @csrf
                 @method('PATCH')
 
-                <button class="bg-green-600 text-white px-4 py-2 rounded">
+                <button class="bg-green-600 text-white px-4 py-2 rounded-xl">
                     Complete Order
                 </button>
             </form>

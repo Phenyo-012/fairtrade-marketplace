@@ -26,7 +26,7 @@
                     <a href="/products/{{ $item->product->id }}">
 
                         <img src="{{ $image ? asset('storage/' . $image->image_path) : '/placeholder.png' }}"
-                             class="w-full h-auto object-cover rounded mb-2">
+                             class="w-full h-auto object-cover rounded-xl mb-2">
 
                         <p class="font-semibold text-sm">
                             {{ $item->product->name }}

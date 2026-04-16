@@ -64,7 +64,7 @@
                     <img src="{{ $item->product->images->first()
                         ? asset('storage/'.$item->product->images->first()->image_path)
                         : '/placeholder.png' }}"
-                        class="w-12 h-12 object-cover rounded">
+                        class="w-12 h-12 object-cover rounded-xl">
                 @endforeach
             </div>
 
@@ -74,8 +74,8 @@
             </p>
 
             <!-- PROGRESS BAR -->
-            <div class="w-full bg-gray-200 rounded h-2 mt-3">
-                <div class="bg-green-500 h-2 rounded"
+            <div class="w-full bg-gray-200 rounded-xl h-2 mt-3">
+                <div class="bg-green-500 h-2 rounded-xl"
                      style="width:
                         @switch($order->status)
                             @case('pending') 10% @break

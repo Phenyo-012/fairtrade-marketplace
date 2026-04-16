@@ -22,12 +22,12 @@
             <label class="block mb-2 font-semibold">Reason</label>
 
             <textarea name="reason"
-                class="w-full border rounded p-3 mb-4"
+                class="w-full border rounded-xl p-3 mb-4"
                 rows="5"
                 placeholder="Describe the issue..."
                 required></textarea>
 
-            <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+            <button class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700">
                 Submit Dispute
             </button>
         </form>

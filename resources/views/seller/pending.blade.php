@@ -10,7 +10,7 @@
         You will be notified once approved.
     </p>
 
-    <div class="bg-yellow-100 text-yellow-700 p-4 rounded">
+    <div class="bg-yellow-100 text-yellow-700 p-4 rounded-xl">
         Status: {{ auth()->user()->sellerProfile->verification_status }}
     </div>
 

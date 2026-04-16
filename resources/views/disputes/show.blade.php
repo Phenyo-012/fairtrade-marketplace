@@ -4,7 +4,7 @@
 
     <h2 class="text-2xl font-bold mb-6">Dispute Details</h2>
 
-    <div class="bg-white p-6 rounded shadow space-y-4">
+    <div class="bg-white p-6 rounded-xl shadow space-y-4">
 
         <p>
             <strong>Order ID:</strong> {{ $dispute->order_id }}
@@ -24,12 +24,12 @@
         <p>
             <strong>Reason:</strong>
         </p>
-        <p class="bg-gray-100 p-3 rounded">
+        <p class="bg-gray-100 p-3 rounded-xl">
             {{ $dispute->reason }}
         </p>
         @if($dispute->seller_response)
             <p><strong>Seller Response:</strong></p>
-            <p class="bg-yellow-100 p-3 rounded">
+            <p class="bg-yellow-100 p-3 rounded-xl">
                 {{ $dispute->seller_response }}
             </p>
         @endif
@@ -38,7 +38,7 @@
             <p>
                 <strong>Resolution Notes:</strong>
             </p>
-            <p class="bg-blue-50 p-3 rounded">
+            <p class="bg-blue-50 p-3 rounded-xl">
                 {{ $dispute->resolution_notes ?? 'No notes provided.' }}
             </p>
 

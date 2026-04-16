@@ -9,7 +9,7 @@
         </h2>
 
         @if(session('success'))
-            <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
+            <div class="bg-green-100 text-green-700 p-3 rounded-xl mb-4">
                 {{ session('success') }}
             </div>
         @endif
@@ -31,7 +31,7 @@
                 <div class="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col">
 
                     <!-- IMAGE -->
-                    <div class="w-full h-48 mb-3 overflow-hidden rounded">
+                    <div class="w-full h-48 mb-3 overflow-hidden rounded-xl">
                         <img 
                             src="{{ $image ? asset('storage/' . $image->image_path) : '/placeholder.png' }}"
                             class="w-full h-full object-cover"
@@ -61,14 +61,14 @@
                         <!-- Approve -->
                         <form method="POST" action="{{ route('admin.products.approve', $product->id) }}" class="flex-1">
                             @csrf
-                            <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
+                            <button class="w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition">
                                 Approve
                             </button>
                         </form>
 
                         <!-- Optional Reject (future) -->
                         <!--
-                        <button class="flex-1 bg-red-500 text-white py-2 rounded">
+                        <button class="flex-1 bg-red-500 text-white py-2 rounded-xl">
                             Reject
                         </button>
                         -->

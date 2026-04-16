@@ -10,14 +10,14 @@
 
         {{-- SUCCESS --}}
         @if(session('success'))
-            <div class="bg-green-100 text-green-700 p-3 rounded mb-4 text-sm">
+            <div class="bg-green-100 text-green-700 p-3 rounded-xl mb-4 text-sm">
                 {{ session('success') }}
             </div>
         @endif
 
         {{-- ERROR --}}
         @if(session('error'))
-            <div class="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">
+            <div class="bg-red-100 text-red-700 p-3 rounded-xl mb-4 text-sm">
                 {{ session('error') }}
             </div>
         @endif
@@ -33,11 +33,11 @@
                 <input type="text"
                        name="delivery_code"
                        required
-                       class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       class="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                        placeholder="Enter delivery code">
             </div>
 
-            <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+            <button class="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition">
                 Confirm Delivery
             </button>
         </form>

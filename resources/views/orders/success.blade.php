@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="max-w-2xl mx-auto mt-10 bg-white p-6 rounded shadow">
+<div class="max-w-2xl mx-auto mt-10 bg-white p-6 rounded-xl shadow">
 
 <h2 class="text-2xl font-bold mb-4">Order Placed Successfully</h2>
 
@@ -8,7 +8,7 @@
 Your order has been created.
 </p>
 
-<div class="bg-green-100 p-4 rounded text-center">
+<div class="bg-green-100 p-4 rounded-xl text-center">
 
 <p class="text-lg font-semibold">Your Delivery Code</p>
 

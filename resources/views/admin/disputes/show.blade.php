@@ -49,7 +49,7 @@
 
             </select>
 
-            <button class="bg-green-600 text-black px-4 py-2 rounded">
+            <button class="bg-green-600 text-black px-4 py-2 rounded-xl">
 
             Submit Decision
 
