@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="assets/fairTradeREADME-logo.png" width="400">
+  <img src="public/images/FairTrade-Logo2.png" width="400">
 </p>
 
 # FairTrade – Secure Informal Trade Infrastructure
