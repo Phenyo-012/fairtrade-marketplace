@@ -16,7 +16,11 @@ class SellerProfile extends Model
         'id_document',
         'selfie_document',
         'kyc_submitted',
-        'onboarding_step'
+        'onboarding_step',
+        'pickup_address',
+        'pickup_city',
+        'pickup_postal_code',
+        'pickup_country',
 
     ];
 

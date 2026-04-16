@@ -19,7 +19,13 @@ class Order extends Model
         'seller_deadline',
         'payment_status',
         'is_late',
-        'shipped_at'
+        'shipped_at',
+        'shipping_name',
+        'shipping_phone',
+        'shipping_address',
+        'shipping_city',
+        'shipping_postal_code',
+        'shipping_country',
     ];
 
     protected $casts = [

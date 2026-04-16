@@ -92,7 +92,7 @@
 
                <div class="flex items-center gap-1 mt-1">
                      @for($i = 1; $i <= 5; $i++)
-                        <span class="{{ $i <= floor($rating) ? 'text-yellow-400' : 'text-gray-300' }}">
+                        <span class="{{ $i <= floor($rating) ? 'text-black' : 'text-gray-300' }}">
                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
                               <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
                                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
@@ -154,30 +154,30 @@
    </div>
 
    <script>
-   const trigger = document.getElementById("categoryTrigger");
-   const dropdown = document.getElementById("categoryDropdown");
-   const selectedText = document.getElementById("selectedCategory");
-   const hiddenInput = document.getElementById("categoryInput");
+      const trigger = document.getElementById("categoryTrigger");
+      const dropdown = document.getElementById("categoryDropdown");
+      const selectedText = document.getElementById("selectedCategory");
+      const hiddenInput = document.getElementById("categoryInput");
 
-   // Toggle menu
-   trigger.addEventListener("click", () => {
-      dropdown.classList.toggle("hidden");
-   });
-
-   // Select option
-   document.querySelectorAll(".menu-item").forEach(item => {
-      item.addEventListener("click", () => {
-         selectedText.textContent = item.textContent;
-         hiddenInput.value = item.dataset.value;
-         dropdown.classList.add("hidden");
+      // Toggle menu
+      trigger.addEventListener("click", () => {
+         dropdown.classList.toggle("hidden");
       });
-   });
 
-   // Close when clicking outside
-   document.addEventListener("click", e => {
-      if (!document.getElementById("categoryMenu").contains(e.target)) {
-         dropdown.classList.add("hidden");
-      }
-   });
+      // Select option
+      document.querySelectorAll(".menu-item").forEach(item => {
+         item.addEventListener("click", () => {
+            selectedText.textContent = item.textContent;
+            hiddenInput.value = item.dataset.value;
+            dropdown.classList.add("hidden");
+         });
+      });
+
+      // Close when clicking outside
+      document.addEventListener("click", e => {
+         if (!document.getElementById("categoryMenu").contains(e.target)) {
+            dropdown.classList.add("hidden");
+         }
+      });
    </script>
 </x-app-layout>

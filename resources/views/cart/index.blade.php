@@ -101,7 +101,7 @@
                     <div class="mt-3 mb-6">
                        <form method="GET" action="{{ route('checkout.index') }}">
                             <button
-                                class="w-full py-3 rounded-md font-semibold transition
+                                class="w-full py-3 rounded-xl font-semibold transition
                                 {{ $items->isEmpty() 
                                     ? 'bg-gray-300 cursor-not-allowed text-gray-500' 
                                     : 'bg-black hover:bg-gray-800 text-white' }}"
@@ -111,6 +111,15 @@
 
                             </button>
                         </form>
+
+                        <!-- CONTINUE SHOPPING -->
+                         <button
+                            class="w-full mt-2 py-3 rounded-xl font-semibold transition
+                            bg-gray-200 hover:bg-gray-200 text-gray-800"
+                            onclick="window.location.href='/'">
+
+                            Continue Shopping
+                        </button>
                     </div>
 
                     <div>

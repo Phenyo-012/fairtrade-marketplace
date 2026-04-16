@@ -1,53 +1,83 @@
 <x-app-layout>
 
-<div class="max-w-4xl mx-auto mt-10">
+<div class="max-w-6xl mx-auto mt-10 px-4">
 
-<h2 class="text-2xl font-bold mb-6">My Orders</h2>
+    <h2 class="text-2xl font-bold mb-6">My Orders</h2>
 
-<table class="w-full border">
+    <!-- 
+    ========================
+         FILTER BAR
+    ======================== 
+    -->
+    <form method="GET" class="flex flex-wrap gap-3 mb-6">
 
-<tr class="bg-gray-200">
-<th class="p-2">Order ID</th>
-<th class="p-2">Status</th>
-<th class="p-2">Delivery Code</th>
-<th class="p-2">Actions</th>
-<th class="p-2">Review</th>
-</tr>
+        <input type="text" name="search" placeholder="Search Order ID"
+            value="{{ request('search') }}"
+            class="border px-3 py-2 rounded-xl">
 
-@foreach($orders as $order)
+        <select name="status" class="border rounded-xl px-3 py-2">
+            <option value="">All Status</option>
+            @foreach(['pending','awaiting_shipment','shipped','delivered','completed','disputed'] as $status)
+                <option value="{{ $status }}" @selected(request('status') == $status)>
+                    {{ ucfirst(str_replace('_',' ', $status)) }}
+                </option>
+            @endforeach
+        </select>
 
-<tr class="border-t">
-    <td class="p-2">{{ $order->id }}</td>
-    <td class="p-2 font-semibold">
-        @if($order->is_auto_completed)
-            <span class="text-green-800 font-bold">Completed</span>
-        @else
-            @switch($order->status)
-                @case('pending')
-                    <span class="text-gray-500">Pending</span>
-                @break
-                @case('awaiting_shipment')
-                    <span class="text-blue-500">Awaiting Shipment</span>
-                @break
-                @case('shipped')
-                    <span class="text-orange-500">Shipped</span>
-                @break
-                @case('delivered')
-                    <span class="text-green-600">Delivered</span>
-                @break
-                @case('disputed')
-                    <span class="text-red-600">Disputed</span>
-                @break
-                @case('completed')
-                    <span class="text-green-800">Completed</span>
-                @break
-            @endswitch
-        @endif
+        <button class="bg-black text-white px-4 py-2 rounded-xl">
+            Filter
+        </button>
+    </form>
 
-        {{-- Progress Bar --}}
-        <div class="w-full bg-gray-200 rounded h-2 mt-1">
-            <div class="bg-green-500 h-2 rounded"
-                 style="width: @switch($order->status)
+    <!-- 
+    ========================
+         ORDERS GRID
+    ======================== 
+    -->
+    <div class="grid md:grid-cols-2 gap-6">
+
+        @forelse($orders as $order)
+
+        <a href="{{ route('orders.show', $order) }}"
+           class="block bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
+
+            <!-- HEADER -->
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-bold">Order #{{ $order->id }}</h3>
+
+                <span class="text-sm font-semibold
+                    @if($order->status == 'pending') text-gray-500
+                    @elseif($order->status == 'awaiting_shipment') text-blue-500
+                    @elseif($order->status == 'shipped') text-orange-500
+                    @elseif($order->status == 'delivered') text-green-600
+                    @elseif($order->status == 'completed') text-green-800
+                    @elseif($order->status == 'disputed') text-red-600
+                    @endif
+                ">
+                    {{ ucfirst(str_replace('_',' ', $order->status)) }}
+                </span>
+            </div>
+
+            <!-- PRODUCTS PREVIEW -->
+            <div class="flex gap-2 mb-3">
+                @foreach($order->orderItems->take(3) as $item)
+                    <img src="{{ $item->product->images->first()
+                        ? asset('storage/'.$item->product->images->first()->image_path)
+                        : '/placeholder.png' }}"
+                        class="w-12 h-12 object-cover rounded">
+                @endforeach
+            </div>
+
+            <!-- DELIVERY CODE -->
+            <p class="text-sm text-gray-600">
+                Code: <span class="font-bold text-green-700">{{ $order->delivery_code }}</span>
+            </p>
+
+            <!-- PROGRESS BAR -->
+            <div class="w-full bg-gray-200 rounded h-2 mt-3">
+                <div class="bg-green-500 h-2 rounded"
+                     style="width:
+                        @switch($order->status)
                             @case('pending') 10% @break
                             @case('awaiting_shipment') 30% @break
                             @case('shipped') 60% @break
@@ -55,61 +85,25 @@
                             @case('completed') 100% @break
                             @default 0%
                         @endswitch;">
+                </div>
             </div>
-        </div>
-    </td>
-    <td class="p-2 font-bold text-green-700">
-        {{ $order->delivery_code }}
-    </td>
 
-    <td class="p-2">
+        </a>
 
-        @if($order->dispute)
+        @empty
+            <p>No orders found.</p>
+        @endforelse
 
-            <a href="{{ route('disputes.show', $order->dispute) }}"
-                class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                View Dispute
-            </a>
+    </div>
 
-        @elseif($order->status !== 'disputed')
-
-            <a href="{{ route('disputes.create', $order) }}"
-                class="bg-red-500 text-white px-3 py-1 rounded text-sm">
-                Dispute Order
-            </a>
-
-        @else
-
-            <span class="text-red-600 font-bold">
-                Dispute Open
-            </span>
-
-        @endif
-
-    </td>
-
-    <td class="p-2">
-
-        @if($order->canBeReviewed())
-
-            <a href="{{ route('reviews.create', $order) }}"
-               class="bg-green-600 text-black px-3 py-1 rounded text-sm">
-               Write Review
-            </a>
-
-        @elseif($order->review)
-
-            <span class="text-green-600 font-bold">
-                Review Submitted        
-            </span>
-        @endif
-    </td>
-
-</tr>
-
-@endforeach
-
-</table>
+    <!-- 
+    ========================
+         PAGINATION
+    ======================== 
+    -->
+    <div class="mt-6">
+        {{ $orders->links() }}
+    </div>
 
 </div>
 

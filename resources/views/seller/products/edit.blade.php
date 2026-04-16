@@ -19,7 +19,7 @@ class="border p-2 w-full mb-2">{{ $product->description }}</textarea>
 <input name="stock_quantity" value="{{ $product->stock_quantity }}"
        class="border p-2 w-full mb-2">
 
-<select name="category" class="w-full border rounded p-2 mb-4">
+<select name="category" class="w-full border rounded p-2 mb-4" required>
     <option value="">Select Category</option>
 
     @foreach(config('categories') as $main => $subs)

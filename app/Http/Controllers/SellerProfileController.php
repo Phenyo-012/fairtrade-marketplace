@@ -98,7 +98,12 @@ class SellerProfileController extends Controller
 
         $seller->update([
             'store_name' => $request->store_name,
-            'about' => $request->about
+            'about' => $request->about,
+
+            'pickup_address' => $request->pickup_address,
+            'pickup_city' => $request->pickup_city,
+            'pickup_postal_code' => $request->pickup_postal_code,
+            'pickup_country' => $request->pickup_country,
         ]);
 
         return back()->with('success', 'Store updated successfully.');

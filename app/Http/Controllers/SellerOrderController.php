@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Services\CourierService;
 
 class SellerOrderController extends Controller
 {
@@ -104,6 +105,25 @@ class SellerOrderController extends Controller
             }
  
         return back()->with('success', 'Order status updated.');
+    }
+
+    public function ship(Order $order, CourierService $courierService)
+    {
+        $sellerAddress = auth()->user()->sellerProfile->address;
+        $buyerAddress = $order->shipping_address;
+
+        $shipment = $courierService->createShipment(
+            $sellerAddress,
+            $buyerAddress,
+            $order
+        );
+
+        $order->update([
+            'status' => 'shipped',
+            'tracking_number' => $shipment['tracking_number']
+        ]);
+
+        return back()->with('success', 'Order shipped with tracking: ' . $shipment['tracking_number']);
     }
     
 }

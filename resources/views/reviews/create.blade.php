@@ -9,7 +9,7 @@ Review Order #{{ $order->id }}
 @foreach($order->orderItems as $orderItem)
     @php $item = $orderItem; @endphp
 
-<div class="border p-4 rounded mb-3">
+<div class="border p-4 rounded-xl mb-3 bg-white shadow ">
 
     <p class="font-semibold">{{ $item->product->name }}</p>
 
@@ -18,7 +18,7 @@ Review Order #{{ $order->id }}
     <form method="POST" action="{{ route('review.store', $item->id) }}" enctype="multipart/form-data"   class="mt-3">
         @csrf
 
-        <select name="rating" class="border p-2 mb-2">
+        <select name="rating" class="border p-2 mb-2 mt-2 rounded-lg">
             <option value="5">5 ⭐</option>
             <option value="4">4 ⭐</option>
             <option value="3">3 ⭐</option>
@@ -26,11 +26,11 @@ Review Order #{{ $order->id }}
             <option value="1">1 ⭐</option>
         </select>
 
-        <textarea name="comment" class="border p-2 w-full mb-2"></textarea>
+        <textarea name="comment" class="border p-2 w-full mb-2 mt-4 rounded-lg"></textarea>
 
-        <input type="file" name="image" class="border p-2 w-full mb-2">
+        <input type="file" name="image" class="border p-2 w-full mb-2 mt-4 rounded-lg">
 
-        <button class="bg-blue-600 text-white px-3 py-1 rounded">
+        <button class="bg-blue-600 text-white px-3 py-1 rounded mt-4">
             Submit Review
         </button>
 

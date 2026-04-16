@@ -83,8 +83,10 @@ Route::middleware('auth')->group(function () {
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
+
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
+        
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
@@ -95,6 +97,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/my-orders', [OrderController::class, 'myOrders'])
         ->name('orders.my');
+
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+
 
     // Buyer Disputes
     Route::get('/orders/{order}/dispute', [DisputeController::class, 'create'])
@@ -145,7 +150,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'store'])
         ->name('checkout.store');
 
-    Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])
+    Route::get('/checkout/success/{orders}', [CheckoutController::class, 'success'])
         ->name('checkout.success');
 
     // SELLER STORE SETUP

@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-300">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div class="flex items-center justify-between h-20">
@@ -23,7 +23,7 @@
                 <form action="{{ route('marketplace.index') }}" method="GET" class="w-full max-w-xl">
                     <input type="text" name="search"
                         placeholder="Search for anything..."
-                        class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-2xl">
+                        class="w-full border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-2xl">
                 </form>
             </div>
 

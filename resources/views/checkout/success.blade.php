@@ -1,90 +1,75 @@
 <x-app-layout>
+    <div class="bg-gray-100 min-h-screen py-10">
 
-<div class="bg-gray-100 min-h-screen py-10">
+        <div class="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow">
 
-    <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-2xl font-bold mb-6 text-green-600">
+                ✅ Orders Placed Successfully!
+            </h2>
 
-        <div class="bg-white p-6 rounded-xl shadow space-y-6">
+            @foreach($orders as $order)
+                <div class="border rounded-lg p-4 mb-6">
 
-            <!-- SUCCESS MESSAGE -->
-            <div>
-                <h2 class="text-2xl font-bold text-green-600">
-                    🎉 Order Placed Successfully!
-                </h2>
+                    <!-- ORDER HEADER -->
+                    <div class="flex justify-between mb-4">
+                        <div>
+                            <p class="font-bold">Order #{{ $order->id }}</p>
+                            <p class="text-sm text-gray-500">
+                                Delivery Code:
+                                <span class="font-bold text-green-700">
+                                    {{ $order->delivery_code }}
+                                </span>
+                            </p>
+                        </div>
 
-                <p class="text-gray-600 mt-2">
-                    Your delivery code:
-                    <span class="font-bold text-blue-600 text-lg">
-                        {{ $order->delivery_code }}
-                    </span>
-                </p>
-            </div>
+                        <span class="text-sm bg-gray-200 px-3 py-1 rounded">
+                            {{ ucfirst(str_replace('_',' ', $order->status)) }}
+                        </span>
+                    </div>
 
-            <!-- ORDER ITEMS -->
-            <div>
-                <h3 class="text-lg font-semibold mb-4">Order Items</h3>
+                    <!-- ITEMS -->
+                    @foreach($order->orderItems as $item)
+                        <div class="flex items-center gap-4 border-b py-3">
 
-                <div class="space-y-4">
+                            <!-- IMAGE -->
+                            @if($item->product->images->count())
+                                <img src="{{ asset('storage/'.$item->product->images->first()->image_path) }}"
+                                    class="w-16 h-16 object-cover rounded">
+                            @else
+                                <img src="/placeholder.png"
+                                    class="w-16 h-16 object-cover rounded">
+                            @endif
 
-                    @foreach($order->orderItems as $orderItem)
-                        @php $image = $orderItem->product->images->first(); @endphp
-
-                        <div class="flex items-center gap-4 border-b pb-4">
-
-                            <!-- Image -->
-                            <div class="w-20 h-20 flex-shrink-0 mb-6">
-                                <img 
-                                    src="{{ $image ? asset('storage/' . $image->image_path) : '/placeholder.png' }}"
-                                    class="w-full h-full object-cover rounded"
-                                >
-                            </div>
-
-                            <!-- Info -->
+                            <!-- INFO -->
                             <div class="flex-1">
-                                <p class="font-semibold text-gray-800">
-                                    {{ $orderItem->product->name }}
-                                </p>
-
+                                <p class="font-semibold">{{ $item->product->name }}</p>
                                 <p class="text-sm text-gray-500">
-                                    Quantity: {{ $orderItem->quantity }}
-                                </p>
-
-                                <p class="text-sm text-gray-500">
-                                    Unit Price: R{{ number_format($orderItem->unit_price, 2) }}
+                                    Qty: {{ $item->quantity }}
                                 </p>
                             </div>
 
-                            <!-- Subtotal -->
-                            <div class="text-right">
-                                <p class="font-bold text-gray-800">
-                                    R{{ number_format($orderItem->subtotal, 2) }}
-                                </p>
-                            </div>
-
+                            <!-- PRICE -->
+                            <p class="font-bold">
+                                R{{ number_format($item->subtotal, 2) }}
+                            </p>
                         </div>
                     @endforeach
 
+                    <!-- TOTAL -->
+                    <div class="flex justify-between mt-4 font-bold">
+                        <span>Order Total</span>
+                        <span>R{{ number_format($order->total_amount, 2) }}</span>
+                    </div>
+
                 </div>
-            </div>
+            @endforeach
 
-            <!-- TOTAL -->
-            <div class="border-t pt-4 flex justify-between text-lg font-bold">
-                <span>Total</span>
-                <span>R{{ number_format($order->total_amount, 2) }}</span>
-            </div>
-
-            <!-- ACTION -->
-            <div class="pt-4">
-                <a href="{{ route('marketplace.index') }}"
-                   class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-                    Continue Shopping
-                </a>
-            </div>
+            <a href="{{ route('orders.my') }}"
+            class="block text-center bg-black text-white py-3 rounded mt-6">
+                View My Orders
+            </a>
 
         </div>
 
     </div>
-
-</div>
-
 </x-app-layout>

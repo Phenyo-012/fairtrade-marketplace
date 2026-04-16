@@ -53,7 +53,7 @@
                 </div>
 
                 <!-- RIGHT: PRODUCT DETAILS -->
-                <div class="md:col-span-2 bg-white p-6 rounded-xl shadow space-y-4">
+                <div class="md:col-span-2 top-24 self-start bg-white p-5 rounded-xl shadow space-y-4">
 
                     <h2 class="text-2xl font-bold text-gray-800">
                         {{ $product->name }}
@@ -68,7 +68,7 @@
                         {{ $product->description }}
                     </p>
 
-                    <p class="text-3xl font-bold text-blue-600">
+                    <p class="text-3xl font-bold text-black">
                         R{{ number_format($product->price, 2) }}
                     </p>
 
@@ -77,29 +77,29 @@
                     </p>
 
                     <form method="POST" action="{{ route('cart.add', $product) }}" class="space-y-3">
-                    @csrf
+                        @csrf
 
-                    <div class="flex items-center gap-3">
-                        <button type="button" onclick="decreaseQty()" class="px-3 py-1 bg-gray-200 rounded">-</button>
-                        <input id="qty" type="number" name="quantity" value="1"
-                            class="border rounded w-16 text-center">
-                        <button type="button" onclick="increaseQty()" class="px-3 py-1 bg-gray-200 rounded">+</button>
-                    </div>
-                    
-                    <button class="w-full bg-blue-600 text-white py-2 rounded mt-6">
-                        Add to Cart
-                    </button>
+                        <div class="flex items-center gap-3">
+                            <button type="button" onclick="decreaseQty()" class="px-3 py-1 bg-gray-200 rounded">-</button>
+                            <input id="qty" type="number" name="quantity" value="1"
+                                class="border rounded w-16 text-center">
+                            <button type="button" onclick="increaseQty()" class="px-3 py-1 bg-gray-200 rounded">+</button>
+                        </div>
+                        
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-xl mt-6">
+                            Add to Cart
+                        </button>
                     </form>
 
                     <!-- CLICKABLE GO TO SELLER STORE CARD -->
                     <a href="{{ route('store.show', $product->seller_profile_id) }}"
-                    class="block bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded mt-6 text-center">
+                    class="block bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-xl mt-6 text-center">
                         View Seller Store
                     </a>
 
                     <!-- ADD TO WISHLIST -->
                     <a href="{{ route('wishlist.toggle', $product) }}"
-                        class="block bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded mt-6 text-center">
+                        class="block bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-xl mt-6 text-center">
                         Add to Wishlist
                     </a>
                 </div>

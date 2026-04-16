@@ -1,41 +1,96 @@
 <x-app-layout>
 
-<h2>Your Orders</h2>
+<div class="max-w-6xl mx-auto px-4 py-10">
 
-<table border="1">
+    <h2 class="text-2xl font-bold mb-6">My Orders</h2>
 
-<thead>
-<tr>
-<th>Product</th>
-<th>Quantity</th>
-<th>Total</th>
-<th>Status</th>
-<th>Ordered At</th>
-</tr>
-</thead>
+    <!-- FILTER BAR -->
+    <form method="GET" class="flex flex-wrap gap-3 mb-6">
 
-<tbody>
+        <input type="text" name="search" placeholder="Search Order ID"
+               value="{{ request('search') }}"
+               class="border rounded px-3 py-2">
 
-@foreach($orders as $order)
+        <select name="status" class="border rounded px-3 py-2">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="awaiting_shipment">Awaiting Shipment</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="completed">Completed</option>
+            <option value="disputed">Disputed</option>
+        </select>
 
-<tr>
+        <button class="bg-black text-white px-4 py-2 rounded">
+            Filter
+        </button>
 
-<td>{{ $order->product->name }}</td>
+    </form>
 
-<td>{{ $order->quantity }}</td>
+    <!-- ORDERS GRID -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-<td>${{ $order->total_amount }}</td>
+        @forelse($orders as $order)
 
-<td>{{ $order->status }}</td>
+        <a href="{{ route('orders.show', $order) }}"
+           class="block bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
 
-<td>{{ $order->created_at }}</td>
+            <!-- HEADER -->
+            <div class="flex justify-between items-center mb-3">
+                <span class="font-bold">#{{ $order->id }}</span>
 
-</tr>
+                <span class="text-sm font-semibold
+                    @switch($order->status)
+                        @case('pending') text-gray-500 @break
+                        @case('awaiting_shipment') text-blue-500 @break
+                        @case('shipped') text-orange-500 @break
+                        @case('delivered') text-green-600 @break
+                        @case('completed') text-green-800 @break
+                        @case('disputed') text-red-600 @break
+                    @endswitch
+                ">
+                    {{ ucfirst(str_replace('_',' ', $order->status)) }}
+                </span>
+            </div>
 
-@endforeach
+            <!-- DELIVERY CODE -->
+            <p class="text-sm text-gray-600">
+                Code: <span class="font-bold text-green-700">{{ $order->delivery_code }}</span>
+            </p>
 
-</tbody>
+            <!-- PROGRESS BAR -->
+            <div class="w-full bg-gray-200 rounded h-2 mt-3">
+                <div class="bg-green-500 h-2 rounded"
+                    style="width:
+                        @switch($order->status)
+                            @case('pending') 10% @break
+                            @case('awaiting_shipment') 30% @break
+                            @case('shipped') 60% @break
+                            @case('delivered') 90% @break
+                            @case('completed') 100% @break
+                            @default 0%
+                        @endswitch;">
+                </div>
+            </div>
 
-</table>
+            <!-- FOOTER -->
+            <div class="mt-4 text-sm text-gray-500">
+                {{ $order->created_at->format('d M Y') }}
+            </div>
+
+        </a>
+
+        @empty
+            <p>No orders found.</p>
+        @endforelse
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="mt-8">
+        {{ $orders->links() }}
+    </div>
+
+</div>
 
 </x-app-layout>

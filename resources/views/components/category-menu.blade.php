@@ -54,7 +54,7 @@
     <div x-show="open"
         x-transition
         @click.outside="open = false"
-        class="absolute left-0 mt-2 w-[700px] bg-white shadow-2xl rounded-xl z-50 flex">
+        class="absolute left-0 mt-2 w-[700px] bg-white shadow-2xl rounded-xl z-50 flex border border-black/10">
 
         <!-- LEFT SIDE: MAIN CATEGORIES -->
         <div class="w-1/3 border-r bg-gray-50">
@@ -95,7 +95,7 @@
                         <template x-for="sub in categories[active]" :key="sub">
                             <a
                                 :href="`/marketplace?category=${sub}`"
-                                class="block p-3 border rounded-lg hover:shadow hover:bg-gray-50 transition">
+                                class="block p-3 border rounded-xl hover:shadow hover:bg-gray-50 transition">
 
                                 <span x-text="sub"></span>
 

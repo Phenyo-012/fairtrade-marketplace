@@ -127,7 +127,7 @@
                     <p class="text-sm text-gray-500 mb-1">Average Rating</p>
                     <div class="flex items-center gap-1">
                         @for($i = 1; $i <= 5; $i++)
-                            <span class="{{ $i <= floor($averageRating) ? 'text-yellow-400' : 'text-gray-300' }}">
+                            <span class="{{ $i <= floor($averageRating) ? 'text-black' : 'text-gray-300' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     width="18"
                                     height="18"
@@ -320,7 +320,7 @@
                 <div class="space-y-4">
                     @forelse($recentReviews as $review)
                         <div class="border rounded-xl p-4">
-                            <div class="flex items-center text-yellow-500 font-semibold gap-1">
+                            <div class="flex items-center text-black font-semibold gap-1">
                                 <span>{{ $review->rating }}</span>
 
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -367,7 +367,7 @@
                                 width="18"
                                 height="18"
                                 viewBox="0 0 24 24"
-                                class="text-yellow-500">
+                                class="text-black">
                                 <path fill="currentColor"
                                     fill-opacity="0"
                                     stroke="currentColor"
