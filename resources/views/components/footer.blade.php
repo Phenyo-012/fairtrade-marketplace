@@ -1,4 +1,4 @@
-<footer class="bg-white text-black border-t border-gray-300  mt-16 rounded-t-lg ">
+<footer class="bg-white text-black border-t border-gray-300  mt-16 rounded-t-xl">
 
     <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
 

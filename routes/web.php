@@ -24,6 +24,9 @@ use App\Http\Controllers\Admin\SellerVerificationController;
 use App\Http\Controllers\Admin\ReviewModerationController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminOrderController;
+
 
 
 
@@ -206,9 +209,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
     // Admin Dashboard
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+    ->name('admin.dashboard');
 
     // Product Approval
     Route::get('/products', [AdminProductController::class, 'index'])
@@ -252,6 +254,18 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 
     Route::post('/sellers/{seller}/reject', [SellerVerificationController::class, 'reject'])
         ->name('admin.sellers.reject');
+
+    Route::get('/sellers/{seller}', [SellerVerificationController::class, 'show'])
+    ->name('admin.sellers.show');
+
+    Route::get('/admin/orders', [AdminOrderController::class, 'index'])
+    ->name('admin.orders.index');
+
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
+    ->name('admin.orders.show');
+
+    Route::patch('/admin/orders/{order}/complete', [AdminOrderController::class, 'complete'])
+    ->name('admin.orders.complete');
 
 });
 

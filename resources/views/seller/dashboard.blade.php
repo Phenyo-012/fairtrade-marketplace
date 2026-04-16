@@ -29,7 +29,7 @@
                 <p class="text-gray-500 mt-1">
                     Use these shortcuts to quickly access important sections of your seller dashboard.
                 </p>
-                <div class="text-sm text-gray-500 mb-2 mb-6 mt-6 flex gap-4">
+                <div class="text-sm text-gray-500 mb-6 mt-6 flex gap-4">
                 
                     <!-- EDIT STORE-->
                     <a href="{{ route('seller.store.edit') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">

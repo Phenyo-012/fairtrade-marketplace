@@ -192,6 +192,11 @@
                             <x-dropdown-link :href="route('admin.sellers.index')">
                                 Seller Applications
                             </x-dropdown-link>
+
+                            <!-- GLOBAL ORDERS -->
+                            <x-dropdown-link :href="route('admin.orders.index')">
+                                View All Seller Orders
+                            </x-dropdown-link>
                         @endif
 
                         <hr>

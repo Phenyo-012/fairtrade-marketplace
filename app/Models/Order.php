@@ -128,4 +128,17 @@ class Order extends Model
 
         return true;
     }
+
+    public function canBeCompletedByAdmin()
+    {
+        if ($this->status !== 'delivered') {
+            return false;
+        }
+
+        if (!$this->delivered_at) {
+            return false;
+        }
+
+        return now()->gt($this->delivered_at->addHours(24));
+    }
 }
