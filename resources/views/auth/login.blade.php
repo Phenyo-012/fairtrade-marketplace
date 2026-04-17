@@ -12,7 +12,7 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Password -->
+        <!-- Password with option to show/hide -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
@@ -20,12 +20,20 @@
                             type="password"
                             name="password"
                             required autocomplete="current-password" />
-
+                
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+        <!-- Show/Hide Password -->
+        <div class="mt-4">
+            <label for="show_password" class="inline-flex items-center">
+                <input id="show_password" type="checkbox" class="rounded-xl border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" onclick="togglePasswordVisibility()">
+                <span class="ms-2 text-sm text-gray-600">{{ __('Show Password') }}</span>
+            </label>
+        </div>
+
         <!-- Remember Me -->
-        <div class="block mt-4">
+        <div class="block mt-2">
             <label for="remember_me" class="inline-flex items-center">
                 <input id="remember_me" type="checkbox" class="rounded-xl border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
                 <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
@@ -44,4 +52,12 @@
             </x-primary-button>
         </div>
     </form>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const showPasswordCheckbox = document.getElementById('show_password');
+            passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
+        }
+    </script>
 </x-guest-layout>

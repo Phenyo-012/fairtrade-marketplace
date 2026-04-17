@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -45,10 +46,13 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        /* with role id 3 (assuming 3 is the ID for the 'buyer' role) */
-        $user->roles()->attach(3);
+        // Assign buyer role by default
+        $buyerRole = Role::where('name', 'buyer')->firstOrFail();
+        $user->roles()->attach($buyerRole->id);
 
         event(new Registered($user));
+
+
 
         Auth::login($user);
 

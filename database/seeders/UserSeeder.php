@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@test.com',
             'phone' => '0810000000',
             'password' => bcrypt('password'),
+            'is_super_admin' => false,
         ]);
         $admin->roles()->attach([1]); // attach admin role
 
@@ -26,6 +27,7 @@ class UserSeeder extends Seeder
             'email' => 'seller@test.com',
             'phone' => '0810000001',
             'password' => bcrypt('password'),
+            'is_super_admin' => false,
         ]);
         $seller->roles()->attach([2]); // attach seller role
 
@@ -36,6 +38,7 @@ class UserSeeder extends Seeder
             'email' => 'buyer@test.com',
             'phone' => '0810000002',
             'password' => bcrypt('password'),
+            'is_super_admin' => false,
         ]);
         $buyer->roles()->attach([3]); // attach buyer role
     }

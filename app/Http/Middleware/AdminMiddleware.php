@@ -13,6 +13,14 @@ class AdminMiddleware
             abort(403, 'Unauthorized');
         }
 
+        if ($request->header('X-ADMIN-KEY') !== config('app.admin_creation_key')) {
+            abort(403, 'Invalid admin key');
+        }
+
+        if (!auth()->user()->is_super_admin) {
+            abort(403, 'Only super admins can access this route');
+        }
+
         return $next($request);
     }
 }

@@ -256,16 +256,22 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
         ->name('admin.sellers.reject');
 
     Route::get('/sellers/{seller}', [SellerVerificationController::class, 'show'])
-    ->name('admin.sellers.show');
+        ->name('admin.sellers.show');
 
     Route::get('/admin/orders', [AdminOrderController::class, 'index'])
-    ->name('admin.orders.index');
+        ->name('admin.orders.index');
 
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
-    ->name('admin.orders.show');
+        ->name('admin.orders.show');
 
     Route::patch('/admin/orders/{order}/complete', [AdminOrderController::class, 'complete'])
-    ->name('admin.orders.complete');
+        ->name('admin.orders.complete');
+
+    Route::get('/create-admin', [App\Http\Controllers\Admin\AdminUserController::class, 'create'])
+        ->name('admin.create');
+
+    Route::post('/create-admin', [App\Http\Controllers\Admin\AdminUserController::class, 'store'])
+        ->name('admin.store');
 
 });
 

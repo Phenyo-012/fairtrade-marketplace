@@ -197,6 +197,13 @@
                             <x-dropdown-link :href="route('admin.orders.index')">
                                 View All Seller Orders
                             </x-dropdown-link>
+
+                            <!-- CREATE ADMIN USER IF USER IS SUPER ADMIN -->
+                            @if(Auth::user()->is_super_admin)
+                                <x-dropdown-link :href="route('admin.create')">
+                                    Create Admin User
+                                </x-dropdown-link>
+                            @endif
                         @endif
 
                         <hr>
