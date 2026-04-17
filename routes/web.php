@@ -267,11 +267,13 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::patch('/admin/orders/{order}/complete', [AdminOrderController::class, 'complete'])
         ->name('admin.orders.complete');
 
-    Route::get('/create-admin', [App\Http\Controllers\Admin\AdminUserController::class, 'create'])
-        ->name('admin.create');
+     Route::middleware('super.admin')->group(function () {
+        Route::get('/create-admin', [App\Http\Controllers\Admin\AdminUserController::class, 'create'])
+            ->name('admin.create');
 
-    Route::post('/create-admin', [App\Http\Controllers\Admin\AdminUserController::class, 'store'])
-        ->name('admin.store');
+        Route::post('/create-admin', [App\Http\Controllers\Admin\AdminUserController::class, 'store'])
+            ->name('admin.store');
+     });
 
 });
 

@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         'not.seller' => \App\Http\Middleware\EnsureUserIsNotSeller::class,
         'seller.approved' => \App\Http\Middleware\EnsureSellerIsVerified::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'super.admin' => \App\Http\Middleware\SuperAdminMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
