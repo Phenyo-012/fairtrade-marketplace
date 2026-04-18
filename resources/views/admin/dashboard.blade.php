@@ -13,25 +13,25 @@
         <div class="grid md:grid-cols-4 gap-6 mb-10">
 
             <a href="{{ route('admin.products') }}"
-            class="bg-yellow-100 p-5 rounded-xl shadow hover:shadow-md">
+            class="bg-white border border-gray-300 p-5 rounded-xl shadow-md hover:shadow-md hover:bg-yellow-100">
                 <p class="text-sm text-yellow-700">Pending Products Approvals</p>
                 <h2 class="text-2xl font-bold">{{ $pendingProducts }}</h2>
             </a>
 
             <a href="{{ route('admin.sellers.index') }}"
-            class="bg-blue-100 p-5 rounded-xl shadow hover:shadow-md">
+            class="bg-white border border-gray-300 p-5 rounded-xl shadow-md hover:shadow-md hover:bg-blue-100">
                 <p class="text-sm text-blue-700">Seller Applications Open</p>
                 <h2 class="text-2xl font-bold">{{ $pendingSellers }}</h2>
             </a>
 
             <a href="{{ route('admin.disputes') }}"
-            class="bg-red-100 p-5 rounded-xl shadow hover:shadow-md">
+            class="bg-white border border-gray-300 p-5 rounded-xl shadow-md hover:shadow-md hover:bg-red-100">
                 <p class="text-sm text-red-700">Open Disputes</p>
                 <h2 class="text-2xl font-bold">{{ $openDisputes }}</h2>
             </a>
 
             <a href="{{ route('admin.orders.index') }}"
-            class="bg-green-100 p-5 rounded-xl shadow hover:shadow-md">
+            class="bg-white border border-gray-300 p-5 rounded-xl shadow-md hover:shadow-md hover:bg-green-100">
                 <p class="text-sm text-green-700">Seller Orders</p>
                 <h2 class="text-2xl font-bold">{{ $totalOrders }}</h2>
             </a>
