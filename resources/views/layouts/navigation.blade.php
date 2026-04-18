@@ -91,7 +91,7 @@
                             : 0;
                     @endphp
                     @if($cartCount > 0)
-                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2">
+                        <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full px-2">
                             {{ $cartCount }}
                         </span>
                     @endif

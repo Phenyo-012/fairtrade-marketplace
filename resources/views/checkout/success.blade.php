@@ -1,3 +1,14 @@
+@php
+    function displayPrice($item) {
+        $p = $item->product;
+
+        if ($p->discount_percentage && $p->discount_ends_at && now()->lt($p->discount_ends_at)) {
+            return $p->price - ($p->price * $p->discount_percentage / 100);
+        }
+
+        return $p->price;
+    }
+@endphp
 <x-app-layout>
     <div class="bg-gray-100 min-h-screen py-10">
 
@@ -30,6 +41,9 @@
                     <!-- ITEMS -->
                     @foreach($order->orderItems as $item)
                         <div class="flex items-center gap-4 border-b py-3">
+                              @php 
+                                $price = displayPrice($item); 
+                            @endphp
 
                             <!-- IMAGE -->
                             @if($item->product->images->count())
@@ -50,7 +64,12 @@
 
                             <!-- PRICE -->
                             <p class="font-bold">
-                                R{{ number_format($item->subtotal, 2) }}
+                                    <span class="font-bold text-black ml-2">
+                                        R{{ number_format($price * $item->quantity, 2) }}
+                                    </span>
+                                    <span class="line-through text-gray-400">
+                                        R{{ number_format($item->product->price * $item->quantity, 2) }}
+                                    </span>
                             </p>
                         </div>
                     @endforeach

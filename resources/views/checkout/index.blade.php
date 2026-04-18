@@ -1,3 +1,12 @@
+@php
+    function finalPrice($product) {
+        if ($product->discount_percentage && $product->discount_ends_at && now()->lt($product->discount_ends_at)) {
+            return $product->price - ($product->price * $product->discount_percentage / 100);
+        }
+        return $product->price;
+    }
+@endphp
+
 <x-app-layout>
 <div class="bg-gray-100 min-h-screen py-10">
 
@@ -13,9 +22,12 @@
             <!-- ======================== -->
             <div class="mb-6">
                 @foreach($items as $item)
+                @php
+                    $price = finalPrice($item->product);
+                @endphp
                     <div class="flex justify-between mb-2">
                         <span>{{ $item->product->name }} (x{{ $item->quantity }})</span>
-                        <span>R{{ number_format($item->product->price * $item->quantity, 2) }}</span>
+                        <span>R{{ number_format($price * $item->quantity,2) }}</span>
                     </div>
                 @endforeach
 

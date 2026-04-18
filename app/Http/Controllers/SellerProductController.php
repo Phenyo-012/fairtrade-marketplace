@@ -86,6 +86,24 @@ class SellerProductController extends Controller
                 ]);
             }
         }
+
+        $discountEndsAt = null;
+
+        if ($request->filled('discount_percentage') && $request->filled('discount_hours')) {
+            $discountEndsAt = now()->addHours((int) $request->discount_hours);
+        }
+
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock_quantity' => $request->stock_quantity,
+
+            'discount_percentage' => $request->discount_percentage,
+            'discount_ends_at' => $discountEndsAt,
+            'free_shipping' => $request->has('free_shipping'),
+        ]);
+
         return redirect()->route('seller.products.index')
             ->with('success','Product created.');
     }
@@ -98,6 +116,24 @@ class SellerProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $product->update($request->all());
+
+        $discountEndsAt = null;
+        $hours = (int) $request->discount_hours;
+
+        if ($request->filled('discount_percentage') && $request->filled('discount_hours')) {
+            $discountEndsAt = now()->addHours($hours);
+        }
+
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock_quantity' => $request->stock_quantity,
+
+            'discount_percentage' => $request->discount_percentage,
+            'discount_ends_at' => $discountEndsAt,
+            'free_shipping' => $request->has('free_shipping'),
+        ]);
 
         return redirect()->route('seller.products.index')
             ->with('success','Product updated.');

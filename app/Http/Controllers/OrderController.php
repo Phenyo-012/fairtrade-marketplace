@@ -117,7 +117,7 @@ class OrderController extends Controller
                     throw new \Exception("Not enough stock for {$item->product->name}");
                 }
 
-                $total += $item->product->price * $item->quantity;
+                $total += $item->unit_price * $item->quantity;
             }
 
             $deliveryCode = strtoupper(Str::random(8));
@@ -154,7 +154,7 @@ class OrderController extends Controller
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
                     'price' => $item->product->price,
-                    'subtotal' => $item->product->price * $item->quantity,
+                    'subtotal' => $item->unit_price * $item->quantity,
                 ]);
 
                 // reduce stock

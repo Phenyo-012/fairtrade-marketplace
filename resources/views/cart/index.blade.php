@@ -1,3 +1,11 @@
+@php
+    function finalPrice($product) {
+        if ($product->discount_percentage && $product->discount_ends_at && now()->lt($product->discount_ends_at)) {
+            return $product->price - ($product->price * $product->discount_percentage / 100);
+        }
+        return $product->price;
+    }
+@endphp
 <x-app-layout>
 <div class="bg-gray-100 min-h-screen py-10">
     <div class="max-w-7xl mx-auto px-4">
@@ -20,7 +28,11 @@
                 <div class="lg:col-span-2 space-y-6">
 
                     @foreach($items as $item)
-                        @php $image = $item->product->images->first(); @endphp
+                        @php 
+                            $image = $item->product->images->first(); 
+                            $product = $item->product;
+                            $price = finalPrice($product);
+                        @endphp
 
                         <div class="bg-white rounded-xl shadow p-4 flex flex-col md:flex-row gap-4">
                             <!-- Image -->
@@ -33,9 +45,22 @@
                             <div class="flex-1 flex flex-col justify-between">
                                 <div>
                                     <h3 class="font-semibold text-gray-800">{{ $item->product->name }}</h3>
-                                    <p class="text-sm text-gray-500 mt-1">
-                                        R{{ number_format($item->product->price, 2) }}
-                                    </p>
+                                    <div class="mt-1">
+                                        <span class="font-bold text-black ml-2">
+                                            R{{ number_format($price * $item->quantity, 2) }}
+                                        </span>
+
+                                        @if($price < $product->price)
+                                            <span class="line-through text-gray-400 text-sm">
+                                                R{{ number_format($product->price * $item->quantity, 2) }}
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    <!-- FREE SHIPPING -->
+                                    @if($product->free_shipping)
+                                        <span class="text-xs text-green-600">FREE SHIPPING</span>
+                                    @endif
                                 </div>
 
                                 <!-- Quantity & Actions -->
@@ -62,9 +87,17 @@
 
                             <!-- Total -->
                             <div class="flex-shrink-0 text-right mt-2 md:mt-0">
-                                <p class="font-bold text-gray-800">
-                                    R{{ number_format($item->product->price * $item->quantity, 2) }}
-                                </p>
+                                <div class="mt-1">
+                                    <span class="font-bold text-black ml-2">
+                                        R{{ number_format($price * $item->quantity, 2) }}
+                                    </span>
+                                    
+                                    @if($price < $product->price)
+                                        <span class="line-through text-gray-400 text-sm">
+                                            R{{ number_format($product->price * $item->quantity, 2) }}
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     @endforeach

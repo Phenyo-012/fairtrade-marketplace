@@ -24,7 +24,7 @@ class CheckoutController extends Controller
         }
 
         $total = $items->sum(fn ($item) =>
-            $item->product->price * $item->quantity
+            $item->product->discounted_price * $item->quantity
         );
 
         return view('checkout.index', compact('items', 'total'));
@@ -54,7 +54,7 @@ class CheckoutController extends Controller
 
         try {
 
-            // GROUP ITEMS BY SELLER
+            // GROUP BY SELLER
             $grouped = $items->groupBy(fn ($item) =>
                 $item->product->seller_profile_id
             );
@@ -63,22 +63,21 @@ class CheckoutController extends Controller
 
             foreach ($grouped as $sellerId => $sellerItems) {
 
-                $total = 0;
+                $orderTotal = 0;
 
                 foreach ($sellerItems as $item) {
-                    $total += $item->product->price * $item->quantity;
+                    $orderTotal += $item->product->discounted_price * $item->quantity;
                 }
 
-                // create order per seller
+                // CREATE ORDER
                 $order = Order::create([
                     'buyer_id' => auth()->id(),
                     'seller_profile_id' => $sellerId,
-                    'total_amount' => $total,
+                    'total_amount' => $orderTotal,
                     'status' => 'pending',
                     'delivery_code' => strtoupper(Str::random(8)),
                     'seller_deadline' => now()->addDays(5),
 
-                    // shipping
                     'shipping_name' => $request->shipping_name,
                     'shipping_phone' => $request->shipping_phone,
                     'shipping_address' => $request->shipping_address,
@@ -99,29 +98,25 @@ class CheckoutController extends Controller
                         throw new \Exception("Not enough stock for {$product->name}");
                     }
 
-                    $subtotal = $product->price * $item->quantity;
-                    $total += $subtotal;
+                    $unitPrice = $product->discounted_price;
+                    $subtotal = $unitPrice * $item->quantity;
 
                     OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => $product->id,
                         'quantity' => $item->quantity,
-                        'unit_price' => $product->price,
+                        'unit_price' => $unitPrice,
+                        'original_price' => $product->price,
                         'subtotal' => $subtotal,
                     ]);
 
                     $product->decrement('stock_quantity', $item->quantity);
                 }
 
-                // update total AFTER items
-                $order->update([
-                    'total_amount' => $total
-                ]);
-
                 $orders[] = $order;
             }
 
-            // clear cart
+            // CLEAR CART
             CartItem::where('user_id', auth()->id())->delete();
 
             DB::commit();
@@ -134,7 +129,6 @@ class CheckoutController extends Controller
             DB::rollBack();
             return back()->with('error', $e->getMessage());
         }
-
     }
 
     // SUCCESS PAGE

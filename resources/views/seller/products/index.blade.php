@@ -48,9 +48,30 @@
                         {{ $product->name }}
                     </h3>
 
-                    <p class="text-gray-900 font-bold text-sm">
-                        R{{ number_format($product->price, 2) }}
-                    </p>
+                    @if($product->is_on_sale)
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-blue-600 font-bold text-lg">
+                                R{{ number_format($product->discounted_price, 2) }} 
+                            </span>
+
+                            <span class="text-gray-400 line-through text-sm">
+                                R{{ number_format($product->price, 2) }} 
+                            </span>
+                            <p class="text-gray-400 text-sm">
+                                ({{ $product->discount_percentage }}% OFF)
+                            </p>
+                        </div>
+                    @else
+                        <p class="font-bold text-gray-900">
+                            R{{ number_format($product->price, 2) }}
+                        </p>
+                    @endif
+
+                    @if($product->free_shipping)
+                        <span class="text-xs bg-green-100 text-black px-2 py-1 rounded-xl mt-1 inline-block">
+                            FREE Shipping
+                        </span>
+                    @endif
 
                     <!-- Stock Badge -->
                     <span class="inline-block text-xs px-2 py-1 rounded-full

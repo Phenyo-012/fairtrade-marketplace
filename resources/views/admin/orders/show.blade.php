@@ -60,7 +60,25 @@
                 </div>
 
                 <p class="font-bold">
-                    R{{ number_format($item->subtotal, 2) }}
+                    @php
+                        $price = $item->unit_price;
+                    @endphp
+
+                    @if($item->product->discount_percentage && $item->product->discount_ends_at && now()->lt($item->product->discount_ends_at))
+                        <span class="font-bold text-black ml-2">
+                            R{{ number_format($price * $item->quantity, 2) }}
+                        </span>
+                        <span class="line-through text-gray-400">
+                            R{{ number_format($item->product->price * $item->quantity, 2) }}
+                        </span>
+                    @else
+                        <span class="font-bold text-black ml-2">
+                            R{{ number_format($price * $item->quantity, 2) }}
+                        </span>
+                        <span class="line-through text-gray-400">
+                            R{{ number_format($item->product->price * $item->quantity, 2) }}
+                        </span>
+                    @endif
                 </p>
 
             </div>

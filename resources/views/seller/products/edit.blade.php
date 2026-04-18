@@ -31,6 +31,29 @@
                 @endforeach
             </select>
 
+            <!-- DISCOUNT -->
+            <div>
+                <label class="block text-sm font-medium">Discount (%)</label>
+                <input type="number" name="discount_percentage"
+                    value="{{ old('discount_percentage', $product->discount_percentage) }}"
+                    class="w-full border-gray-400 rounded-xl p-2 mb-4 focus:ring-blue-300 focus:outline-none" required"
+                    min="0" max="90">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Discount Duration (hours)</label>
+                <input type="number" name="discount_hours"
+                    class="w-full border-gray-400 rounded-xl p-2 mb-4 focus:ring-blue-300 focus:outline-none" required"
+                    placeholder="e.g. 24">
+            </div>
+
+            <!-- FREE SHIPPING -->
+            <div class="flex items-center gap-2 mt-3 mb-5">
+                <input type="checkbox" class="rounded-full" name="free_shipping" value="1"
+                    {{ $product->free_shipping ? 'checked' : '' }}>
+                <label>Free Shipping</label>
+            </div>
+
             <button class="px-4 py-2 bg-gray-200 text-black border border-black rounded-3xl hover:bg-blue-300 transition shadow-md">
                 Update
             </button>

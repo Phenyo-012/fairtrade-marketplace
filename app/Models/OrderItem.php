@@ -33,4 +33,9 @@ class OrderItem extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function getIsDiscountedAttribute()
+    {
+        return $this->original_price && $this->original_price > $this->unit_price;
+    }
 }

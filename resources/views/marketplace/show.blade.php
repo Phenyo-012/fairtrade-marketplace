@@ -63,20 +63,38 @@
                     {{ $product->condition == 'new' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
                     {{ ucfirst(str_replace('_', ' ', $product->condition)) }}
                 </span>
+                
+                    @if($product->is_on_sale)
+                        <div class="flex items-center gap-3">
+                            <span class="text-blue-600 font-bold text-3xl">
+                                R{{ number_format($product->discounted_price, 2) }}
+                            </span>
 
-                    <p class="text-gray-600 text-sm">
-                        {{ $product->description }}
-                    </p>
+                            <span class="text-gray-400 line-through text-lg">
+                                R{{ number_format($product->price, 2) }}
+                            </span>
+                        </div>
 
-                    <p class="text-3xl font-bold text-black">
-                        R{{ number_format($product->price, 2) }}
-                    </p>
+                        <p class="text-sm text-blue-500">
+                            {{ $product->discount_percentage }}% OFF
+                        </p>
+                    @else
+                        <p class="text-3xl font-bold">
+                            R{{ number_format($product->price, 2) }}
+                        </p>
+                    @endif
+
+                    @if($product->free_shipping)
+                        <p class="text-green-600 font-medium text-mb">
+                            Free Shipping Available
+                        </p>
+                    @endif
 
                     <p class="text-sm text-gray-500">
                         Stock: {{ $product->stock_quantity }}
                     </p>
 
-                    <form method="POST" action="{{ route('cart.add', $product) }}" class="space-y-3">
+                    <form method="POST" action="{{ route('cart.add', $product) }}" >
                         @csrf
 
                         <div class="flex items-center gap-3">
@@ -90,18 +108,44 @@
                             </button>
                         </div>
                         
-                        <button class=" font-semibold w-full bg-blue-300 hover:bg-gray-300 text-black py-2 border border-gray-300 rounded-3xl mt-6 shadow-md">
+                        <button class="font-semibold w-full bg-blue-300 hover:bg-gray-300 text-black py-2 border border-gray-300 rounded-3xl mt-6 shadow-md">
                             Add to Cart
                         </button>
                     </form>
 
                     <!-- ADD TO WISHLIST -->
-                    <a href="{{ route('wishlist.toggle', $product) }}"
-                        class=" font-semibold block bg-gray-100 hover:bg-gray-500 text-black py-2 border border-gray-300 rounded-3xl mt-6 text-center shadow-md">
-                        Add to Wishlist
-                    </a>
+                    <form method="POST" action="{{ route('wishlist.toggle', $product) }}"class="space-y-3">
+                        @csrf
+
+                        <button class="w-full font-semibold block bg-gray-100 hover:bg-gray-500 text-black py-2 border border-gray-300 rounded-3xl mt-6 mb-6 text-center shadow-md">
+                            Add to Wishlist
+                        </button>
+                    </form>
+                    
                 </div>
 
+            </div>
+
+           <div class="mt-16">
+                <div class="bg-white p-6 rounded-2xl shadow">
+
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800">
+                        Product Description
+                    </h3>
+
+                    <!-- SCROLLABLE DESCRIPTION BOX -->
+                    <div id="descriptionBox"
+                        class="description-scroll max-h-[300px] overflow-y-auto pr-2">
+
+                        <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed space-y-3">
+
+                            {!! nl2br(e($product->description)) !!}
+
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
 
             <!-- REVIEWS SECTION -->
@@ -474,6 +518,29 @@
         // QUANTITY CONTROLS
         function increaseQty(){ let input=document.getElementById('qty'); input.value=parseInt(input.value)+1; }
         function decreaseQty(){ let input=document.getElementById('qty'); if(input.value>1) input.value--; }
+
+        //DESCRIPTION SCROLL 
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const descBox = document.getElementById('descriptionBox');
+
+            let scrollTimeout;
+
+            descBox.addEventListener('scroll', () => {
+
+                // Show scrollbar when scrolling
+                descBox.classList.add('show-scrollbar');
+
+                clearTimeout(scrollTimeout);
+
+                // Hide after user stops scrolling
+                scrollTimeout = setTimeout(() => {
+                    descBox.classList.remove('show-scrollbar');
+                }, 800);
+
+            });
+
+        });
 
     </script>
 

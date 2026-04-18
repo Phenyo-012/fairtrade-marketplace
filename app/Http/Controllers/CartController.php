@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
-use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -17,7 +16,7 @@ class CartController extends Controller
             ->get();
 
         $total = $items->sum(function ($item) {
-            return $item->product->price * $item->quantity;
+            return $item->product->discounted_price * $item->quantity;
         });
 
         return view('cart.index', compact('items', 'total'));
@@ -30,7 +29,6 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1'
         ]);
 
-        // Prevent adding more than stock initially
         if ($request->quantity > $product->stock_quantity) {
             return back()->with('error', 'Not enough stock available');
         }
@@ -42,7 +40,6 @@ class CartController extends Controller
         if ($item) {
             $newQty = $item->quantity + $request->quantity;
 
-            // Prevent exceeding stock when updating existing cart item
             if ($newQty > $product->stock_quantity) {
                 return back()->with('error', 'Exceeds available stock');
             }
@@ -72,7 +69,6 @@ class CartController extends Controller
             abort(403);
         }
 
-        // Prevent exceeding stock
         if ($request->quantity > $item->product->stock_quantity) {
             return back()->with('error', 'Exceeds available stock');
         }
