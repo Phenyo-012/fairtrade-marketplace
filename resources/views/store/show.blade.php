@@ -50,6 +50,12 @@
                     @endif
 
                 </div>
+
+                <a href="{{ route('chat.start', $seller->user_id) }}"
+                    class="bg-white text-black border border-black px-4 py-2 rounded-3xl 
+                    justify-center mt-4 inline-flex items-center gap-2 hover:bg-blue-200 transition shadow-md">
+                    Message Seller
+                </a>
             </div>
 
         </div>

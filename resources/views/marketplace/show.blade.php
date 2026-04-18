@@ -91,12 +91,6 @@
                         </button>
                     </form>
 
-                    <!-- CLICKABLE GO TO SELLER STORE CARD -->
-                    <a href="{{ route('store.show', $product->seller_profile_id) }}"
-                    class="block bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-xl mt-6 text-center">
-                        View Seller Store
-                    </a>
-
                     <!-- ADD TO WISHLIST -->
                     <a href="{{ route('wishlist.toggle', $product) }}"
                         class="block bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-xl mt-6 text-center">
@@ -253,6 +247,126 @@
                     {{ $reviews->withQueryString()->links() }}
 
                     
+                </div>
+
+            </div>
+
+            <!-- SELLER CARD (FULL FIXED VERSION) -->
+            <div class="mt-6">
+
+                <div class="bg-white border rounded-xl shadow-sm hover:shadow-md transition p-4">
+
+                    <div class="flex items-center gap-4">
+
+                        <!-- LOGO -->
+                        <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
+
+                            @if(optional($product->sellerProfile)->logo)
+                                <img src="{{ asset('storage/' . $product->sellerProfile->logo) }}"
+                                    class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center text-xs text-gray-500">
+                                    No Logo
+                                </div>
+                            @endif
+
+                        </div>
+
+                        <!-- INFO -->
+                        <div class="flex-1">
+
+                            <!-- STORE NAME -->
+                            <h3 class="font-bold text-gray-800">
+                                {{ optional($product->sellerProfile)->store_name ?? 'Seller Store' }}
+                            </h3>
+
+                            <!-- STARS -->
+                            @php
+                                $rating = $sellerRating ?? 0;
+                            @endphp
+
+                            <div class="flex items-center gap-1 text-yellow-500 text-sm mt-1">
+
+                                <div class="flex items-center gap-1 text-yellow-400">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($rating >= $i)
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                                <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                                    0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                                    <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
+                                                </path>
+                                            </svg>
+                                        @elseif($rating > $i - 1)
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                                <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                                    0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                                    <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="0"/>
+                                                </path>
+                                            </svg>
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                                <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                                    0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                                    <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="0"/>
+                                                </path>
+                                            </svg>
+                                        @endif
+                                    @endfor
+
+                                    <span class="text-gray-500 text-sm ml-1">
+                                        ({{ number_format($rating, 1) }})
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- META -->
+                            <div class="text-xs text-gray-500 mt-1 flex flex-wrap gap-3">
+
+                                @php
+                                    // Based on the seller's total orders, not just this product
+                                    $sales = $totalSales ?? 0;
+                                    $created = optional($product->sellerProfile)->created_at;
+
+                                    
+                                @endphp
+
+                                <span>
+                                    {{ $sales }} {{ Str::plural('sale', $sales) }}
+                                </span>
+
+                                <span>
+                                    Joined {{ $created ? $created->diffForHumans() : 'New seller' }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- BUTTONS (FIXED LAYOUT) -->
+                    <div class="mt-4 flex gap-2">
+
+                        <!-- VIEW STORE -->
+                        <a href="{{ route('store.show', $product->seller_profile_id) }}"
+                        class="flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-3xl text-sm">
+                            View Store
+                        </a>
+
+                        <!-- MESSAGE SELLER (FIXED) -->
+                        <a href="{{ url('/chat/start/' . $product->seller_profile_id) }}"
+                        class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-3xl text-sm">
+                            Message Seller
+                        </a>
+
+                    </div>
+
                 </div>
 
             </div>

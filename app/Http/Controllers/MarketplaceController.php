@@ -42,6 +42,12 @@ class MarketplaceController extends Controller
             abort(404);
         }
 
+        $product->load([
+            'images',
+            'reviews',
+            'sellerProfile'
+        ]);
+
         $reviewsQuery = \App\Models\Review::with([
             'orderItem.product',
             'votes'
@@ -109,6 +115,30 @@ class MarketplaceController extends Controller
                 : 0;
         }
 
-        return view('marketplace.show', compact('product', 'reviews', 'related' , 'ratingPercentages', 'totalReviews'));
+        $seller = $product->sellerProfile;
+
+        $sellerRating = \App\Models\Review::whereHas('orderItem.product', function ($q) use ($product) {
+                $q->where('seller_profile_id', $product->seller_profile_id);
+            })
+            ->avg('rating');
+
+        $sellerRating = $sellerRating ? round($sellerRating, 1) : 0;
+
+        $totalSales = \App\Models\OrderItem::whereHas('product', function ($q) use ($product) {
+            $q->where('seller_profile_id', $product->seller_profile_id);
+        })
+        ->distinct('order_id')
+        ->count('order_id');
+
+        return view('marketplace.show', compact(
+            'product',
+            'reviews',
+            'related',
+            'ratingPercentages',
+            'totalReviews',
+            'seller',
+            'sellerRating',
+            'totalSales'
+        ));
     }
 }

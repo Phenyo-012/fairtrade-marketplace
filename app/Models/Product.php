@@ -20,13 +20,13 @@ class Product extends Model
 
     public function seller()
     {
-        return $this->belongsTo(SellerProfile::class);
+        return $this->belongsTo(SellerProfile::class, 'seller_profile_id');
     }
 
     //
     public function sellerProfile()
     {
-        return $this->belongsTo(SellerProfile::class);
+        return $this->belongsTo(SellerProfile::class, 'seller_profile_id');
     }
 
     public function orders()

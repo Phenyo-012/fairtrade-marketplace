@@ -132,6 +132,11 @@
                                 My Orders
                             </x-dropdown-link>
 
+                            <!-- MESSAGES -->
+                            <x-dropdown-link :href="route('chat.index')">
+                                Messages
+                            </x-dropdown-link>
+
                             <x-dropdown-link :href="route('seller.setup')">
                                 Sell on FairTrade
                             </x-dropdown-link>
@@ -161,6 +166,10 @@
                             <!-- MY ORDERS -->
                             <x-dropdown-link :href="route('orders.my')">
                                 My Orders
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('chat.index')">
+                                Messages
                             </x-dropdown-link>
 
                             @if(Auth::user()->sellerProfile && Auth::user()->sellerProfile->onboarding_step < 3)
@@ -196,6 +205,11 @@
                             <!-- GLOBAL ORDERS -->
                             <x-dropdown-link :href="route('admin.orders.index')">
                                 View All Seller Orders
+                            </x-dropdown-link>
+
+                            <!-- USER CHAT MODERATION -->
+                            <x-dropdown-link :href="route('admin.chats.index')">
+                                Chat Moderation
                             </x-dropdown-link>
 
                             <!-- CREATE ADMIN USER IF USER IS SUPER ADMIN -->

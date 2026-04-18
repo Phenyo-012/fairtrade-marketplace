@@ -33,11 +33,18 @@ class SellerProfile extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class, 'seller_profile_id');
     }
 
     public function orders()
     {
-        return $this->hasMany(\App\Models\Order::class);
+        return $this->hasManyThrough(
+            OrderItem::class,
+            Product::class,
+            'seller_profile_id',
+            'product_id',
+            'id',
+            'id'
+        );
     }
 }

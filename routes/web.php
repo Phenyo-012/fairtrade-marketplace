@@ -26,6 +26,8 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\ChatController;
 
 
 
@@ -198,6 +200,25 @@ Route::middleware('auth')->group(function () {
     Route::post('/seller/onboarding/store', [SellerProfileController::class, 'storeStep']);
 
     Route::post('/seller/onboarding/kyc', [SellerProfileController::class, 'kycStep']);
+
+    // CHAT ROUTES
+    Route::get('/chat/start/{seller}', [ChatController::class, 'start'])
+        ->name('chat.start');
+
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])
+        ->name('chat.show');
+
+    Route::get('/chat', [ChatController::class, 'index'])
+        ->name('chat.index');
+    
+    Route::post('/chat/{conversation}/send', [ChatController::class, 'send'])
+        ->name('chat.send');
+
+    Route::post('/chat/message/{message}/report', [ChatController::class, 'report'])
+        ->name('chat.report');
+
+    Route::post('/chat/block/{user}', [ChatController::class, 'block'])
+        ->name('chat.block');
 });
 
 /*
@@ -274,6 +295,13 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
         Route::post('/create-admin', [App\Http\Controllers\Admin\AdminUserController::class, 'store'])
             ->name('admin.store');
      });
+
+    Route::get('/chats', [\App\Http\Controllers\Admin\AdminChatController::class, 'index'])
+        ->name('admin.chats.index');
+
+    Route::get('/chats/{conversation}', [\App\Http\Controllers\Admin\AdminChatController::class, 'show'])
+        ->name('admin.chats.show');
+
 
 });
 

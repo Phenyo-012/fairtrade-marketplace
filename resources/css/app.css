@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Chat scrollbar behavior */
+
+.chat-scroll::-webkit-scrollbar {
+    width: 0px;
+}
+
+.chat-scroll.show-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-scroll.show-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+}
+
+/* Firefox */
+.chat-scroll {
+    scrollbar-width: none;
+}
+
+.chat-scroll.show-scrollbar {
+    scrollbar-width: thin;
+}
