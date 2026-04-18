@@ -21,6 +21,11 @@ class MarketplaceController extends Controller
             });
         }
 
+        // CATEGORY
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
        // PRICE RANGE
         if ($request->filled('min_price')) {
             $query->where('price', '>=', $request->min_price);
