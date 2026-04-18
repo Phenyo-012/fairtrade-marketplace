@@ -12,7 +12,7 @@
         </div>
 
         <a href="{{ route('seller.disputes.show', $dispute) }}"
-           class="bg-blue-600 text-white px-5 py-3 rounded-xl text-sm">
+           class="w-28 bg-white text-black text-center justify-center py-2 border border-black rounded-3xl hover:bg-blue-300 transition shadow-md">
            View
         </a>
     </div>

@@ -5,31 +5,29 @@
 
         <h2 class="text-2xl font-bold mb-6">Orders</h2>
 
-        <form method="GET" class="mb-6 flex flex-wrap gap-3">
+        <!-- 
+        ========================
+            FILTER BAR
+        ======================== 
+        -->
+        <form method="GET" class="flex flex-wrap gap-3 mb-6">
 
-            <!-- SEARCH -->
-            <input type="text"
-                name="search"
-                placeholder="Order ID"
+            <input type="text" name="search" placeholder="Search Order ID"
                 value="{{ request('search') }}"
-                class="border rounded-xl px-3 py-2">
+                class="border px-3 py-2 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
 
-            <!-- STATUS FILTER -->
-            <select name="status" class="border rounded-xl px-3 py-2">
+            <select name="status" class="border rounded-3xl px-3 py-2 focus:ring focus:ring-blue-300 focus:outline-none">
                 <option value="">All Status</option>
-                <option value="pending" @selected(request('status')=='pending')>Pending</option>
-                <option value="awaiting_shipment" @selected(request('status')=='awaiting_shipment')>Awaiting Shipment</option>
-                <option value="shipped" @selected(request('status')=='shipped')>Shipped</option>
-                <option value="delivered" @selected(request('status')=='delivered')>Delivered</option>
-                <option value="completed" @selected(request('status')=='completed')>Completed</option>
-                <option value="cancelled" @selected(request('status')=='cancelled')>Cancelled</option>
-                <option value="disputed" @selected(request('status')=='disputed')>Disputed</option>
+                @foreach(['pending','awaiting_shipment','shipped','delivered','completed','disputed'] as $status)
+                    <option value="{{ $status }}" @selected(request('status') == $status)>
+                        {{ ucfirst(str_replace('_',' ', $status)) }}
+                    </option>
+                @endforeach
             </select>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded-xl">
+            <button class="font-semibold tracking-wider bg-black text-white px-4 py-2 rounded-3xl shadow-md">
                 Filter
             </button>
-
         </form>
 
         @forelse($orders as $order)

@@ -9,9 +9,9 @@
 
         <input type="text" name="search" placeholder="Search Order ID"
                value="{{ request('search') }}"
-               class="border rounded-xl px-3 py-2">
+               class="border rounded-3xl px-3 py-2 focus:ring focus:ring-blue-300 focus:outline-none">
 
-        <select name="status" class="border rounded-xl px-3 py-2">
+        <select name="status" class="border rounded-3xl px-3 py-2 focus:ring focus:ring-blue-300 focus:outline-none">
             <option value="">All Status</option>
             <option value="pending">Pending</option>
             <option value="awaiting_shipment">Awaiting Shipment</option>
@@ -21,7 +21,7 @@
             <option value="disputed">Disputed</option>
         </select>
 
-        <button class="bg-black text-white px-4 py-2 rounded-xl">
+        <button class="font-semibold tracking-wider bg-black text-white px-4 py-2 rounded-3xl">
             Filter
         </button>
 

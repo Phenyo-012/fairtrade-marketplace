@@ -13,9 +13,9 @@
 
         <input type="text" name="search" placeholder="Search Order ID"
             value="{{ request('search') }}"
-            class="border px-3 py-2 rounded-xl">
+            class="border px-3 py-2 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
 
-        <select name="status" class="border rounded-xl px-3 py-2">
+        <select name="status" class="border rounded-3xl px-3 py-2 focus:ring focus:ring-blue-300 focus:outline-none">
             <option value="">All Status</option>
             @foreach(['pending','awaiting_shipment','shipped','delivered','completed','disputed'] as $status)
                 <option value="{{ $status }}" @selected(request('status') == $status)>
@@ -24,7 +24,7 @@
             @endforeach
         </select>
 
-        <button class="bg-black text-white px-4 py-2 rounded-xl">
+        <button class="font-semibold tracking-wider bg-black text-white px-4 py-2 rounded-3xl shadow-md">
             Filter
         </button>
     </form>
@@ -75,7 +75,7 @@
 
             <!-- PROGRESS BAR -->
             <div class="w-full bg-gray-200 rounded-xl h-2 mt-3">
-                <div class="bg-green-500 h-2 rounded-xl"
+                <div class="bg-blue-500 h-2 rounded-xl"
                      style="width:
                         @switch($order->status)
                             @case('pending') 10% @break

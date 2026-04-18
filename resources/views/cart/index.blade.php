@@ -8,7 +8,7 @@
             <div class="bg-white p-10 rounded-xl shadow text-center">
                 <p class="text-gray-500 mb-4">Your cart is empty.</p>
 
-                <a href="/" class="bg-blue-600 text-white px-4 py-2 rounded-xl">
+                <a href="/" class="bg-white hover:bg-blue-300 text-black py-2 px-4 rounded-3xl text-sm border border-gray-400 shadow-md">
                     Continue Shopping
                 </a>
             </div>
@@ -44,9 +44,9 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="number" name="quantity"  value="{{ $item->quantity }}" min="1" max="{{ $item->product->stock_quantity }}"
-                                            class="w-16 border rounded-xl text-center">
+                                            class="border border-gray-300 rounded-xl w-16 text-center focus:ring focus:ring-blue-300 focus:outline-none">
                                         <button type="submit" 
-                                            class="text-blue-600 text-sm hover:underline"
+                                            class="text-blue-600 text-md hover:underline"
                                             onclick="this.innerText='Updating...'">
                                             Update
                                         </button>
@@ -55,7 +55,7 @@
                                     <form method="POST" action="{{ route('cart.destroy', $item) }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="text-red-500 text-sm">Remove</button>
+                                        <button class="text-red-500 text-md">Remove</button>
                                     </form>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                     <div class="mt-3 mb-6">
                        <form method="GET" action="{{ route('checkout.index') }}">
                             <button
-                                class="w-full py-3 rounded-xl font-semibold transition
+                                class="w-full py-3 rounded-3xl font-semibold shadow-md transition mb-2
                                 {{ $items->isEmpty() 
                                     ? 'bg-gray-300 cursor-not-allowed text-gray-500' 
                                     : 'bg-black hover:bg-gray-800 text-white' }}"
@@ -114,7 +114,7 @@
 
                         <!-- CONTINUE SHOPPING -->
                          <button
-                            class="w-full mt-2 py-3 rounded-xl font-semibold transition
+                            class="w-full mt-2 py-3 rounded-3xl font-semibold shadow-md transition
                             bg-gray-200 hover:bg-gray-200 text-gray-800"
                             onclick="window.location.href='/'">
 
@@ -127,7 +127,7 @@
                             @csrf
                             @method('DELETE')
 
-                            <button class="text-red-500 text-sm mb-4">
+                            <button class="text-red-500 text-mb mb-4">
                                 Clear Cart
                             </button>
                         </form>

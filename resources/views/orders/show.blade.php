@@ -50,7 +50,7 @@
                     <div class="flex-1 text-center">
                         <div class="w-6 h-6 mx-auto rounded-full
                             {{ array_search($key, array_keys($steps)) <= $currentIndex 
-                                ? 'bg-green-500' : 'bg-gray-300' }}">
+                                ? 'bg-blue-500' : 'bg-gray-300' }}">
                         </div>
                         <p class="mt-2 text-xs">{{ $label }}</p>
                     </div>
@@ -127,7 +127,7 @@
                         @csrf
                         <input type="hidden" name="quantity" value="1">
 
-                        <button class="mt-2 text-xs bg-gray-100 px-3 py-1 rounded-xl hover:bg-gray-200">
+                        <button class="font-semibold tracking-wider mt-2 text-xs bg-gray-200 border border-gray-400 px-3 py-3 rounded-3xl hover:bg-blue-300 shadow-md">
                             Buy Again
                         </button>
                     </form>
@@ -192,7 +192,7 @@
 
             @elseif($order->status !== 'disputed')
                 <a href="{{ route('disputes.create', $order) }}"
-                class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600">
+                class="bg-red-500 text-white px-4 py-2 rounded-3xl hover:bg-red-600 shadow-md">
                     Dispute Order
                 </a>
             @endif

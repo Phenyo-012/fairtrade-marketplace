@@ -121,9 +121,9 @@
                         alt="{{ $product->name }}"
                         class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
                @else
-                     <img src="/placeholder.png" 
-                        class="w-full h-80 object-cover rounded-xl mb-3 transition-transform"
-                        alt="no image">
+                     <div class="w-full h-80 object-cover flex items-center justify-center rounded-xl mb-3 transition-transform">
+                        No Image
+                    </div>
                @endif
 
                <!-- NAME -->

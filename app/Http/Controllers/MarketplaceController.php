@@ -10,10 +10,10 @@ class MarketplaceController extends Controller
     public function index(Request $request)
     {
         $query = Product::where('is_approved', true)
-                        ->where('is_active', true)
-                        ->with(['images', 'reviews']);
+            ->where('is_active', true)
+            ->with(['images', 'reviews']);
 
-        // Search
+        // SEARCH
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'LIKE', '%' . $request->search . '%')
@@ -21,17 +21,43 @@ class MarketplaceController extends Controller
             });
         }
 
-        // Category filter
-        if ($request->filled('category')) {
-            $query->where('category', $request->category);
+       // PRICE RANGE
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
         }
 
-        // Condition filter
-        if ($request->filled('condition')) {
-            $query->where('condition', $request->condition);
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
         }
 
-        $products = $query->latest()->paginate(12);
+        // OFFERS (future-ready)
+        if ($request->offer === 'free_shipping') {
+            $query->where('free_shipping', true);
+        }
+
+        if ($request->offer === 'on_sale') {
+            $query->where('on_sale', true);
+        }
+
+        // SORTING
+        if ($request->sort === 'low_price') {
+            $query->orderBy('price', 'asc');
+        }
+
+        if ($request->sort === 'high_price') {
+            $query->orderBy('price', 'desc');
+        }
+
+        if ($request->sort === 'top_reviews') {
+            $query->withAvg('reviews', 'rating')
+                ->orderByDesc('reviews_avg_rating');
+        }
+
+        if ($request->sort === 'recent') {
+            $query->latest();
+        }
+
+        $products = $query->paginate(12)->withQueryString();
 
         return view('marketplace.index', compact('products'));
     }

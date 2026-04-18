@@ -4,7 +4,7 @@
         <div class="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow">
 
             <h2 class="text-2xl font-bold mb-6 text-green-600">
-                ✅ Orders Placed Successfully!
+                Orders Placed Successfully!
             </h2>
 
             @foreach($orders as $order)
@@ -13,8 +13,8 @@
                     <!-- ORDER HEADER -->
                     <div class="flex justify-between mb-4">
                         <div>
-                            <p class="font-bold">Order #{{ $order->id }}</p>
-                            <p class="text-sm text-gray-500">
+                            <p class="font-bold">Order no. #{{ $order->id }}</p>
+                            <p class="text-lg text-gray-500">
                                 Delivery Code:
                                 <span class="font-bold text-green-700">
                                     {{ $order->delivery_code }}
@@ -22,7 +22,7 @@
                             </p>
                         </div>
 
-                        <span class="text-sm bg-gray-200 px-3 py-1 rounded-xl">
+                        <span class="text-sm bg-gray-200 px-3 py-4 rounded-xl">
                             {{ ucfirst(str_replace('_',' ', $order->status)) }}
                         </span>
                     </div>
@@ -65,7 +65,7 @@
             @endforeach
 
             <a href="{{ route('orders.my') }}"
-            class="block text-center bg-black text-white py-3 rounded-xl mt-6">
+            class="block text-center bg-black text-white py-3 rounded-3xl mt-6">
                 View My Orders
             </a>
 

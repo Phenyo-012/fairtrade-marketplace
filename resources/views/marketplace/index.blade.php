@@ -5,57 +5,64 @@
 
       <!-- <h2 class="text-2xl font-bold mb-6">Marketplace</h2> -->
 
-      <!-- FILTER -->
-      <form method="GET" class="mb-6 flex gap-2 mt-6">
+      <!-- FILTER BAR -->
+      <form method="GET" class="mb-8 space-y-4 mt-6">
 
-        <div class="relative inline-block" id="categoryMenu">
+         <div class="flex flex-wrap gap-3 items-center">
 
-         <!-- Trigger Button -->
-         <button
-            type="button"
-            id="categoryTrigger"
-            class="flex items-center justify-between border border-gray-400 px-4 py-2 rounded-2xl w-60 bg-white hover:bg-gray-50"
-            aria-haspopup="true"
-            aria-expanded="false">
+            <!-- SPECIAL OFFERS -->
+            <select name="offer" class="border px-4 py-2 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
+                  <option value="">Special Offers</option>
+                  <option value="free_shipping" {{ request('offer') == 'free_shipping' ? 'selected' : '' }}>
+                     Free Shipping
+                  </option>
+                  <option value="on_sale" {{ request('offer') == 'on_sale' ? 'selected' : '' }}>
+                     On Sale
+                  </option>
+            </select>
 
-            <span>
-                  Category:
-                  <span id="selectedCategory">All Categories</span>
-            </span>
+            <!-- PRICE RANGE -->
+            <div class="flex items-center gap-2">
+                  <input type="number" name="min_price" placeholder="Min"
+                     value="{{ request('min_price') }}"
+                     class="border px-3 py-2 w-24 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
 
-            <!-- Caret -->
-            <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24">
-                  <path d="M7 10l5 5 5-5z"/>
-            </svg>
-         </button>
+                  <span>-</span>
 
-         <!-- Dropdown Menu -->
-         <div
-            id="categoryDropdown"
-            class="hidden absolute right-0 mt-2 w-60 bg-white border rounded-xl shadow-lg z-50">
+                  <input type="number" name="max_price" placeholder="Max"
+                     value="{{ request('max_price') }}"
+                     class="border px-3 py-2 w-24 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none ">
+            </div>
 
-            <button class="menu-item block w-full text-left px-4 py-2 hover:bg-gray-100" data-value="">
-                  All Categories
+            <!-- SORT -->
+            <select name="sort" class="border px-4 py-2 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
+                  <option value="">Sort By</option>
+                  <option value="low_price" {{ request('sort') == 'low_price' ? 'selected' : '' }}>
+                     Lowest Price
+                  </option>
+                  <option value="high_price" {{ request('sort') == 'high_price' ? 'selected' : '' }}>
+                     Highest Price
+                  </option>
+                  <option value="top_reviews" {{ request('sort') == 'top_reviews' ? 'selected' : '' }}>
+                     Top Customer Reviews
+                  </option>
+                  <option value="recent" {{ request('sort') == 'recent' ? 'selected' : '' }}>
+                     Most Recent
+                  </option>
+            </select>
+
+            <!-- APPLY -->
+            <button class="bg-black text-white px-5 py-2 rounded-3xl shadow-md">
+                  Apply
             </button>
 
-            <button class="menu-item block w-full text-left px-4 py-2 hover:bg-gray-100" data-value="electronics">
-                  Electronics
-            </button>
-
-            <button class="menu-item block w-full text-left px-4 py-2 hover:bg-gray-100" data-value="fashion">
-                  Fashion
-            </button>
-
-            <button class="menu-item block w-full text-left px-4 py-2 hover:bg-gray-100" data-value="home">
-                  Home
-            </button>
+            <!-- RESET -->
+            <a href="{{ route('marketplace.index') }}"
+               class="bg-black text-white px-5 py-2 rounded-3xl shadow-md">
+                  Reset
+            </a>
 
          </div>
-
-         <!-- Hidden input (replaces select) -->
-         <input type="hidden" name="category" id="categoryInput">
-
-      </div>
 
       </form>
 
@@ -75,9 +82,9 @@
                         alt="{{ $product->name }}"
                         class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
                @else
-                     <img src="/placeholder.png" 
-                        class="w-full h-80 object-cover rounded-xl mb-3 transition-transform"
-                        alt="no image">
+                     <div class="w-full h-80 object-cover flex items-center justify-center rounded-xl mb-3 transition-transform">
+                        No Image
+                    </div>
                @endif
 
                <!-- NAME -->
@@ -159,22 +166,28 @@
       const selectedText = document.getElementById("selectedCategory");
       const hiddenInput = document.getElementById("categoryInput");
 
-      // Toggle menu
-      trigger.addEventListener("click", () => {
+      // Open dropdown
+      trigger.addEventListener("click", (e) => {
+         e.stopPropagation();
          dropdown.classList.toggle("hidden");
       });
 
       // Select option
       document.querySelectorAll(".menu-item").forEach(item => {
          item.addEventListener("click", () => {
-            selectedText.textContent = item.textContent;
-            hiddenInput.value = item.dataset.value;
+
+            const value = item.dataset.value;
+            const text = item.textContent.trim();
+
+            hiddenInput.value = value;
+            selectedText.textContent = text;
+
             dropdown.classList.add("hidden");
          });
       });
 
-      // Close when clicking outside
-      document.addEventListener("click", e => {
+      // Close on outside click
+      document.addEventListener("click", (e) => {
          if (!document.getElementById("categoryMenu").contains(e.target)) {
             dropdown.classList.add("hidden");
          }

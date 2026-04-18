@@ -17,7 +17,7 @@
             {{-- GLOBAL STATUS ALERTS (SHOW ONLY ONCE) --}}
             @if($order->is_late && $order->status !== 'shipped')
                 <div class="bg-red-100 text-red-700 p-3 rounded-xl mb-4">
-                    ⚠ This order is late! Please ship it as soon as possible.
+                    This order is late! Please ship it as soon as possible.
                 </div>
             @endif
 
@@ -28,7 +28,7 @@
             @endif
 
             @if($order->seller_deadline && !in_array($order->status, ['shipped','delivered','completed','cancelled','disputed']))
-                <div class="bg-yellow-100 text-yellow-800 p-3 rounded-xl mb-4">
+                <div class="bg-yellow-100 text-black p-3 rounded-xl mb-4">
                     You must ship this order within:
                     <span class="countdown font-bold"
                         data-deadline="{{ $order->seller_deadline }}">
@@ -85,7 +85,7 @@
                         </div>
                     @endforeach
 
-                    <div class="bg-white p-6 rounded-xl shadow mb-6">
+                    <div class="bg-white border border-gray-200 p-6 rounded-xl shadow mb-6 mt-6">
                         <h3 class="font-bold mb-3">Shipping Details</h3>
 
                         <label class="text-md text-gray-500">Recipient:</label>
@@ -115,7 +115,7 @@
                         @csrf
                         @method('PATCH')
 
-                        <select name="status" class="border rounded-xl p-2 w-full mb-4">
+                        <select name="status" class="border rounded-3xl p-2 w-full mb-4 focus:ring-blue-300 focus:outline-none">
                             <option value="awaiting_shipment"
                                 {{ $order->status === 'awaiting_shipment' ? 'selected' : '' }}>
                                 Awaiting shipment
@@ -127,7 +127,7 @@
                             </option>
                         </select>
 
-                        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700">
+                        <button class="w-full font-semibold bg-blue-300 hover:bg-gray-300 text-black py-2 border border-gray-300 rounded-3xl mt-3 shadow-md">
                             Update Status
                         </button>
                     </form>

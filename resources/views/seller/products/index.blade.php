@@ -11,88 +11,89 @@
             </h2>
 
             <a href="{{ route('seller.products.create') }}"
-               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow">
+               class="px-4 py-2 bg-white text-black border border-black rounded-3xl hover:bg-blue-300 transition shadow-md">
                 + Add Product
             </a>
         </div>
 
         <!-- Product Grid -->
-        <div class="grid gap-4 mb-6 w-full
+        <div class="grid gap-6
                     grid-cols-1
-                    md:grid-cols-products-md
-                    lg:grid-cols-products-lg
-                    justify-center">
+                    sm:grid-cols-2
+                    lg:grid-cols-3
+                    max-w-6xl mx-auto">
 
-            @forelse($products as $product)
+        @forelse($products as $product)
 
-            <!-- Product Card -->
-            <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden text-sm h-[420px] flex flex-col">
+        <!-- Product Card -->
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden flex flex-col">
 
-                <!-- Image -->
-                <div class="w-full h-48 overflow-hidden">
-                   @if($product->images->count())
-                        <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
-                            class="w-full h-40 object-cover">
-                    @else
-                        <div class="w-full h-40 bg-gray-200 flex items-center justify-center">
-                            No Image
-                        </div>
-                    @endif
+            <!-- Image -->
+            <div class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
+                @if($product->images->count())
+                    <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+                        class="w-full h-full object-cover">
+                @else
+                    <div class="w-full h-80 object-cover flex items-center justify-center rounded-xl mb-3 transition-transform">
+                        No Image
+                    </div>
+                @endif
+            </div>
+
+            <!-- Content -->
+            <div class="p-4 flex flex-col flex-1">
+
+                <div class="space-y-1">
+                    <h3 class="font-semibold text-base text-gray-900 line-clamp-2">
+                        {{ $product->name }}
+                    </h3>
+
+                    <p class="text-gray-900 font-bold text-sm">
+                        R{{ number_format($product->price, 2) }}
+                    </p>
+
+                    <!-- Stock Badge -->
+                    <span class="inline-block text-xs px-2 py-1 rounded-full
+                        @if($product->stock_quantity < 5)
+                            bg-red-100 text-red-700
+                        @else
+                            bg-green-100 text-green-700
+                        @endif">
+                        {{ $product->stock_quantity }} in stock
+                    </span>
                 </div>
 
-                <!-- Content -->
-                <div class="p-4 flex-1 flex flex-col justify-between">
+                <!-- Actions -->
+                <div class="flex gap-2 mt-auto pt-4">
 
-                    <div class="space-y-2">
-                        <h3 class="font-semibold text-lg text-black line-clamp-2">
-                            {{ $product->name }}
-                        </h3>
+                    <a href="{{ route('seller.products.edit', $product) }}"
+                    class="flex-1 text-center py-2 text-sm border border-black rounded-full hover:bg-blue-300 transition">
+                        Edit
+                    </a>
 
-                        <p class="text-gray-700 font-semibold text-sm">
-                            R{{ number_format($product->price, 2) }}
-                        </p>
+                    <form method="POST"
+                        action="{{ route('seller.products.destroy', $product) }}"
+                        class="flex-1">
+                        @csrf
+                        @method('DELETE')
 
-                        <!-- Stock Badge -->
-                        <span class="inline-block py-0.5 px-2 text-xs rounded-full
-                            @if($product->stock_quantity < 5)
-                                bg-red-100 text-red-700
-                            @else
-                                bg-green-100 text-green-700
-                            @endif">
-                            {{ $product->stock_quantity }} in stock
-                        </span>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="flex gap-2 pt-4">
-                        <a href="{{ route('seller.products.edit', $product) }}"
-                           class="flex-1 text-center text-black font-semibold py-2 rounded-lg border">
-                            Edit
-                        </a>
-
-                        <form method="POST"
-                              action="{{ route('seller.products.destroy', $product) }}"
-                              class="flex-1">
-                            @csrf
-                            @method('DELETE')
-
-                            <button class=" w-full flex-1 text-center text-black font-semibold py-2 rounded-lg border">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
+                        <button class="w-full py-2 text-sm border border-black rounded-full hover:bg-red-300 transition">
+                            Delete
+                        </button>
+                    </form>
 
                 </div>
 
             </div>
+        </div>
 
-            @empty
+        @empty
 
-            <div class="col-span-full text-center text-gray-500">
-                No products yet.
-            </div>
+        <div class="col-span-full text-center text-gray-500">
+            No products yet.
+        </div>
 
-            @endforelse
+        @endforelse
 
         </div>
 

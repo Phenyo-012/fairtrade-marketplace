@@ -27,13 +27,13 @@
 
                         <!-- LEFT -->
                         <button onclick="prevImage()"
-                            class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow rounded-full px-3 py-2">
+                            class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 border border-gray-300 hover:bg-white shadow rounded-full px-3 py-2">
                             ←
                         </button>
 
                         <!-- RIGHT -->
                         <button onclick="nextImage()"
-                            class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow rounded-full px-3 py-2">
+                            class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 border border-gray-300 hover:bg-white shadow rounded-full px-3 py-2">
                             →
                         </button>
 
@@ -80,20 +80,24 @@
                         @csrf
 
                         <div class="flex items-center gap-3">
-                            <button type="button" onclick="decreaseQty()" class="px-3 py-1 bg-gray-200 rounded-xl">-</button>
+                            <button type="button" onclick="decreaseQty()" class="px-3 py-1 bg-white border border-gray-300 rounded-3xl hover:bg-gray-300 transition shadow-sm">
+                                -
+                            </button>
                             <input id="qty" type="number" name="quantity" value="1"
-                                class="border rounded-xl w-16 text-center">
-                            <button type="button" onclick="increaseQty()" class="px-3 py-1 bg-gray-200 rounded-xl">+</button>
+                                class="border border-gray-300 rounded-xl w-16 text-center focus:ring focus:ring-blue-300 focus:outline-none">
+                            <button type="button" onclick="increaseQty()" class="px-3 py-1 bg-white border border-gray-300 rounded-3xl hover:bg-gray-300 transition shadow-sm">
+                                +
+                            </button>
                         </div>
                         
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-xl mt-6">
+                        <button class=" font-semibold w-full bg-blue-300 hover:bg-gray-300 text-black py-2 border border-gray-300 rounded-3xl mt-6 shadow-md">
                             Add to Cart
                         </button>
                     </form>
 
                     <!-- ADD TO WISHLIST -->
                     <a href="{{ route('wishlist.toggle', $product) }}"
-                        class="block bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-xl mt-6 text-center">
+                        class=" font-semibold block bg-gray-100 hover:bg-gray-500 text-black py-2 border border-gray-300 rounded-3xl mt-6 text-center shadow-md">
                         Add to Wishlist
                     </a>
                 </div>
@@ -146,16 +150,16 @@
 
                 <form method="GET" class="mb-6 flex gap-2">
 
-                    <select name="rating" class="border rounded-xl p-2 text-sm">
+                    <select name="rating" class="border w-32 rounded-3xl p-2 text-sm">
                         <option value="">All Ratings</option>
-                        <option value="5" {{ request('rating') == 5 ? 'selected' : '' }}>5★</option>
-                        <option value="4" {{ request('rating') == 4 ? 'selected' : '' }}>4★ & up</option>
-                        <option value="3" {{ request('rating') == 3 ? 'selected' : '' }}>3★ & up</option>
-                        <option value="2" {{ request('rating') == 2 ? 'selected' : '' }}>2★ & up</option>
-                        <option value="1" {{ request('rating') == 1 ? 'selected' : '' }}>1★ & up</option>
+                        <option value="5" {{ request('rating') == 5 ? 'selected' : '' }}>5 Stars</option>
+                        <option value="4" {{ request('rating') == 4 ? 'selected' : '' }}>4 Stars & up</option>
+                        <option value="3" {{ request('rating') == 3 ? 'selected' : '' }}>3 Stars & up</option>
+                        <option value="2" {{ request('rating') == 2 ? 'selected' : '' }}>2 Stars & up</option>
+                        <option value="1" {{ request('rating') == 1 ? 'selected' : '' }}>1 Star & up</option>
                     </select>
 
-                    <button class="bg-gray-800 text-white px-3 py-2 rounded-xl text-sm">
+                    <button class="bg-gray-800 text-white px-3 py-2 rounded-3xl text-sm">
                         Filter
                     </button>
 
@@ -163,14 +167,14 @@
 
                 <form method="GET" class="mb-6 flex gap-2">
 
-                    <select name="sort" class="border rounded-xl p-2 text-sm">
+                    <select name="sort" class="border w-32 rounded-3xl p-2 text-sm">
                         <option value="">Sort Reviews</option>
                         <option value="helpful" {{ request('sort') == 'helpful' ? 'selected' : '' }}>Most Helpful</option>
                         <option value="highest" {{ request('sort') == 'highest' ? 'selected' : '' }}>Highest Rating</option>
                         <option value="lowest" {{ request('sort') == 'lowest' ? 'selected' : '' }}>Lowest Rating</option>
                     </select>
 
-                    <button class="bg-gray-800 text-white px-3 py-2 rounded-xl text-sm">
+                    <button class="bg-gray-800 text-white px-3 py-2 rounded-3xl text-sm">
                         Apply
                     </button>
 
@@ -245,8 +249,6 @@
                 <!-- Pagination -->
                 <div class="mt-6">
                     {{ $reviews->withQueryString()->links() }}
-
-                    
                 </div>
 
             </div>
@@ -355,13 +357,13 @@
 
                         <!-- VIEW STORE -->
                         <a href="{{ route('store.show', $product->seller_profile_id) }}"
-                        class="flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-3xl text-sm">
+                        class="flex-1 text-center bg-white hover:bg-gray-200 text-black py-2 rounded-3xl text-sm border border-gray-400 shadow-md">
                             View Store
                         </a>
 
                         <!-- MESSAGE SELLER (FIXED) -->
                         <a href="{{ url('/chat/start/' . $product->seller_profile_id) }}"
-                        class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-3xl text-sm">
+                        class="flex-1 text-center bg-white hover:bg-blue-400 text-Black py-2 rounded-3xl text-sm border border-gray-400 shadow-md">
                             Message Seller
                         </a>
 
