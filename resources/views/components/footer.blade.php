@@ -37,6 +37,7 @@
                 <li><a href="/become-seller" class="text-gray-500 hover:text-gray-700">Become a Seller</a></li>
                 <li><a href="/seller/dashboard" class="text-gray-500 hover:text-gray-700">Seller Dashboard</a></li>
                 <li><a href="/seller/orders" class="text-gray-500 hover:text-gray-700">Manage Orders</a></li>
+                <li><a href="/seller/guide" class="text-gray-500 hover:text-gray-700"> Seller Guide</a></li>
             </ul>
         </div>
 

@@ -333,6 +333,9 @@ Route::middleware(['auth','role:seller', 'seller.approved'])->group(function () 
     Route::patch('/seller/orders/{order}/status', [SellerOrderController::class, 'updateStatus'])
         ->name('seller.orders.updateStatus');
 
+    Route::get('/seller/guide', [App\Http\Controllers\SellerGuideController::class, 'index'])
+        ->name('seller.guide');
+
 });
 
 /*

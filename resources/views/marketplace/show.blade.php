@@ -176,7 +176,7 @@
                             </span>
 
                             <div class="flex-1 bg-gray-200 h-3 rounded-xl">
-                                <div class="bg-yellow-400 h-3 rounded-xl"
+                                <div class="bg-black h-3 rounded-xl"
                                     style="width: {{ $ratingPercentages[$i] ?? 0 }}%">
                                 </div>
                             </div>

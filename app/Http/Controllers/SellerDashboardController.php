@@ -26,22 +26,38 @@ class SellerDashboardController extends Controller
         // Orders (unique)
         $orders = $orderItems->pluck('order')->unique('id');
 
-        // Completed order items (for revenue)
-        $completedItems = $orderItems->filter(function ($orderItem) {
-            return $orderItem->order->status === 'completed';
+        // ========================
+        // 💰 ESCROW + COMPLETED
+        // ========================
+
+        // Items NOT completed = escrow
+        $escrowItems = $orderItems->filter(function ($item) {
+            return !in_array($item->order->status, ['completed', 'cancelled', 'disputed']);
+        });
+
+        // Completed = earned
+        $completedItems = $orderItems->filter(function ($item) {
+            return $item->order->status === 'completed';
+        });
+
+        // 💰 ESCROW TOTAL
+        $escrowBalance = $escrowItems->sum(function ($item) {
+            return $item->subtotal;
+        });
+
+        // 💰 TOTAL EARNED (completed only)
+        $totalRevenue = $completedItems->sum(function ($item) {
+            return $item->subtotal;
         });
 
         // ========================
         // STATS
         // ========================
         $totalOrders = $orders->count();
-        $totalRevenue = $completedItems->sum(function ($orderItem) {
-            return $orderItem->subtotal;
-        });
         $totalProducts = $products->count();
 
         // ========================
-        // REVIEWS (FIXED)
+        // REVIEWS
         // ========================
         $orderItemIds = $orderItems->pluck('id');
 
@@ -49,11 +65,11 @@ class SellerDashboardController extends Controller
 
         $averageRating = round($reviews->avg('rating'), 1) ?? 0;
         $totalReviews = $reviews->count();
+
         $ratingDistribution = $reviews
             ->groupBy('rating')
-            ->map(function ($group) {
-                return $group->count();
-            });
+            ->map(fn ($group) => $group->count());
+
         $isTopRated = ($averageRating >= 4.5 && $totalReviews >= 10);
 
         // ========================
@@ -66,27 +82,19 @@ class SellerDashboardController extends Controller
         // CHARTS
         // ========================
         $revenueData = $completedItems
-            ->groupBy(function ($orderItem) {
-                return $orderItem->order->created_at->format('Y-m-d');
-            })
-            ->map(function ($orderItems, $date) {
-                return [
-                    'date' => $date,
-                    'total' => $orderItems->sum('subtotal')
-                ];
-            })
+            ->groupBy(fn ($item) => $item->order->created_at->format('Y-m-d'))
+            ->map(fn ($items, $date) => [
+                'date' => $date,
+                'total' => $items->sum('subtotal')
+            ])
             ->values();
 
         $orderData = $orders
-            ->groupBy(function ($order) {
-                return $order->created_at->format('Y-m-d');
-            })
-            ->map(function ($orders, $date) {
-                return [
-                    'date' => $date,
-                    'total' => $orders->count()
-                ];
-            })
+            ->groupBy(fn ($order) => $order->created_at->format('Y-m-d'))
+            ->map(fn ($orders, $date) => [
+                'date' => $date,
+                'total' => $orders->count()
+            ])
             ->values();
 
         // ========================
@@ -111,13 +119,13 @@ class SellerDashboardController extends Controller
         // COMMISSION
         // ========================
         $commissionRate = 0.05;
+
         $platformEarnings = $totalRevenue * $commissionRate;
         $sellerEarnings = $totalRevenue - $platformEarnings;
 
         // ========================
         // SHIPPING PERFORMANCE
         // ========================
-
         $totalShipped = Order::whereHas('orderItems.product', function ($q) use ($seller) {
                 $q->where('seller_profile_id', $seller->id);
             })
@@ -137,9 +145,22 @@ class SellerDashboardController extends Controller
             ? round(($onTimeShipments / $totalShipped) * 100)
             : 100;
 
+        $pendingOrders = $orders->whereIn('status', ['pending', 'awaiting_shipment'])->count();
+
+        $activeDiscounts = Product::where('seller_profile_id', $seller->id)
+            ->whereNotNull('discount_percentage')
+            ->where('discount_percentage', '>', 0)
+            ->whereNotNull('discount_ends_at')
+            ->where('discount_ends_at', '>', now())
+            ->count();
+
+        $conversionRate = $totalProducts > 0
+            ? round(($totalOrders / $totalProducts) * 100, 1)
+            : 0;
 
         return view('seller.dashboard', [
             'totalRevenue' => $totalRevenue,
+            'escrowBalance' => $escrowBalance, // ⭐ NEW
             'totalOrders' => $totalOrders,
             'totalProducts' => $totalProducts,
             'totalReviews' => $totalReviews,
@@ -157,6 +178,9 @@ class SellerDashboardController extends Controller
             'onTimeRate' => $onTimeRate,
             'lateShipments' => $lateShipments,
             'totalShipped' => $totalShipped,
+            'pendingOrders' => $pendingOrders,
+            'activeDiscounts' => $activeDiscounts,
+            'conversionRate' => $conversionRate,
         ]);
     }
 }
