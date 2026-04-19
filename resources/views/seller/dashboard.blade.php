@@ -11,7 +11,7 @@
 
             <!-- Welcome -->
             <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-5">
-                <h3 class="text-lg font-semibold text-gray-700">
+                <h3 class="text-lg font-semibold text-black">
                     Welcome {{ Auth::user()->first_name }} {{ Auth::user()->last_name }} 👋
                 </h3>
                 <p class="text-gray-500 mt-1">
@@ -22,7 +22,7 @@
             <!-- SELLER NAVIGATION BUTTONS -->
 
             <div class="bg-white p-6 rounded-2xl shadow mb-4 mt-6">
-                <h3 class="text-lg font-semibold text-gray-700">
+                <h3 class="text-lg font-semibold text-black">
                     Quick Actions
                 </h3>
 
@@ -56,33 +56,39 @@
 
             </div>
             
-            @if($averageRating >= 4.8)
-                <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6 flex justify-between items-center">
-                    <div class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-                        🏆 Top Rated Seller
-                    </div> 
-                </div>
-            @endif
+           
+            <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6">
+                <h3 class="text-lg font-semibold text-black">
+                    Performance Badge
+                </h3>
 
-            @if($onTimeRate >= 95)
-                <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6 flex justify-between items-center">
-                    <div class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-                        🚀 Fast Shipper
-                    </div>
-                </div>
-            @endif
+                <p class="text-gray-500 mt-1 mb-4">
+                    Keep Performing well to collect more Badges!
+                </p>
 
-            @if($totalReviews >= 250)
-                <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6 flex justify-between items-center">
-                    <div class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                        🌟 Popular Seller
-                    </div>
+                <div class="flex items-center gap-5">
+                    @if($averageRating >= 4.8)    
+                        <div class="bg-yellow-300 text-black px-3 py-1 rounded-full text-sm shadow">
+                            Top Rated Seller
+                        </div>
+                    @endif                         
+                    @if($onTimeRate >= 95)
+                        <div class="bg-blue-300 text-black px-3 py-1 rounded-full text-sm shadow">
+                            Fast Shipper
+                        </div>
+                    @endif
+                    @if($totalReviews >= 250)
+                        <div class="bg-green-300 text-black px-3 py-1 rounded-full text-sm shadow">
+                            Popular Seller
+                        </div>
+                    @endif
                 </div>
-            @endif
+            </div>
             
-
             <div class="bg-white p-6 rounded-xl shadow">
-                <h3 class="text-lg font-semibold mb-2">Shipping Performance</h3>
+                <h3 class="text-lg font-semibold mb-2">
+                    Shipping Performance
+                </h3>
 
                 <p class="text-3xl font-bold text-blue-600">
                     {{ $onTimeRate }}%
@@ -93,8 +99,8 @@
                 </p>
 
                 <div class="mt-3 text-sm">
-                    <p>📦 Total shipped: {{ $totalShipped }}</p>
-                    <p class="text-red-500">⚠ Late shipments: {{ $lateShipments }}</p>
+                    <p>Total shipped: {{ $totalShipped }}</p>
+                    <p class="text-red-500">Late shipments: {{ $lateShipments }}</p>
                 </div>
             </div>
                 
@@ -103,48 +109,66 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
                 <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
-                    <p class="text-sm text-gray-500">Total Revenue</p>
+                    <p class="text-sm text-black">
+                        Total Revenue
+                    </p>
                     <p class="text-3xl font-bold mt-2">
                         R{{ number_format($totalRevenue, 2) }}
                     </p>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
-                    <p class="text-sm text-gray-500">Total Orders</p>
+                    <p class="text-sm text-black">
+                        Total Orders
+                    </p>
                     <p class="text-3xl font-bold mt-2">
                         {{ $totalOrders }}
                     </p>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
-                    <p class="text-sm text-gray-500">Products Listed</p>
+                    <p class="text-sm text-black">
+                        Products Listed
+                    </p>
                     <p class="text-3xl font-bold mt-2">
                         {{ $totalProducts }}
                     </p>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition ">
-                    <p class="text-sm text-gray-500 mb-1">Average Rating</p>
+                    <p class="text-sm text-black mb-1">
+                        Average Rating
+                    </p>
                     <div class="flex items-center gap-1">
                         @for($i = 1; $i <= 5; $i++)
-                            <span class="{{ $i <= floor($averageRating) ? 'text-black' : 'text-gray-300' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    width="18"
-                                    height="18"
-                                    viewBox="0 0 24 24">
-                                    <path fill="currentColor"
-                                        fill-opacity="0"
-                                        stroke="currentColor"
-                                        stroke-dasharray="66"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M12 3l2.35 5.76l6.21 0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                            @if($averageRating >= $i)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                    <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                        0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
                                         <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
                                         <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
                                     </path>
                                 </svg>
-                            </span>
+                            @elseif($averageRating > $i - 1)
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                        <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                        0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                        <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="0"/>
+                                    </path>
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                    <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                        0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                        <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="0"/>
+                                    </path>
+                                </svg>
+                            @endif
                         @endfor
                     </div>
                     <div class="mt-1 flex items-center gap-2">
@@ -163,7 +187,7 @@
             <div class="grid md:grid-cols-2 gap-6 mb-6">
 
                 <div class="bg-white p-6 rounded-2xl shadow">
-                    <h3 class="font-semibold text-gray-700 mb-4">
+                    <h3 class="font-semibold text-black mb-4">
                         Revenue Over Time
                     </h3>
 
@@ -175,7 +199,7 @@
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow">
-                    <h3 class="font-semibold text-gray-700 mb-4">
+                    <h3 class="font-semibold text-black mb-4">
                         Orders Over Time
                     </h3>
 
@@ -192,7 +216,7 @@
             <div class="grid md:grid-cols-2 gap-6 mb-6">
 
                 <div class="bg-white p-6 rounded-2xl shadow">
-                    <h3 class="font-semibold text-gray-700 mb-4">
+                    <h3 class="font-semibold text-black mb-4">
                         Earnings Breakdown
                     </h3>
 
@@ -239,7 +263,7 @@
 
             <!-- Top Products -->
             <div class="bg-white p-6 rounded-2xl shadow mb-6">
-                <h3 class="font-semibold text-gray-700 mb-4">
+                <h3 class="font-semibold text-black mb-4">
                     Top Selling Products
                 </h3>
 
@@ -276,7 +300,7 @@
 
             <!-- Recent Orders -->
             <div class="bg-white p-6 rounded-2xl shadow mb-6">
-                <h3 class="font-semibold text-gray-700 mb-4">
+                <h3 class="font-semibold text-black mb-4">
                     Recent Orders
                 </h3>
 
@@ -299,7 +323,7 @@
                                     @if($order->status == 'completed') bg-green-100 text-green-700
                                     @elseif($order->status == 'pending') bg-yellow-100 text-yellow-700
                                     @elseif($order->status == 'shipped') bg-blue-100 text-blue-700
-                                    @else bg-gray-100 text-gray-600
+                                    @else bg-gray-200 text-gray-600
                                     @endif
                                 ">
                                     {{ ucfirst($order->status) }}
@@ -313,7 +337,7 @@
 
             <!-- Reviews -->
             <div class="bg-white p-6 rounded-2xl shadow mb-6">
-                <h3 class="font-semibold text-gray-700 mb-4">
+                <h3 class="font-semibold text-black mb-4">
                     Recent Reviews
                 </h3>
 
@@ -352,7 +376,7 @@
 
             <!-- Rating Distribution -->
             <div class="bg-white p-6 rounded-2xl shadow mb-6 mt-6">
-                <h3 class="font-semibold text-gray-700 mb-4">
+                <h3 class="font-semibold text-black mb-4">
                     Rating Distribution
                 </h3>
 

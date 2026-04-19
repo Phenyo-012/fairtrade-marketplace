@@ -217,18 +217,22 @@
                 </a>
             @endif
 
-            @if($order->canBeReviewed())
+            @php
+                $reviewableItems = $order->orderItems->filter(function ($item) {
+                    return $item->reviews->where('buyer_id', auth()->id())->count() === 0;
+                });
+            @endphp
+
+            @if($reviewableItems->count() > 0)
                 <a href="{{ route('reviews.create', $order) }}"
-                class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
+                class="bg-green-600 text-white px-4 py-2 rounded-3xl hover:bg-green-700">
                     Write Review
                 </a>
-
-            @elseif($order->review)
-                <span class="text-green-600 font-bold">
+            @else
+                <span class="text-green-600 font-bold mt-2">
                     Review Submitted
                 </span>
             @endif
-
         </div>
 
     </div>

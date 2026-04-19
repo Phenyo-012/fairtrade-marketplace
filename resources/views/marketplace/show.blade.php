@@ -1,3 +1,6 @@
+@php
+    $rating = $sellerRating ?? 0;
+@endphp
 <x-app-layout>
 
     <div class="bg-gray-100 min-h-screen py-10">
@@ -10,7 +13,7 @@
                 <div class="md:col-span-3">
 
                     <!-- MAIN IMAGE CONTAINER -->
-                    <div class="relative bg-white rounded-xl shadow overflow-hidden">
+                    <div class="relative bg-white rounded-2xl shadow overflow-hidden">
 
                         <div class="w-full h-auto overflow-hidden">
                             @if($product->images->isEmpty())
@@ -20,7 +23,7 @@
                             @else
                                 <img id="mainImage"
                                     src="{{ asset('storage/' . $product->images->first()->image_path) }}"
-                                    class="w-full h-full object-cover transition duration-300 cursor-zoom-in"
+                                    class="w-full h-full object-cover transition duration-1000 cursor-zoom-in"
                                     onclick="openLightbox(currentIndex)">
                             @endif
                         </div>
@@ -45,8 +48,7 @@
                             <img 
                                 src="{{ asset('storage/' . $image->image_path) }}"
                                 class="w-20 h-20 object-cover rounded-lg cursor-pointer border hover:border-gray-400 transition"
-                                onclick="changeImage({{ $index }})"
-                            >
+                                onclick="changeImage({{ $index }})">
                         @endforeach
                     </div>
 
@@ -236,7 +238,7 @@
                         <!-- Stars -->
                         <div class="flex items-center gap-1 mb-2">
                             @for($i = 1; $i <= 5; $i++)
-                                <span class="{{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}">
+                                @if($rating >= $i)
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
                                         <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
                                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
@@ -245,7 +247,25 @@
                                             <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
                                         </path>
                                     </svg>
-                                </span>
+                                @elseif($rating > $i - 1)
+                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                          <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                            0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                            <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                            <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="0"/>
+                                        </path>
+                                    </svg>
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                        <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                            0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                            <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                            <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="0"/>
+                                        </path>
+                                    </svg>
+                                @endif
                             @endfor
                         </div>
 
@@ -264,7 +284,7 @@
                             <form method="POST" action="{{ route('reviews.vote', $review) }}">
                                 @csrf
                                 <input type="hidden" name="is_helpful" value="1">
-                                <button class="text-green-600">
+                                <button class="text-black">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                         <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
                                             stroke-width="2" d="M7 11l5 -8l3 1l-1 6h7v3l-3 7h-11h-4v-9h4v9"/>
@@ -275,7 +295,7 @@
                             <form method="POST" action="{{ route('reviews.vote', $review) }}">
                                 @csrf
                                 <input type="hidden" name="is_helpful" value="0">
-                                <button class="text-red-500">
+                                <button class="text-black">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                         <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
                                             stroke-width="2" d="M7 4h11l3 7v3h-7l1 6l-3 1l-5 -8h-4v-9h4v9"/>
@@ -327,13 +347,10 @@
                             </h3>
 
                             <!-- STARS -->
-                            @php
-                                $rating = $sellerRating ?? 0;
-                            @endphp
+                        
+                            <div class="flex items-center gap-1 mt-1">
 
-                            <div class="flex items-center gap-1 text-yellow-500 text-sm mt-1">
-
-                                <div class="flex items-center gap-1 text-yellow-400">
+                                <div class="flex items-center gap-1 text-black">
                                     @for($i = 1; $i <= 5; $i++)
                                         @if($rating >= $i)
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
@@ -418,27 +435,124 @@
             </div>
 
             <!-- RELATED PRODUCTS -->
-            <div class="mt-12">
-                <h3 class="text-xl font-bold mb-4">Related Products</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+                <h3 class="text-2xl font-bold mb-4 mt-4">
+                    Related Products
+                </h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            
                     @foreach($related as $item)
-                        @php $image = $item->images->first(); @endphp
+                        @php 
+                            $image = $item->images->first();
+                            $rating = round($item->reviews->avg('rating'), 1);
+                        @endphp
                         <a href="/products/{{ $item->id }}" 
-                        class="bg-white p-3 rounded-xl shadow-sm hover:shadow-md transition">
-                            @if($image)
-                                <img src="{{ asset('storage/' . $image->image_path) }}"
-                                    class="w-full h-auto object-cover rounded-xl mb-2">
-                            @else
-                                <img src="/placeholder.png"
-                                    class="w-full h-auto object-cover rounded-xl mb-2">
-                            @endif
-                            <p class="font-semibold text-sm text-gray-800">{{ $item->name }}</p>
-                            <p class="text-blue-600 font-bold">R{{ number_format($item->price, 2) }}</p>
+                         class="relative group block bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden group hover:scale-105">
+                            <div class="p-2">
+                                <!-- PRODUCT IMAGE-->
+                                @if($image)
+                                    <img src="{{ asset('storage/' . $image->image_path) }}"
+                                        class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
+                                @else
+                                    <div class="w-full h-80 object-cover flex items-center justify-center rounded-xl mb-3 transition-transform">
+                                            No Image
+                                    </div>
+                                @endif
+                                <h3  class="font-semibold text-lg text-gray-800 group-hover:text-blue-600 transition">
+                                    {{ $item->name }}
+                                </h3>
+
+                                <!--PRODUCT RATING STARS-->
+                                <div class="flex items-center gap-1 mt-1">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($rating >= $i)
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                                <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                                    0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                                    <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
+                                                </path>
+                                            </svg>
+                                        @elseif($rating > $i - 1)
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                                <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                                    0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                                    <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="0"/>
+                                                </path>
+                                            </svg>
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                                <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                                    0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                                    <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="0"/>
+                                                </path>
+                                            </svg>
+                                        @endif
+                                    @endfor
+                                    <span class="text-xs text-gray-500">
+                                        ({{ number_format($rating, 1) }})
+                                    </span>
+                                </div>
+
+                                <!-- CONDITION -->
+                                <span class="text-xs px-2 py-1 rounded-xl inline-block mt-1
+                                        {{ $item->condition == 'new' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+                                        {{ ucfirst(str_replace('_', ' ', $item->condition)) }}
+                                </span>
+
+                                <!-- PRICE -->
+                                @if($item->is_on_sale)
+                                    <div class="flex items-center gap-2 mb-3 mt-3">
+                                        <span class="text-blue-600 font-bold text-lg">
+                                            R{{ number_format($item->discounted_price, 2) }} 
+                                        </span>
+                                        <span class="text-gray-400 line-through text-sm">
+                                            R{{ number_format($item->price, 2) }} 
+                                        </span>
+                                    </div>
+                                @else
+                                    <p class="font-bold text-gray-900  mb-3 mt-3">
+                                        R{{ number_format($item->price, 2) }}
+                                    </p>
+                                @endif
+
+                                @if($item->free_shipping)
+                                    <span class="text-xs bg-green-100 text-black px-2 py-1 rounded-xl mt-1 inline-block">
+                                        FREE Shipping
+                                    </span>
+                                @endif
+
+                                @auth
+                                    <form method="POST" action="{{ route('wishlist.toggle', $item) }}"
+                                            class="absolute top-5 right-6 z-10 opacity-0 group-hover:opacity-100 transition duration-200">
+                                        @csrf
+
+                                        <button type="submit"
+                                            class="bg-white/90 backdrop-blur p-2 rounded-full shadow hover:scale-110 transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                                <path fill="none" stroke="#ff0505" stroke-dasharray="30" stroke-linecap="round" 
+                                                stroke-linejoin="round" stroke-width="2" d="M12 8c0 0 0 0 -0.76 -1c-0.88 -1.16 
+                                                -2.18 -2 -3.74 -2c-2.49 0 -4.5 2.01 -4.5 4.5c0 0.93 0.28 1.79 0.76 2.5c0.81 1.21 
+                                                8.24 9 8.24 9M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 
+                                                4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @endauth
+
+                            </div>
                         </a>
                     @endforeach
-                </div>
             </div>
 
+          
         </div>
     </div>
 

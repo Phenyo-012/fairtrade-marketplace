@@ -111,18 +111,32 @@ class Order extends Model
 
     public function canBeReviewed()
     {
-        // Must belong to buyer
-        if (!$this->buyer_id || auth()->id() !== $this->buyer_id) {
+        // Must belong to a valid order
+        if (!$this->order) {
             return false;
         }
 
-        // Must be completed or delivered (depending on your flow)
-        if (!in_array($this->status, ['delivered', 'completed'])) {
+        $order = $this->order;
+
+        // Order must be delivered or completed
+        if (!in_array($order->status, ['delivered', 'completed'])) {
             return false;
         }
 
-        // Must not already have a review
-        if ($this->review()->exists()) {
+        // Must have delivery timestamp
+        if (!$order->delivered_at) {
+            return false;
+        }
+
+        // Must be owned by current user
+        if ($order->buyer_id !== auth()->id()) {
+            return false;
+        }
+
+        // Prevent duplicate review per item per user
+        if ($this->reviews()
+            ->where('buyer_id', auth()->id())
+            ->exists()) {
             return false;
         }
 

@@ -132,6 +132,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/review/{orderItem}', [ReviewController::class, 'store'])
         ->name('review.store');
 
+    Route::post('/reviews/bulk', [ReviewController::class, 'bulkStore'])
+        ->name('review.bulkStore');
+
     // Shopping Cart
     Route::post('/cart/{product}', [CartController::class, 'add'])
         ->name('cart.add');
