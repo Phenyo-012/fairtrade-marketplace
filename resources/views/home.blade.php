@@ -226,17 +226,17 @@ function heroSlider() {
             {
                 title: 'Support Local Sellers',
                 subtitle: 'Empowering small businesses',
-                image: @json(asset('images/flag.jpg'))
+                image: @json(asset('images/flag.png'))
             },
             {
                 title: 'Discover Handmade Goods',
                 subtitle: 'Unique, one-of-a-kind products',
-                image: @json(asset('images/handmade.jpg'))
+                image: @json(asset('images/handmade.png'))
             },
             {
                 title: 'Fair Prices, Real Impact',
                 subtitle: 'Transparent and ethical trade',
-                image: @json(asset('images/community.jpg'))
+                image: @json(asset('images/community.png'))
             }
         ],
 
