@@ -2,53 +2,71 @@
 
 <div class="bg-gray-100 min-h-screen py-6">
 
-    <!-- HERO WRAPPER (CONSTRAIN WIDTH) -->
+    <!-- HERO WRAPPER -->
     <div class="max-w-7xl mx-auto px-4">
 
         <!-- HERO BANNER -->
-        <div x-data="{ active: 0 }"
-             x-init="setInterval(() => active = (active + 1) % 3, 6000)"
-             class="relative overflow-hidden rounded-2xl shadow">
+        <div
+            class="relative h-[420px] md:h-[520px] overflow-hidden rounded-3xl shadow-xl"
+            x-data="heroSlider()"
+            x-init="start()">
 
-            <div class="h-40 md:h-48 relative">
+            <!-- SLIDES -->
+            <template x-for="(slide,index) in slides" :key="index">
 
-                <!-- Slide 1 -->
-                <div x-show="active === 0"
-                    class="absolute inset-0 flex items-center px-6 bg-cover bg-center w-6000"
-                    style="background-image: url('{{ asset('images/flag.jpg') }}');">
+                <div
+                    x-show="active === index"
+                    x-transition:enter="transition ease-out duration-700"
+                    x-transition:enter-start="opacity-0 scale-105"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-500"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    x-cloak
+                    class="absolute inset-0">
 
-                    <!-- DARK OVERLAY (for readability) -->
-                    <div class="absolute inset-0 bg-black/50"></div>
+                    <!-- Background -->
+                    <div
+                        class="w-full h-full bg-cover bg-center flex items-center justify-center"
+                        :style="`background-image:url(${slide.image})`">
 
-                    <!-- CONTENT -->
-                    <div class="relative text-white">
-                        <h1 class="text-2xl md:text-3xl font-bold">
-                            Support Local Sellers
-                        <p class="text-sm opacity-80 mt-1">
-                            Empowering small businesses
-                        </p>
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/60"></div>
+
+                        <!-- CONTENT -->
+                        <div class="relative text-center text-white max-w-2xl px-6">
+
+                            <h1 class="text-3xl md:text-5xl font-bold leading-tight"
+                                x-text="slide.title"></h1>
+
+                            <p class="mt-4 text-lg opacity-90"
+                               x-text="slide.subtitle"></p>
+
+                            <div class="mt-8 flex justify-center gap-4">
+
+                                <a href="{{route('marketplace.index')}}"
+                                   class="bg-white text-black px-6 py-3 rounded-3xl font-semibold hover:bg-gray-200 transition">
+                                    Shop Now
+                                </a>
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
 
-                <!-- Slide 2 -->
-                <div x-show="active === 1"
-                     class="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 text-white flex items-center px-6">
-                    <div>
-                        <h1 class="text-2xl md:text-3xl font-bold">Discover Handmade Goods</h1>
-                        <p class="text-sm opacity-80 mt-1">Unique, one-of-a-kind products</p>
-                    </div>
-                </div>
+            </template>
 
-                <!-- Slide 3 -->
-                <div x-show="active === 2"
-                     class="absolute inset-0 bg-gradient-to-r from-purple-500 to-purple-700 text-white flex items-center px-6">
-                    <div>
-                        <h1 class="text-2xl md:text-3xl font-bold">Fair Prices, Real Impact</h1>
-                        <p class="text-sm opacity-80 mt-1">Transparent and ethical trade</p>
-                    </div>
-                </div>
-
+            <!-- INDICATORS -->
+            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
+                <template x-for="(slide,index) in slides" :key="index">
+                    <button
+                        @click="active = index"
+                        class="w-3 h-3 rounded-full transition"
+                        :class="active === index ? 'bg-white' : 'bg-white/40'">
+                    </button>
+                </template>
             </div>
 
         </div>
@@ -117,11 +135,11 @@
 
                <!-- IMAGE -->
                @if($product->images->count())
-                     <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+                    <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
                         alt="{{ $product->name }}"
                         class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
                @else
-                     <div class="w-full h-80 object-cover flex items-center justify-center rounded-xl mb-3 transition-transform">
+                    <div class="w-full h-80 object-cover flex items-center justify-center rounded-xl mb-3 transition-transform">
                         No Image
                     </div>
                @endif
@@ -161,30 +179,9 @@
                </span>
 
                <!-- PRICE -->
-               @if($product->is_on_sale)
-                  <div class="flex items-center gap-2 mt-3 mb-3">
-                     <span class="text-blue-600 font-bold text-lg">
-                           R{{ number_format($product->discounted_price, 2) }} 
-                     </span>
-
-                     <span class="text-gray-400 line-through text-sm">
-                           R{{ number_format($product->price, 2) }} 
-                     </span>
-                     <p class="text-gray-400 text-sm">
-                        ({{ $product->discount_percentage }}% OFF)
-                     </p>
-                  </div>
-               @else
-                  <p class="font-bold text-gray-900 mt-3">
+               <p class="font-bold mt-2 text-gray-900">
                      R{{ number_format($product->price, 2) }}
-                  </p>
-               @endif
-
-               @if($product->free_shipping)
-                  <span class="text-xs bg-green-100 text-black px-2 py-1 rounded-xl mt-1 inline-block mb-2">
-                     FREE Shipping
-                  </span>
-               @endif
+               </p>
 
                @auth
                <form method="POST" action="{{ route('wishlist.toggle', $product) }}"
@@ -214,6 +211,42 @@
       </div>
 
     </div>
+
 </div>
+
+
+<!-- HERO SLIDER SCRIPT -->
+<script>
+function heroSlider() {
+    return {
+        active: 0,
+        interval: null,
+
+        slides: [
+            {
+                title: 'Support Local Sellers',
+                subtitle: 'Empowering small businesses',
+                image: @json(asset('images/flag.jpg'))
+            },
+            {
+                title: 'Discover Handmade Goods',
+                subtitle: 'Unique, one-of-a-kind products',
+                image: @json(asset('images/handmade.jpg'))
+            },
+            {
+                title: 'Fair Prices, Real Impact',
+                subtitle: 'Transparent and ethical trade',
+                image: @json(asset('images/community.jpg'))
+            }
+        ],
+
+        start() {
+            this.interval = setInterval(() => {
+                this.active = (this.active + 1) % this.slides.length
+            }, 7000)
+        }
+    }
+}
+</script>
 
 </x-app-layout>
