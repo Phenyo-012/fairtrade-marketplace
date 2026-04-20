@@ -26,7 +26,7 @@
         @forelse($products as $product)
 
         <!-- Product Card -->
-        <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden flex flex-col">
+        <div class="relative bg-white rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden flex flex-col">
 
             <!-- Image -->
             <div class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
@@ -73,6 +73,12 @@
                         </span>
                     @endif
 
+                    @if($product->is_archived)
+                        <span class="absolute top-3 left-4 bg-gray-900/90 backdrop-blur text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
+                            Archived
+                        </span>
+                    @endif
+
                     <!-- Stock Badge -->
                     <span class="inline-block text-xs px-2 py-1 rounded-full
                         @if($product->stock_quantity < 5)
@@ -85,16 +91,35 @@
                 </div>
 
                 <!-- Actions -->
-                <div class="flex gap-2 mt-auto pt-4">
+                <div class="flex gap-4 mt-auto pt-4">
 
                     <a href="{{ route('seller.products.edit', $product) }}"
                     class="flex-1 text-center py-2 text-sm border border-black rounded-full hover:bg-blue-300 transition">
                         Edit
                     </a>
 
+                    @if(!$product->is_archived)
+                        <form method="POST" action="{{ route('products.archive', $product) }}" class="flex-1">
+                            @csrf
+                            @method('PATCH')
+                            <button class="w-full py-2 text-sm border border-black rounded-full hover:bg-yellow-600 transition">
+                                Archive
+                            </button>
+                        </form>
+                    @else
+                        <form method="POST" action="{{ route('products.unarchive', $product) }}" class="flex-1">
+                            @csrf
+                            @method('PATCH')
+                            <button class="w-full py-2 text-sm border border-black rounded-full hover:bg-green-600 transition">
+                                Restore
+                            </button>
+                        </form>
+                    @endif
+
                     <form method="POST"
                         action="{{ route('seller.products.destroy', $product) }}"
-                        class="flex-1">
+                        class="flex-1"
+                        onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone!');">
                         @csrf
                         @method('DELETE')
 

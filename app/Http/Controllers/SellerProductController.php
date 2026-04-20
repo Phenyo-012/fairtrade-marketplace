@@ -141,9 +141,18 @@ class SellerProductController extends Controller
 
     public function destroy(Product $product)
     {
-        $product->delete();
+        // check ownership
+        if ($product->seller_profile_id !== auth()->user()->sellerProfile->id) {
+            abort(403);
+        }
 
-        return redirect()->route('seller.products.index')
-            ->with('success','Product deleted.');
+        // prevent deleting if product has orders
+        if ($product->orderItems()->exists()) {
+            return back()->with('error', 'This product has orders and cannot be deleted. You can archive it instead.');
+        }
+
+        $product->delete(); // soft delete
+
+        return back()->with('success', 'Product archived successfully.');
     }
 }

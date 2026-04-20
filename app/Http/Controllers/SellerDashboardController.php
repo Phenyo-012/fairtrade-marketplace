@@ -54,7 +54,9 @@ class SellerDashboardController extends Controller
         // STATS
         // ========================
         $totalOrders = $orders->count();
-        $totalProducts = $products->count();
+        $totalProducts = Product::where('seller_profile_id', $seller->id)
+            ->where('is_archived', false)
+            ->count();
 
         // ========================
         // REVIEWS
@@ -113,6 +115,7 @@ class SellerDashboardController extends Controller
         // ========================
         $lowStockProducts = Product::where('seller_profile_id', $seller->id)
             ->where('stock_quantity', '<', 5)
+             ->where('is_archived', false)
             ->get();
 
         // ========================

@@ -222,6 +222,13 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/chat/block/{user}', [ChatController::class, 'block'])
         ->name('chat.block');
+
+    // ARCHIVE PRODUCTS
+    Route::patch('/products/{product}/archive', [ProductController::class, 'archive'])
+        ->name('products.archive');
+
+    Route::patch('/products/{product}/unarchive', [ProductController::class, 'unarchive'])
+        ->name('products.unarchive');
 });
 
 /*

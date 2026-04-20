@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-
-     protected $fillable = [
+    
+    protected $fillable = [
         'seller_profile_id',
         'name',
         'description',
@@ -19,7 +20,12 @@ class Product extends Model
         'discount_percentage',
         'discount_ends_at',
         'free_shipping',
+        'is_archived'
     ];
+
+    protected $dates = ['deleted_at'];
+    
+    use SoftDeletes;
 
     public function seller()
     {

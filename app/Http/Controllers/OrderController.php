@@ -152,6 +152,7 @@ class OrderController extends Controller
 
                 $order->orderItems()->create([
                     'product_id' => $item->product_id,
+                    'product_name' => $product->name,
                     'quantity' => $item->quantity,
                     'price' => $item->product->price,
                     'subtotal' => $item->unit_price * $item->quantity,

@@ -11,6 +11,7 @@ class MarketplaceController extends Controller
     {
         $query = Product::where('is_approved', true)
             ->where('is_active', true)
+            ->where('is_archived', false)
             ->with(['images', 'reviews']);
 
         // SEARCH
@@ -79,14 +80,16 @@ class MarketplaceController extends Controller
             'sellerProfile'
         ]);
 
-        $reviewsQuery = \App\Models\Review::with([
-            'orderItem.product',
-            'votes'
-        ])
-        ->where('status', 'approved')
-        ->whereHas('orderItem', function ($q) use ($product) {
-            $q->where('product_id', $product->id);
-        });
+        $reviewsQuery = \App\Models\Review::with(['votes'])
+            ->whereHas('orderItem', function ($q) use ($product) {
+                $q->where('product_id', $product->id);
+            })
+            ->where('status', 'approved')
+            ->whereHas('orderItem', function ($q) use ($product) {
+                $q->whereHas('product', function ($q2) use ($product) {
+                    $q2->where('seller_profile_id', $product->seller_profile_id);
+                });
+            });
 
         // rating filter
         if (request()->filled('rating')) {
@@ -123,6 +126,7 @@ class MarketplaceController extends Controller
                 ->where('id', '!=', $product->id)
                 ->where('is_approved', true)
                 ->where('is_active', true)
+                ->where('is_archived', false)
                 ->with('images')
                 ->latest()
                 ->take(4)
@@ -148,10 +152,12 @@ class MarketplaceController extends Controller
 
         $seller = $product->sellerProfile;
 
-        $sellerRating = \App\Models\Review::whereHas('orderItem.product', function ($q) use ($product) {
-                $q->where('seller_profile_id', $product->seller_profile_id);
-            })
-            ->avg('rating');
+        $sellerRating = \App\Models\Review::whereHas('orderItem', function ($q) use ($product) {
+            $q->whereHas('product', function ($q2) use ($product) {
+                $q2->where('seller_profile_id', $product->seller_profile_id);
+            });
+        })
+        ->avg('rating');
 
         $sellerRating = $sellerRating ? round($sellerRating, 1) : 0;
 
@@ -160,6 +166,10 @@ class MarketplaceController extends Controller
         })
         ->distinct('order_id')
         ->count('order_id');
+
+        if (!$product->is_approved || !$product->is_active || $product->is_archived) {
+            abort(404);
+        }
 
         return view('marketplace.show', compact(
             'product',

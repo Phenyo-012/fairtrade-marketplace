@@ -55,6 +55,10 @@ class CartController extends Controller
             ]);
         }
 
+        if ($product->is_archived) {
+            return back()->with('error', 'This product is no longer available.');
+        }
+
         return redirect()->route('cart.index')->with('success', 'Added to cart');
     }
 

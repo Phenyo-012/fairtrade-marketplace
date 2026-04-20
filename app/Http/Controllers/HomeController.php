@@ -17,6 +17,7 @@ class HomeController extends Controller
         // ========================
         $featuredProducts = Product::where('is_approved', true)
             ->where('is_active', true)
+            ->where('is_archived', false)
             ->with('images')
             ->latest()
             ->take(8)

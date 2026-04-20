@@ -7,6 +7,8 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+    
+
     //create a function to return the view for creating a new product
     public function create()
     {
@@ -47,5 +49,33 @@ class ProductController extends Controller
         $products = $sellerProfile->products;
 
         return view('products.index', compact('products'));
+    }
+
+    public function archive(Product $product)
+    {
+        if ($product->seller_profile_id !== auth()->user()->sellerProfile->id) {
+            abort(403);
+        }
+
+        $product->update([
+            'is_archived' => true,
+            'is_active' => false
+        ]);
+
+        return back()->with('success', 'Product archived.');
+    }
+
+    public function unarchive(Product $product)
+    {
+       if ($product->seller_profile_id !== auth()->user()->sellerProfile->id) {
+            abort(403);
+        }
+
+        $product->update([
+            'is_archived' => false,
+            'is_active' => true
+        ]);
+
+        return back()->with('success', 'Product restored.');
     }
 }

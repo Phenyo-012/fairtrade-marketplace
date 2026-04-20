@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,14 +12,23 @@ class OrderItem extends Model
     protected $fillable = [
     'order_id',
     'product_id',
+    'product_name',
     'quantity',
     'unit_price',
-    'subtotal'
+    'subtotal',
+    'original_price'
     ];
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(\App\Models\Product::class)
+            ->withTrashed()
+            ->withDefault(function () {
+                return new \App\Models\Product([
+                    'product_name' => 'Deleted Product',
+                    'unit_price' => 0
+                ]);
+            });
     }
 
     public function order()
