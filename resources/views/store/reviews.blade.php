@@ -108,7 +108,7 @@
                             </p>
 
                             <p class="text-sm text-gray-400">
-                                {{ $review->created_at->format('d M Y H i') }}
+                                {{ $review->created_at->format('d M Y - H:i') }}
                             </p>
                         </div>
 
