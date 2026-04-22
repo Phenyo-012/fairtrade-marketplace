@@ -1,6 +1,14 @@
 <x-app-layout>
 
-<div class="max-w-5xl mx-auto py-10">
+<div class="max-w-5xl mx-auto mt-5">
+
+     <a href="{{ route('admin.orders.index') }}" class="mt-6 px-4 py-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" stroke-dasharray="12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12l7 -7M8 12l7 7">
+                <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.62s" values="12;0" />
+            </path>
+        </svg>
+    </a>
 
     <h1 class="text-2xl font-bold mb-6">
         Admin View - Order #{{ $order->id }}

@@ -1,10 +1,14 @@
 <x-app-layout>
 
-<div class="max-w-5xl mx-auto py-10 px-4">
+<div class="max-w-5xl mx-auto py-5 px-4">
 
 <!-- BACK TO CHAT INDEX -->
-    <a href="{{ route('admin.chats.index') }}" class="text-blue-500 hover:underline">
-        Back to Chats
+    <a href="{{ route('admin.chats.index') }}" class="mt-6 px-4 py-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" stroke-dasharray="12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12l7 -7M8 12l7 7">
+                <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.62s" values="12;0" />
+            </path>
+        </svg>
     </a>
 
     <h2 class="text-xl font-bold mb-4">
