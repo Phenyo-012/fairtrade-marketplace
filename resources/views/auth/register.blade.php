@@ -26,7 +26,7 @@
         <!-- Phone with country code selection -->
         <div class="mt-4">
             <x-input-label for="phone" :value="__('Phone Number')" />
-            <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" required autocomplete="tel" placeholder="+1234567890" />
+            <x-text-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" required autocomplete="tel" placeholder="+27 12 345 6789" />
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
 
@@ -53,19 +53,9 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-
-        <div class="mt-4">
+         <div class="mt-4">
             <label class="flex items-center">
-                <input type="checkbox" name="terms" required class="mr-2">
+                <input type="checkbox" name="terms" required class="mr-2 rounded-full">
                 I agree to the 
                 <a href="{{ route('terms') }}" class="text-blue-600 underline ml-1">
                     Terms of Service
@@ -75,12 +65,22 @@
 
         <div class="mt-4">
             <label class="flex items-center">
-                <input type="checkbox" name="privacy" required class="mr-2">
+                <input type="checkbox" name="privacy" required class="mr-2 rounded-full">
                 I agree to the 
                 <a href="{{ route('privacy') }}" class="text-blue-600 underline ml-1">
                     Privacy Policy
                 </a>
             </label>
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                {{ __('Already registered?') }}
+            </a>
+
+            <x-primary-button class="ms-4">
+                {{ __('Register') }}
+            </x-primary-button>
         </div>
 
     </form>

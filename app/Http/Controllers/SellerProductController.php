@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SellerProductController extends Controller
 {
@@ -44,26 +46,9 @@ class SellerProductController extends Controller
             'stock_quantity' => 'required|integer',
             'category' => 'required',
             'condition' => 'required',
-            'images' => 'required|array|max:5',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'cropped_images' => 'required|array|min:1|max:5',
+            'cropped_images.*' => 'required|string',
         ]);
-
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            $path = public_path('storage/product_images/' . $filename);
-
-            // Resize image
-            Image::make($image)
-                ->resize(800, 800, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->save($path);
-
-            $data['image'] = 'product_images/' . $filename;
-        }
 
         $product = Product::create([
             'seller_profile_id' => auth()->user()->sellerProfile->id,
@@ -76,15 +61,22 @@ class SellerProductController extends Controller
             'is_active' => false,
         ]);
 
-        // Save images
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('product_images', 'public');
+        // SAVE CROPPED IMAGES ONLY
+        foreach ($request->cropped_images as $base64Image) {
 
-                $product->images()->create([
-                    'image_path' => $path
-                ]);
-            }
+            $image = str_replace('data:image/jpeg;base64,', '', $base64Image);
+            $image = str_replace(' ', '+', $image);
+
+            $imageName = 'product_' . time() . '_' . uniqid() . '.jpg';
+
+            Storage::disk('public')->put(
+                'products/' . $imageName,
+                base64_decode($image)
+            );
+
+            $product->images()->create([
+                'image_path' => 'products/' . $imageName
+            ]);
         }
 
         $discountEndsAt = null;

@@ -14,7 +14,7 @@
                 <div class="md:col-span-3">
 
                     <!-- MAIN IMAGE CONTAINER -->
-                    <div class="relative bg-white rounded-2xl shadow overflow-hidden">
+                    <div class="relative w-full max-w-[649px] aspect-[649/648] bg-white rounded-2xl shadow overflow-hidden mx-auto">
 
                         <div class="w-full h-auto overflow-hidden">
                             @if($product->images->isEmpty())
