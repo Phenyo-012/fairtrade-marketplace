@@ -11,7 +11,6 @@
 
             <!-- ACTION CARDS -->
             <div class="grid md:grid-cols-4 gap-6 mb-10">
-
                 <a href="{{ route('admin.products') }}"
                 class="bg-white border border-gray-300 p-5 rounded-xl shadow-md hover:shadow-md hover:bg-yellow-100">
                     <p class="text-sm text-yellow-700">Pending Products Approvals</p>
@@ -35,7 +34,6 @@
                     <p class="text-sm text-green-700">Seller Orders</p>
                     <h2 class="text-2xl font-bold">{{ $totalOrders }}</h2>
                 </a>
-
             </div>
 
             <!-- KPI ROW -->

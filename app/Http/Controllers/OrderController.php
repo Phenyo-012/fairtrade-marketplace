@@ -181,4 +181,28 @@ class OrderController extends Controller
             return back()->with('error', 'Failed to place order. Please try again.' . $e->getMessage());
         }
     }
+
+    public function cancel(Order $order)
+    {
+        if ($order->buyer_id !== auth()->id()) {
+            abort(403);
+        }
+
+        if (!$order->can_buyer_cancel) {
+            return back()->with('error', 'This order can no longer be cancelled.');
+        }
+
+        $order->update([
+            'status' => 'cancelled',
+        ]);
+
+        // restore stock
+        foreach ($order->orderItems()->with('product')->get() as $item) {
+            if ($item->product) {
+                $item->product->increment('stock_quantity', $item->quantity);
+            }
+        }
+
+        return back()->with('success', 'Order cancelled successfully.');
+    }
 }

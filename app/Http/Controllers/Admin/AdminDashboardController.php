@@ -18,7 +18,7 @@ class AdminDashboardController extends Controller
     {
 
         // Late shipments %
-        $totalOrders = Order::count();
+        $totalOrders = Order::where('status', 'completed')->count();
 
         $lateOrders = Order::where('is_late', true)->count();
 
@@ -54,14 +54,12 @@ class AdminDashboardController extends Controller
             ->having('disputes', '>', 3)
             ->get();
 
-        $totalRevenue = Order::sum('total_amount');
-
+        $totalRevenue = Order::where('status', 'completed')->sum('total_amount');
+        $platformRevenue = $totalRevenue * 0.05;
+        
         // DAILY REVENUE (last 180 days)
-        $dailyRevenue = Order::select(
-                DB::raw('DATE(created_at) as date'),
-                DB::raw('SUM(total_amount) as total')
-            )
-            ->where('created_at', '>=', now()->subDays(180))
+        $dailyRevenue = Order::selectRaw('DATE(created_at) as date, SUM(total_amount) as total')
+            ->where('status', 'completed')
             ->groupBy('date')
             ->orderBy('date')
             ->get();
@@ -86,13 +84,13 @@ class AdminDashboardController extends Controller
 
         return view('admin.dashboard', [
             'totalUsers' => User::count(),
-            'totalOrders' => Order::count(),
+            'totalOrders' => $totalOrders,
             'totalProducts' => Product::count(),
             'pendingProducts' => Product::where('is_approved', false)->count(),
             'pendingSellers' => SellerProfile::where('verification_status', 'pending')->count(),
             'openDisputes' => Dispute::where('status', 'open')->count(),
-            'totalRevenue' => Order::sum('total_amount'),
-            'platformRevenue' => $totalRevenue * 0.05,
+            'totalRevenue' => $totalRevenue,
+            'platformRevenue' => $platformRevenue,
             'totalDisputes' => Dispute::count(),
             'totalSellers' => SellerProfile::count(),
             'totalReviews' => Review::count(),

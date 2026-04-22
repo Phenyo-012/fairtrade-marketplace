@@ -53,7 +53,9 @@ class SellerDashboardController extends Controller
         // ========================
         // STATS
         // ========================
-        $totalOrders = $orders->count();
+        $totalOrders = \App\Models\Order::where('seller_profile_id', $seller->id)
+            ->where('status', 'completed')
+            ->count();
         $totalProducts = Product::where('seller_profile_id', $seller->id)
             ->where('is_archived', false)
             ->count();

@@ -79,10 +79,17 @@ class SellerOrderController extends Controller
             'status' => 'required|in:awaiting_shipment,shipped'
         ]);
 
+        $newStatus = $request->status;
+
+        // Prevent shipping during buyer cancellation window
+        if ($newStatus === 'shipped' && !$order->can_seller_ship) {
+            return back()->with('error', 'You can only mark this order as shipped after the buyer cancellation window has expired.');
+        }
+
         // ========================
         // WHEN SHIPPING
         // ========================
-        if ($request->status === 'shipped') {
+        if ($newStatus === 'shipped') {
 
             $isLate = false;
 
@@ -100,11 +107,11 @@ class SellerOrderController extends Controller
             
             else {
                 $order->update([
-                    'status' => $request->status
+                    'status' => $newStatus
                 ]);
             }
  
-        return back()->with('success', 'Order status updated.');
+        return back()->with('success', 'Order status updated successfully.');
     }
 
     public function ship(Order $order, CourierService $courierService)

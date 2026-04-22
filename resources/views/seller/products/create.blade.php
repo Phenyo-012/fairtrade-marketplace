@@ -32,11 +32,11 @@
 
                 <!-- Controls -->
                 <div class="mt-4 flex flex-wrap gap-2">
-                    <button type="button" onclick="cropCurrent()" class="bg-black text-white px-4 py-2 rounded">
+                    <button type="button" onclick="cropCurrent()" class="bg-black text-white px-4 py-2 rounded-3xl">
                         Crop Image
                     </button>
 
-                    <button type="button" onclick="nextImage()" class="bg-gray-300 px-4 py-2 rounded">
+                    <button type="button" onclick="nextImage()" class="bg-gray-300 px-4 py-2 rounded-3xl">
                         Next
                     </button>
                 </div>
@@ -79,7 +79,7 @@
                 <option value="second_hand">Second Hand</option>
             </select>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded-3xl">
+            <button class="bg-white text-black border border-gray-400 rounded-3xl hover:bg-blue-300 transition shadow-md px-4 py-2">
                 Save Product Listing
             </button>
         </form>

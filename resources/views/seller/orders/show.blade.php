@@ -103,6 +103,21 @@
                         </div>
                     @endforeach
 
+                    
+                    @if($order->can_buyer_cancel)
+                        <div class="bg-orange-100 text-orange-900 p-3 rounded-xl mt-4 mb-4">
+                            Buyer can still cancel this order for:
+                            <span
+                                class="buyer-cancel-countdown font-bold"
+                                data-deadline="{{ $order->buyer_cancellation_deadline }}">
+                            </span>
+                        </div>
+                    @elseif(in_array($order->status, ['pending', 'awaiting_shipment']))
+                        <div class="bg-gray-100 text-gray-700 p-3 rounded-xl mt-4 mb-4">
+                            Buyer cancellation window has expired.
+                        </div>
+                    @endif
+
                     <div class="bg-white border border-gray-200 p-6 rounded-xl shadow mb-6 mt-6">
                         <h3 class="font-bold mb-3">Shipping Details</h3>
 
@@ -140,7 +155,8 @@
                             </option>
 
                             <option value="shipped"
-                                {{ $order->status === 'shipped' ? 'selected' : '' }}>
+                                {{ $order->status === 'shipped' ? 'selected' : '' }}
+                                {{ !$order->can_seller_ship ? 'disabled' : '' }}>
                                 Shipped
                             </option>
                         </select>
@@ -156,6 +172,7 @@
         </div>
     </div>
 
+    <!-- SHIP "WITHIN" COUNTDOWN SCRIPT -->
     <script>
         function startCountdowns() {
             const elements = document.querySelectorAll('.countdown');
@@ -196,6 +213,42 @@
         }
 
         document.addEventListener('DOMContentLoaded', startCountdowns);
+    </script>
+
+    <!-- ORDER CANCELLATION COUNTDOWN SCRIPT -->
+    <script>
+        function startBuyerCancelCountdowns() {
+            const elements = document.querySelectorAll('.buyer-cancel-countdown');
+
+            elements.forEach(el => {
+                const deadline = new Date(el.dataset.deadline).getTime();
+
+                function update() {
+                    const now = new Date().getTime();
+                    const diff = deadline - now;
+
+                    if (diff <= 0) {
+                        el.innerHTML = "Expired";
+
+                        const cancelBox = el.closest('.bg-yellow-100, .bg-orange-100');
+                        if (cancelBox) {
+                            setTimeout(() => window.location.reload(), 1000);
+                        }
+                        return;
+                    }
+
+                    const minutes = Math.floor(diff / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    el.innerHTML = `${minutes}m ${seconds}s`;
+                }
+
+                update();
+                setInterval(update, 1000);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', startBuyerCancelCountdowns);
     </script>
 
 </x-app-layout>

@@ -134,6 +134,7 @@
                         </a>
                     </div>
 
+                    <!-- TOTAL ORDERS-->
                     <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
                         <p class="text-sm text-black">
                             Total Orders
@@ -141,6 +142,7 @@
                         <p class="text-3xl font-bold mt-2">
                             {{ $totalOrders }}
                         </p>
+                        <p class="text-xs text-gray-500 mt-1"> This figure only records orders that are completed</p>
                     </div>
 
                     <div class="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">

@@ -31,6 +31,36 @@
                 Ordered on: {{ $order->created_at->format('d M Y H:i') }}
             </p>
 
+            @if($order->can_buyer_cancel)
+                <div class="bg-yellow-100 text-yellow-900 p-4 rounded-xl shadow mb-6">
+                    <p class="font-semibold mb-1">
+                        You can still cancel this order.
+                    </p>
+                    <p class="text-sm mb-3">
+                        Time left:
+                        <span
+                            class="buyer-cancel-countdown font-bold"
+                            data-deadline="{{ $order->buyer_cancellation_deadline }}">
+                        </span>
+                    </p>
+
+                    <form method="POST" action="{{ route('orders.cancel', $order) }}">
+                        @csrf
+                        @method('PATCH')
+
+                        <button class="bg-red-500 text-white px-4 py-2 rounded-3xl hover:bg-red-600 shadow-md">
+                            Cancel Order
+                        </button>
+                    </form>
+                </div>
+            @endif
+
+            @if(!$order->can_buyer_cancel && in_array($order->status, ['pending', 'awaiting_shipment']))
+                <div class="bg-gray-100 text-red-600 p-4 rounded-xl shadow mb-6">
+                    The buyer cancellation window has expired.
+                </div>
+            @endif
+
             <!-- TIMELINE -->
             <div class="flex justify-between text-sm">
 
@@ -212,7 +242,7 @@
 
             @elseif($order->status !== 'disputed')
                 <a href="{{ route('disputes.create', $order) }}"
-                class="bg-red-500 text-white px-4 py-2 rounded-3xl hover:bg-red-600 shadow-md">
+                class="px-4 py-2 bg-white text-black border border-black rounded-3xl hover:bg-red-500 transition shadow-md">
                     Dispute Order
                 </a>
             @endif
@@ -225,7 +255,7 @@
 
             @if($reviewableItems->count() > 0)
                 <a href="{{ route('reviews.create', $order) }}"
-                class="bg-green-600 text-white px-4 py-2 rounded-3xl hover:bg-green-700">
+                class="px-4 py-2 bg-white text-black border border-black rounded-3xl hover:bg-green-600 transition shadow-md">
                     Write Review
                 </a>
             @else
@@ -236,5 +266,41 @@
         </div>
 
     </div>
+
+    <!-- ORDER CANCELLATION COUNTDOWN SCRIPT -->
+    <script>
+        function startBuyerCancelCountdowns() {
+            const elements = document.querySelectorAll('.buyer-cancel-countdown');
+
+            elements.forEach(el => {
+                const deadline = new Date(el.dataset.deadline).getTime();
+
+                function update() {
+                    const now = new Date().getTime();
+                    const diff = deadline - now;
+
+                    if (diff <= 0) {
+                        el.innerHTML = "Expired";
+
+                        const cancelBox = el.closest('.bg-yellow-100, .bg-orange-100');
+                        if (cancelBox) {
+                            setTimeout(() => window.location.reload(), 1000);
+                        }
+                        return;
+                    }
+
+                    const minutes = Math.floor(diff / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    el.innerHTML = `${minutes}m ${seconds}s`;
+                }
+
+                update();
+                setInterval(update, 1000);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', startBuyerCancelCountdowns);
+    </script>
 
 </x-app-layout>

@@ -229,6 +229,11 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/products/{product}/unarchive', [ProductController::class, 'unarchive'])
         ->name('products.unarchive');
+
+    // CANCEL ORDER 
+    
+    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])
+        ->name('orders.cancel');
 });
 
 /*
@@ -369,8 +374,8 @@ Route::middleware(['auth', 'not.seller'])->group(function () {
 Route::middleware(['auth','role:buyer'])->group(function () {
 
     Route::get('/buyer/dashboard', function () {
-        return view('buyer.dashboard');
-    })->name('buyer.dashboard');
+        return view('buyer.dashboard');})
+        ->name('buyer.dashboard');
 });
 
 require __DIR__.'/auth.php';

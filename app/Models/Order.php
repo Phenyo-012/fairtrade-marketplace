@@ -155,4 +155,32 @@ class Order extends Model
 
         return now()->gt($this->delivered_at->addHours(24));
     }
+
+    public function getBuyerCancellationDeadlineAttribute()
+    {
+        return $this->created_at?->copy()->addMinutes(30);
+    }
+
+    public function getCanBuyerCancelAttribute()
+    {
+        return in_array($this->status, ['pending', 'awaiting_shipment'])
+            && $this->created_at
+            && now()->lt($this->buyer_cancellation_deadline);
+    }
+
+    public function getCanSellerShipAttribute()
+    {
+        return in_array($this->status, ['pending', 'awaiting_shipment'])
+            && $this->created_at
+            && now()->gte($this->buyer_cancellation_deadline);
+    }
+
+    public function getBuyerCancellationTimeLeftAttribute()
+    {
+        if (!$this->can_buyer_cancel) {
+            return 0;
+        }
+
+        return now()->diffInSeconds($this->buyer_cancellation_deadline, false);
+    }
 }
