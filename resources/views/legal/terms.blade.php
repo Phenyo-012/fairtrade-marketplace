@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="max-w-4xl mx-auto px-4 py-10 bg-white shadow rounded-xl mt-6">
+    <div class="max-w-4xl mx-auto px-7 py-10 bg-white shadow rounded-xl mt-6">
 
         <h1 class="text-3xl font-bold mb-6">Terms of Service</h1>
 

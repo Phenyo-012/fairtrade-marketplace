@@ -30,11 +30,6 @@
                             {{ $user1->first_name }} & {{ $user2->first_name }}
                         </p>
 
-                        @if($last)
-                            <p class="text-sm text-gray-500 truncate">
-                                {{ $last->message }}
-                            </p>
-                        @endif
                     </div>
 
                     <span class="text-xs text-gray-400">

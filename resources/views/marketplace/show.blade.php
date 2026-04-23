@@ -359,7 +359,7 @@
             <!-- SELLER CARD (FULL FIXED VERSION) -->
             <div class="mt-6">
 
-                <div class="bg-white border rounded-xl shadow-sm hover:shadow-md transition p-4">
+                <div class="bg-white border rounded-xl shadow-sm hover:shadow-md transition h-auto p-10">
 
                     <div class="flex items-center gap-4">
 
@@ -386,7 +386,6 @@
                             </h3>
 
                             <!-- STARS -->
-                        
                             <div class="flex items-center gap-1 mt-1">
 
                                 <div class="flex items-center gap-1 text-black">
@@ -451,7 +450,7 @@
                     </div>
 
                     <!-- BUTTONS (FIXED LAYOUT) -->
-                    <div class="mt-4 flex gap-2">
+                    <div class="mt-10 flex gap-2">
 
                         <!-- VIEW STORE -->
                         <a href="{{ route('store.show', $product->seller_profile_id) }}"

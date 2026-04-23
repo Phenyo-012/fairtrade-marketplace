@@ -98,8 +98,6 @@ Route::middleware('auth')->group(function () {
     // Orders
     Route::post('/products/{product}/buy', [OrderController::class, 'store']);
 
-    Route::get('/orders', [OrderController::class, 'index']);
-
     Route::get('/my-orders', [OrderController::class, 'myOrders'])
         ->name('orders.my');
 

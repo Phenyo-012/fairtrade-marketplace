@@ -13,32 +13,33 @@
          <div class="flex flex-wrap gap-3 items-center">
 
             <!-- SPECIAL OFFERS -->
-            <select name="offer" class="border px-4 py-2 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
-                  <option value="">Special Offers</option>
+            <select name="offer" class="border w-40 px-4 py-2 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
+                  <option value="">
+                     Special Offers
+                  </option>
                   <option value="free_shipping" {{ request('offer') == 'free_shipping' ? 'selected' : '' }}>
                      Free Shipping
-                  </option>
-                  <option value="on_sale" {{ request('offer') == 'on_sale' ? 'selected' : '' }}>
-                     On Sale
                   </option>
             </select>
 
             <!-- PRICE RANGE -->
             <div class="flex items-center gap-2">
-                  <input type="number" name="min_price" placeholder="Min"
-                     value="{{ request('min_price') }}"
-                     class="border px-3 py-2 w-24 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
+               <input type="number" name="min_price" placeholder="Min"
+                  value="{{ request('min_price') }}"
+                  class="border px-3 py-2 w-24 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
 
-                  <span>-</span>
+               <span> - </span>
 
-                  <input type="number" name="max_price" placeholder="Max"
-                     value="{{ request('max_price') }}"
-                     class="border px-3 py-2 w-24 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none ">
+               <input type="number" name="max_price" placeholder="Max"
+                  value="{{ request('max_price') }}"
+                  class="border px-3 py-2 w-24 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none ">
             </div>
 
             <!-- SORT -->
-            <select name="sort" class="border px-4 py-2 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
-                  <option value="">Sort By</option>
+            <select name="sort" class="border w-[225px] px-4 py-2 rounded-3xl focus:ring focus:ring-blue-300 focus:outline-none">
+                  <option value="">
+                     Sort By
+                  </option>
                   <option value="low_price" {{ request('sort') == 'low_price' ? 'selected' : '' }}>
                      Lowest Price
                   </option>
@@ -196,7 +197,7 @@
 
       <!-- Pagination -->
       <div class="mt-6">
-      {{ $products->links() }}
+         {{ $products->links() }}
       </div>
 
    </div>
@@ -234,4 +235,5 @@
          }
       });
    </script>
+   
 </x-app-layout>

@@ -120,5 +120,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Product::class, 'wishlists');
     }
 
+    public function chatReports()
+    {
+        return $this->hasMany(ChatReport::class, 'reported_by');
+    }
 
 }

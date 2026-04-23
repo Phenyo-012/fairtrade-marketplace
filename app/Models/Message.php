@@ -27,4 +27,14 @@ class Message extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'sender_id');
     }
+
+    public function reports()
+    {
+        return $this->hasMany(ChatReport::class);
+    }
+
+    public function isReported()
+    {
+        return $this->reports()->exists();
+    }
 }

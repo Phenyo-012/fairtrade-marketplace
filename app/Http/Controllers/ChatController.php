@@ -91,7 +91,7 @@ class ChatController extends Controller
         \App\Models\ChatReport::create([
             'message_id' => $message->id,
             'reported_by' => auth()->id(),
-            'reason' => $request->reason
+            'reason'  => $request->reason ?? 'Feature Not available'
         ]);
 
         $message->update(['is_flagged' => true]);

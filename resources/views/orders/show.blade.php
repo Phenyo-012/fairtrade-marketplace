@@ -1,16 +1,22 @@
 <x-app-layout>
 
-    <div class="max-w-5xl mx-auto px-4 py-10">
+    <div class="max-w-5xl mx-auto px-4 py-5">
+
+        <!-- BACK TO MY ORDERS -->
+        <a href="{{ route('orders.my') }}" class="mt-6 px-4 py-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-dasharray="12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12l7 -7M8 12l7 7">
+                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.62s" values="12;0" />
+                </path>
+            </svg>
+        </a>
+
 
         <h2 class="text-2xl font-bold mb-6">
             Order #{{ $order->id }}
         </h2>
 
-        <!-- 
-        ========================
-            STATUS + TIMELINE
-        ======================== 
-        -->
+        <!-- STATUS + TIMELINE -->
         <div class="bg-white p-6 rounded-xl shadow mb-6">
 
             <p class="font-semibold mb-2">

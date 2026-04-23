@@ -1,15 +1,17 @@
 <x-app-layout>
 
-    <div class="bg-gray-100 min-h-screen py-10">
+    <div class="bg-gray-100 min-h-screen py-5">
         <div class="max-w-5xl mx-auto px-4">
 
-            <!-- BACK BUTTON -->
-            <div class="mb-6">
-                <a href="{{ route('chat.index') }}"
-                    class="text-blue-500 hover:text-blue-700 font-semibold">
-                    Back to Conversations
-                </a>
-            </div>
+            <!-- BACK TO CHATS -->
+            <a href="{{ route('chat.index') }}" class="mt-6 px-4 py-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-dasharray="12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12l7 -7M8 12l7 7">
+                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.62s" values="12;0" />
+                    </path>
+                </svg>
+            </a>
+
 
             <!-- HEADER -->
             <div class="bg-white rounded-xl shadow p-6 mb-6 flex justify-between items-center">
@@ -21,13 +23,8 @@
                     <!-- VISIT TERMS OF SERVICE FOR CHAT RULES -->
                     <a href="{{ route('terms') }}#chat"
                         class="text-xs text-blue-500 hover:underline mt-1 inline-block">
-                        Chat Terms of Service
+                        Messaging & Communication Policy
                     </a>
-
-                    <div class="text-sm text-gray-400 mt-1">
-                        {{ $conversation->updated_at->format('M d, Y - H:i') }} |
-                        {{ $conversation->messages->where('sender_id','!=',auth()->id())->whereNull('read_at')->count() }} unread
-                    </div>
                 </div>
             </div>
 
@@ -57,15 +54,13 @@
 
                         <div class="flex {{ $isMe ? 'justify-end' : 'justify-start' }}">
 
-                            <div class="max-w-sm md:max-w-md">
+                            <div class="max-w-sm md:max-w-md w-fit min-w-0">
 
                                 <!-- MESSAGE BUBBLE -->
-                                <div class="
-                                    px-4 py-2 rounded-2xl text-sm shadow
-                                    {{ $isMe
-                                        ? 'bg-blue-500 text-white font-semibold tracking-wider rounded-br-none'
-                                        : 'bg-gray-900 text-white font-semibold tracking-wider border rounded-bl-none'
-                                    }}">
+                                <div class="px-4 py-2 rounded-3xl text-sm shadow
+                                    {{ $isMe ? 'bg-blue-500 text-white font-semibold tracking-wider rounded-br-none'
+                                            : 'bg-black text-white font-semibold tracking-wider border rounded-bl-none' }}"
+                                    style="overflow-wrap: anywhere; word-break: break-word;">
                                     {{ $message->message }}
                                 </div>
 
@@ -129,8 +124,13 @@
                             class="flex-1 border rounded-full px-4 py-2 focus:ring focus:ring-blue-300 focus:outline-none"
                             required>
 
-                        <button class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition">
-                            Send
+                        <button class="bg-black text-white px-3 py-3 rounded-full hover:bg-blue-800 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                    <path d="M12 21l0 -17.5" />
+                                    <path d="M12 3l7 7M12 3l-7 7" />
+                                </g>
+                            </svg>
                         </button>
 
                     </form>
@@ -144,25 +144,25 @@
 
     <!-- AUTO SCROLL -->
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function () {
 
-        const chatBox = document.getElementById('chatBox');
+            const chatBox = document.getElementById('chatBox');
 
-        // Scroll to bottom
-        chatBox.scrollTop = chatBox.scrollHeight;
+            // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-        let scrollTimeout;
+            let scrollTimeout;
 
-        chatBox.addEventListener('scroll', () => {
-            chatBox.classList.add('show-scrollbar');
+            chatBox.addEventListener('scroll', () => {
+                chatBox.classList.add('show-scrollbar');
 
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                chatBox.classList.remove('show-scrollbar');
-            }, 800);
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    chatBox.classList.remove('show-scrollbar');
+                }, 800);
+            });
+
         });
-
-    });
     </script>
 
 </x-app-layout>
