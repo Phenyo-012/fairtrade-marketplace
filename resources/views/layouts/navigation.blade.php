@@ -30,7 +30,7 @@
             <!-- RIGHT SIDE -->
             <div class="hidden sm:flex items-center gap-4">
 
-                <a href="{{ route('wishlist.index') }}" :active="request()->routeIs('wishlist.*')">
+                <a href="{{ route('wishlist.index') }}" :active="request()->routeIs('wishlist.*')" title="Wishlist">
                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="none" stroke="currentColor" stroke-dasharray="30" stroke-linecap="round" 
                             stroke-linejoin="round" stroke-width="2" d="M12 8c0 0 0 0 -0.76 -1c-0.88 -1.16 
@@ -42,7 +42,7 @@
                     </svg>
                 </a>
                 <!-- SUPPORT ICON -->
-                <a href="#" class="text-xl">
+                <a href="{{ route('support.contact') }}" title="Contact Support" class="text-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="none" stroke="#060606" stroke-dasharray="62" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3c0.5 0 2.5
                              4.5 2.5 5c0 1 -1.5 2 -2 3c-0.5 1 0.5 2 1.5 3c0.39 0.39 2 2 3 1.5c1 -0.5 2 -2 3 -2c0.5 0 5 2 5 2.5c0 2 -1.5 3.5 -3 4c-1.5 0.5 -2.5 0.5 
@@ -53,36 +53,15 @@
                 </a>
 
                 <!-- CART ICON -->
-                <a href="{{ route('cart.index') }}" class="relative text-xl">
-                   <svg xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24">
-
-                        <path
-                            fill="currentColor"
-                            fill-opacity="0"
-                            stroke="currentColor"
-                            stroke-width="0.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-dasharray="230"
-                            stroke-dashoffset="230"
-                            d="M2.316 3.25a.75.75 0 1 0 0 1.5h1.181a.75.75 0 0 1 .743.646l1.254 8.917a2.25 2.25 0 0 0 2.228 1.937h10.344a.75.75 
-                            0 0 0 0-1.5H7.722a.75.75 0 0 1-.743-.646l-.12-.853h10.852a2.25 2.25 0 0 0 2.15-1.583l1.921-6.188a.75.75 0 0 0-.716-.972H5.516A2.25 2.25 0 
-                            0 0 3.498 3.25zm3.525 2.758h14.207l-1.62 5.215a.75.75 0 0 1-.717.527H6.648zM7.784 17.75a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5m6.786 
-                            1.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0">
-
-                            <animate attributeName="stroke-dashoffset"
-                                    values="260;0"
-                                    dur="1.1s"
-                                    fill="freeze"/>
-
-                            <animate attributeName="fill-opacity"
-                                    begin="1.1s"
-                                    dur="0.6s"
-                                    to="1"
-                                    fill="freeze"/>
+                <a href="{{ route('cart.index') }}" title="Shopping cart" class="relative text-xl">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" 
+                            stroke-dasharray="230" stroke-dashoffset="230" d="M2.316 3.25a.75.75 0 1 0 0 1.5h1.181a.75.75 0 0 1 .743.646l1.254 8.917a2.25 2.25 
+                            0 0 0 2.228 1.937h10.344a.75.75 0 0 0 0-1.5H7.722a.75.75 0 0 1-.743-.646l-.12-.853h10.852a2.25 2.25 0 0 0 2.15-1.583l1.921-6.188a.75.75 
+                            0 0 0-.716-.972H5.516A2.25 2.25 0 0 0 3.498 3.25zm3.525 2.758h14.207l-1.62 5.215a.75.75 0 0 1-.717.527H6.648zM7.784 17.75a1.75 1.75 0 1 0 0 
+                            3.5a1.75 1.75 0 0 0 0-3.5m6.786 1.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0">
+                            <animate attributeName="stroke-dashoffset" values="260;0" dur="1.1s" fill="freeze"/>
+                            <animate attributeName="fill-opacity" begin="1.1s" dur="0.6s" to="1" fill="freeze"/>
                         </path>
                     </svg>
                     @php
@@ -128,14 +107,20 @@
                                 Buyer Dashboard
                             </x-dropdown-link>
 
+                            <hr>
+
                             <x-dropdown-link :href="route('orders.my')">
                                 My Orders
                             </x-dropdown-link>
+
+                            <hr>
 
                             <!-- MESSAGES -->
                             <x-dropdown-link :href="route('chat.index')">
                                 Messages
                             </x-dropdown-link>
+
+                            <hr>
 
                             <x-dropdown-link :href="route('seller.setup')">
                                 Sell on FairTrade
@@ -147,26 +132,38 @@
                                 Seller Dashboard
                             </x-dropdown-link>
 
+                            <hr>
+
                             <x-dropdown-link :href="route('seller.products.index')">
                                 My Products
                             </x-dropdown-link>
+
+                            <hr>
 
                             <x-dropdown-link :href="route('seller.orders.index')">
                                 Order Management
                             </x-dropdown-link>
 
+                            <hr>
+
                             <x-dropdown-link :href="route('seller.disputes.index')">
                                 Disputes
                             </x-dropdown-link>
+
+                            <hr>
 
                             <x-dropdown-link :href="route('store.show', Auth::user()->sellerProfile->id)">
                                 My Store
                             </x-dropdown-link>
 
+                            <hr>
+
                             <!-- MY ORDERS -->
                             <x-dropdown-link :href="route('orders.my')">
                                 My Orders
                             </x-dropdown-link>
+
+                            <hr>
 
                             <x-dropdown-link :href="route('chat.index')">
                                 Messages
@@ -185,32 +182,53 @@
                                 Admin Dashboard
                             </x-dropdown-link>
 
+                            <hr>
+
                             <x-dropdown-link :href="route('admin.disputes')">
                                 Disputes
                             </x-dropdown-link>
+
+                            <hr>
 
                             <x-dropdown-link :href="route('admin.products')">
                                 Products
                             </x-dropdown-link>
 
+                            <hr>
+
                             <x-dropdown-link :href="route('admin.reviews')">
                                 Reviews
                             </x-dropdown-link>
+
+                            <hr>
                             
                             <!-- APPROVE SELLER APPLICATIONS -->
                             <x-dropdown-link :href="route('admin.sellers.index')">
                                 Seller Applications
                             </x-dropdown-link>
 
+                            <hr>
+
                             <!-- GLOBAL ORDERS -->
                             <x-dropdown-link :href="route('admin.orders.index')">
                                 View All Seller Orders
                             </x-dropdown-link>
 
+                            <hr>
+
                             <!-- USER CHAT MODERATION -->
                             <x-dropdown-link :href="route('admin.chats.index')">
                                 Chat Moderation
                             </x-dropdown-link>
+
+                            <hr>
+
+                            <!-- SUPPORT TICKETS LINK -->
+                            <x-dropdown-link :href="route('admin.support.index')">
+                                Support Tickets
+                            </x-dropdown-link>
+
+                            <hr>
 
                             <!-- CREATE ADMIN USER IF USER IS SUPER ADMIN -->
                             @if(Auth::user()->is_super_admin)

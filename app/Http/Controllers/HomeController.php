@@ -60,6 +60,7 @@ class HomeController extends Controller
                     as score
                 ')
             )
+            ->where('seller_profiles.verification_status', 'approved')
             ->leftJoinSub($sellerSales, 'sales', function ($join) {
                 $join->on('seller_profiles.id', '=', 'sales.seller_profile_id');
             })

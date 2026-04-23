@@ -9,12 +9,12 @@
 
         <div class="mb-4">
             <label class="block mb-1">Store Name</label>
-            <input type="text" name="store_name" class="w-full border rounded-xl p-2" required>
+            <input type="text" name="store_name" class="w-full border rounded-3xl p-2" required>
         </div>
 
         <div class="mb-4">
             <label class="block mb-1">About</label>
-            <textarea name="about" class="w-full border rounded-xl p-2"></textarea>
+            <textarea name="about" class="w-full border rounded-3xl p-2"></textarea>
         </div>
 
         <div class="mb-4">
@@ -22,7 +22,7 @@
             <input type="file" name="logo">
         </div>
 
-        <button class="bg-green-600 text-white px-4 py-2 rounded-xl">
+        <button class="bg-white text-black border border-gray-400 px-4 py-2 rounded-3xl hover:bg-gray-200 shadow-md">
             Create Store
         </button>
     </form>

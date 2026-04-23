@@ -25,12 +25,12 @@
             @csrf
 
             <input name="store_name" placeholder="Store Name"
-                   class="border p-2 w-full mb-3" required>
+                   class="border p-2 w-full mb-3 rounded-3xl" required>
 
             <textarea name="about" placeholder="About your store"
-                      class="border p-2 w-full mb-3"></textarea>
+                      class="border p-2 w-full mb-3 rounded-3xl"></textarea>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded-xl">
+            <button class="bg-white text-black border border-gray-400 px-4 py-2 rounded-3xl hover:bg-blue-300 shadow-md">
                 Continue
             </button>
         </form>
@@ -46,7 +46,7 @@
             <input type="file" name="id_document" class="mb-3" required>
             <input type="file" name="selfie_document" class="mb-3" required>
 
-            <button class="bg-blue-600 text-white px-4 py-2 rounded-xl">
+            <button class="bg-white text-black border border-gray-400 px-4 py-2 rounded-3xl hover:bg-blue-300 shadow-md">
                 Submit Verification
             </button>
         </form>

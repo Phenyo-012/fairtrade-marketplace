@@ -28,6 +28,8 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\SupportController;
+use App\Http\Controllers\Admin\SupportTicketController;
 
 
 
@@ -229,9 +231,15 @@ Route::middleware('auth')->group(function () {
         ->name('products.unarchive');
 
     // CANCEL ORDER 
-    
     Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])
         ->name('orders.cancel');
+
+    // CONTACT SUPPORT
+    Route::get('/contact-support', [SupportController::class, 'create'])
+        ->name('support.contact');
+
+    Route::post('/contact-support', [SupportController::class, 'store'])
+        ->name('support.store');
 });
 
 /*
@@ -315,7 +323,15 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::get('/chats/{conversation}', [\App\Http\Controllers\Admin\AdminChatController::class, 'show'])
         ->name('admin.chats.show');
 
+    // SUPPORT ROUTES
+    Route::get('/support-tickets', [SupportTicketController::class, 'index'])
+    ->name('admin.support.index');
 
+    Route::get('/support-tickets/{ticket}', [SupportTicketController::class, 'show'])
+        ->name('admin.support.show');
+
+    Route::patch('/support-tickets/{ticket}/status', [SupportTicketController::class, 'updateStatus'])
+        ->name('admin.support.updateStatus');
 });
 
 /*

@@ -19,11 +19,6 @@
         <!-- FILTERS -->
         <div class="flex gap-3 mb-6">
 
-            <a href="{{ route('admin.sellers.index') }}"
-               class="px-4 py-2 rounded-xl {{ !$status ? 'bg-black text-white' : 'bg-white' }}">
-                All
-            </a>
-
             <a href="?status=pending"
                class="px-4 py-2 rounded-xl {{ $status == 'pending' ? 'bg-black text-white' : 'bg-white' }}">
                 Pending
@@ -90,8 +85,7 @@
                             @if($seller->verification_status == 'pending') bg-yellow-100 text-yellow-700
                             @elseif($seller->verification_status == 'approved') bg-green-100 text-green-700
                             @else bg-red-100 text-red-700
-                            @endif
-                        ">
+                            @endif">
                             {{ ucfirst($seller->verification_status) }}
                         </span>
                     </div>
@@ -128,7 +122,7 @@
                         @if($seller->verification_status !== 'approved')
                         <form method="POST" action="{{ route('admin.sellers.approve', $seller->id) }}">
                             @csrf
-                            <button class="w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition">
+                            <button class="w-full bg-gray-100 text-black py-2 border border-gray-400 rounded-3xl hover:bg-green-700 transition shadow-md">
                                 Approve
                             </button>
                         </form>
@@ -141,7 +135,7 @@
                             <input type="text" name="notes" placeholder="Reason (optional)"
                                    class="w-full border rounded-xl p-2 mb-2 text-sm">
 
-                            <button class="w-full bg-red-500 text-white py-2 rounded-xl hover:bg-red-600 transition">
+                            <button class="w-full bg-gray-100 text-black py-2 border border-gray-400 rounded-3xl hover:bg-red-600 transition shadow-md">
                                 Reject
                             </button>
                         </form>

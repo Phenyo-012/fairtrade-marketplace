@@ -158,7 +158,7 @@ class Order extends Model
 
     public function getBuyerCancellationDeadlineAttribute()
     {
-        return $this->created_at?->copy()->addMinutes(30);
+        return $this->created_at?->copy()->addMinutes(120);
     }
 
     public function getCanBuyerCancelAttribute()

@@ -62,6 +62,7 @@
                                             : 'bg-black text-white font-semibold tracking-wider border rounded-bl-none' }}"
                                     style="overflow-wrap: anywhere; word-break: break-word;">
                                     {{ $message->message }}
+                                    
                                 </div>
 
                                 <!-- META + STATUS -->
