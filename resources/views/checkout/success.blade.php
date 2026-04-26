@@ -74,8 +74,24 @@
                         </div>
                     @endforeach
 
+                   
                     <!-- TOTAL -->
                     <div class="flex justify-between mt-4 font-bold">
+                        <p class="text-sm text-gray-500">
+                            Payment Method:
+                            <span class="font-semibold text-gray-800">
+                                {{ strtoupper(str_replace('_', ' ', $order->payment_method)) }}
+                            </span>
+                        </p>
+
+                        <p class="text-sm text-gray-500">
+                            Payment Status:
+                            <span class="font-semibold text-gray-800">
+                                {{ ucfirst(str_replace('_', ' ', $order->payment_status)) }}
+                            </span>
+                        </p>
+
+
                         <span>Order Total</span>
                         <span>R{{ number_format($order->total_amount, 2) }}</span>
                     </div>

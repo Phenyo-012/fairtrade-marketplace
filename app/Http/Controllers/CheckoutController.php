@@ -30,6 +30,85 @@ class CheckoutController extends Controller
         return view('checkout.index', compact('items', 'total'));
     }
 
+    public function preparePayment(Request $request)
+    {
+        $data = $request->validate([
+            'shipping_name' => 'required|string|max:255',
+            'shipping_phone' => 'required|string|max:50',
+            'shipping_address' => 'required|string',
+            'shipping_city' => 'required|string|max:100',
+            'shipping_postal_code' => 'required|string|max:20',
+            'shipping_country' => 'required|string|max:100',
+            'payment_method' => 'required|in:card,eft,ozow,cod',
+        ]);
+
+        $items = CartItem::where('user_id', auth()->id())
+            ->with('product')
+            ->get();
+
+        if ($items->isEmpty()) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Your cart is empty.');
+        }
+
+        $total = $items->sum(fn ($item) =>
+            $item->product->discounted_price * $item->quantity
+        );
+
+        if ($data['payment_method'] === 'cod' && $total > 2000) {
+            return back()->withErrors([
+                'payment_method' => 'Cash on Delivery is only available for orders up to R2,000.'
+            ])->withInput();
+        }
+
+        session()->put('checkout_data', $data);
+
+        return redirect()->route('checkout.payment');
+    }
+
+    public function showPayment()
+    {
+        $checkoutData = session('checkout_data');
+
+        if (!$checkoutData) {
+            return redirect()->route('checkout.index')
+                ->with('error', 'Please complete checkout details first.');
+        }
+
+        $items = CartItem::where('user_id', auth()->id())
+            ->with('product')
+            ->get();
+
+        if ($items->isEmpty()) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Your cart is empty.');
+        }
+
+        $total = $items->sum(fn ($item) =>
+            $item->product->discounted_price * $item->quantity
+        );
+
+        return view('checkout.payment', [
+            'paymentMethod' => $checkoutData['payment_method'],
+            'total' => $total,
+            'checkoutData' => $checkoutData,
+        ]);
+    }
+
+    public function confirmPayment(Request $request)
+    {
+        $checkoutData = session('checkout_data');
+
+        if (!$checkoutData) {
+            return redirect()->route('checkout.index')
+                ->with('error', 'Please complete checkout details first.');
+        }
+
+        $request->merge($checkoutData);
+
+        return $this->store($request);
+    }
+
     // PROCESS CHECKOUT
     public function store(Request $request)
     {
@@ -40,6 +119,7 @@ class CheckoutController extends Controller
             'shipping_city' => 'required|string|max:100',
             'shipping_postal_code' => 'required|string|max:20',
             'shipping_country' => 'required|string|max:100',
+            'payment_method' => 'required|in:card,eft,ozow,cod',
         ]);
 
         $items = CartItem::where('user_id', auth()->id())
@@ -48,6 +128,15 @@ class CheckoutController extends Controller
 
         if ($items->isEmpty()) {
             return back()->with('error', 'Cart is empty.');
+        }
+
+        $total = $items->sum(fn ($item) =>
+            $item->product->discounted_price * $item->quantity
+        );
+
+        if ($request->payment_method === 'cod' && $total > 2000) {
+            return redirect()->route('checkout.index')
+                ->with('error', 'Cash on Delivery is only available for orders up to R2,000.');
         }
 
         DB::beginTransaction();
@@ -78,6 +167,10 @@ class CheckoutController extends Controller
                     'delivery_code' => strtoupper(Str::random(8)),
                     'seller_deadline' => now()->addDays(5),
 
+                    'payment_method' => $request->payment_method,
+                    'payment_status' => $request->payment_method === 'cod' ? 'pending_on_delivery' : 'paid',
+                    'payment_reference' => strtoupper('PAY-' . Str::random(10)),
+
                     'shipping_name' => $request->shipping_name,
                     'shipping_phone' => $request->shipping_phone,
                     'shipping_address' => $request->shipping_address,
@@ -104,6 +197,7 @@ class CheckoutController extends Controller
                     OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => $product->id,
+                        'product_name' => $product->name,
                         'quantity' => $item->quantity,
                         'unit_price' => $unitPrice,
                         'original_price' => $product->price,
@@ -118,6 +212,8 @@ class CheckoutController extends Controller
 
             // CLEAR CART
             CartItem::where('user_id', auth()->id())->delete();
+
+            session()->forget('checkout_data');
 
             DB::commit();
 

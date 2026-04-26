@@ -151,9 +151,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart', [CartController::class, 'clear'])
         ->name('cart.clear');
 
-    // CHECKOUT ROUTES
+    // CHECKOUT
     Route::get('/checkout', [CheckoutController::class, 'index'])
         ->name('checkout.index');
+
+    Route::post('/checkout/payment/prepare', [CheckoutController::class, 'preparePayment'])
+        ->name('checkout.payment.prepare');
+
+    Route::get('/checkout/payment', [CheckoutController::class, 'showPayment'])
+        ->name('checkout.payment');
+
+    Route::post('/checkout/payment/confirm', [CheckoutController::class, 'confirmPayment'])
+        ->name('checkout.payment.confirm');
 
     Route::post('/checkout', [CheckoutController::class, 'store'])
         ->name('checkout.store');
