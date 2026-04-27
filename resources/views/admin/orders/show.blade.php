@@ -40,9 +40,9 @@
         <label class="text-md text-gray-500">Country:</label>
         <p>{{ $order->shipping_country }}</p>
 
-        @if($order->tracking_number)
+        @if($order->courier_tracking_number)
              <p class="mt-3 font-semibold text-blue-600">
-                 Tracking #: {{ $order->tracking_number }}
+                 Tracking #: {{ $order->courier_tracking_number }}
              </p>
         @endif
        

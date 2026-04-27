@@ -142,9 +142,9 @@
                         <label class="text-md text-gray-500">Country:</label>
                         <p>{{ $order->shipping_country }}</p>
 
-                        @if($order->tracking_number)
+                        @if($order->courier_tracking_number)
                             <p class="mt-3 font-semibold text-blue-600">
-                                Tracking #: {{ $order->tracking_number }}
+                                Tracking #: {{ $order->courier_tracking_number }}
                             </p>
                         @endif
                     </div>
@@ -163,18 +163,24 @@
                                 {{ $order->status === 'awaiting_shipment' ? 'selected' : '' }}>
                                 Awaiting shipment
                             </option>
-
-                            <option value="shipped"
-                                {{ $order->status === 'shipped' ? 'selected' : '' }}
-                                {{ !$order->can_seller_ship ? 'disabled' : '' }}>
-                                Shipped
-                            </option>
                         </select>
 
                         <button class="w-full font-semibold bg-blue-300 hover:bg-gray-300 text-black py-2 border border-gray-300 rounded-3xl mt-3 shadow-md">
                             Update Status
                         </button>
                     </form>
+                    @if($order->courier_name)
+                        <div class="bg-green-100 text-green-800 p-4 rounded-xl mt-4">
+                            <p class="font-bold">Courier Booked</p>
+                            <p>{{ $order->courier_name }} — {{ $order->courier_service }}</p>
+                            <p>Tracking: {{ $order->courier_tracking_number }}</p>
+                        </div>
+                    @else
+                        <a href="{{ route('seller.orders.couriers', $order) }}"
+                        class="block text-center w-full font-semibold bg-black text-white py-2 rounded-3xl mt-3 shadow-md hover:bg-gray-800">
+                            Book Courier
+                        </a>
+                    @endif
                 </div>
 
             </div>

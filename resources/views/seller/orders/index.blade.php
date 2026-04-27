@@ -66,7 +66,7 @@
 
                         @if($order->is_late)
                             <p class="text-red-600 text-sm mt-1">
-                                ⚠ Late Shipment
+                                Late Shipment
                             </p>
                         @endif
                     </div>

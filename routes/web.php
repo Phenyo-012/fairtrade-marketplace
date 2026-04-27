@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\Admin\SupportTicketController;
+use App\Http\Controllers\SellerCourierController;
 
 
 
@@ -373,6 +374,16 @@ Route::middleware(['auth','role:seller', 'seller.approved'])->group(function () 
 
     Route::get('/seller/guide', [App\Http\Controllers\SellerGuideController::class, 'index'])
         ->name('seller.guide');
+
+    // COURIERS
+    Route::get('/seller/orders/{order}/couriers', [SellerCourierController::class, 'index'])
+        ->name('seller.orders.couriers');
+
+    Route::get('/seller/orders/{order}/couriers/{courier}', [SellerCourierController::class, 'show'])
+        ->name('seller.orders.couriers.show');
+
+    Route::post('/seller/orders/{order}/couriers/{courier}/book', [SellerCourierController::class, 'book'])
+        ->name('seller.orders.couriers.book');
 
 });
 

@@ -30,6 +30,11 @@ class Order extends Model
         'payment_method',
         'payment_reference',
         'shipping_fee',
+        'courier_name',
+        'courier_service',
+        'courier_tracking_number',
+        'courier_fee',
+        'courier_booked_at',
     ];
 
     protected $casts = [
