@@ -43,7 +43,7 @@ class DisputeController extends Controller
             'status' => 'open'
         ]);
 
-        // 🔴 IMPORTANT: mark order as disputed
+        // IMPORTANT: mark order as disputed
         $order->update([
             'status' => 'disputed'
         ]);

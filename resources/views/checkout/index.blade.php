@@ -14,26 +14,8 @@
 
             <h2 class="text-2xl font-bold mb-6">Checkout</h2>
 
-            <form method="POST" action="{{ route('checkout.payment.prepare') }}">
+            <form method="POST" action="{{ route('checkout.review') }}">
                 @csrf
-
-                <!-- ORDER SUMMARY -->
-                <div class="mb-6">
-                    @foreach($items as $item)
-                    @php
-                        $price = finalPrice($item->product);
-                    @endphp
-                        <div class="flex justify-between mb-2">
-                            <span>{{ $item->product->name }} (x{{ $item->quantity }})</span>
-                            <span>R{{ number_format($price * $item->quantity,2) }}</span>
-                        </div>
-                    @endforeach
-
-                    <div class="border-t mt-4 pt-4 flex justify-between font-bold">
-                        <span>Total</span>
-                        <span>R{{ number_format($total, 2) }}</span>
-                    </div>
-                </div>
 
                 <div class="bg-gray-50 p-4 rounded-xl mb-6">
                     <h3 class="font-bold mb-3">Payment Method</h3>
@@ -137,6 +119,31 @@
                             @enderror
                         </div>
                     </div>
+
+                    <select name="shipping_province"
+                            class="w-full border border-gray-400 p-2 mt-2 rounded-xl"
+                            required>
+                        <option value="">Select Province</option>
+
+                        @foreach(config('provinces') as $province)
+                            <option value="{{ $province }}" {{ old('shipping_province') === $province ? 'selected' : '' }}>
+                                {{ $province }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('shipping_province')
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @enderror
+
+                    <input type="text" name="shipping_country"
+                        value="{{ old('shipping_country') }}"
+                        placeholder="Country"
+                        class="w-full border border-gray-400 p-2 mt-2 rounded-xl"
+                        required>
+                    @error('shipping_country')
+                        <p class="text-red-500 text-sm">{{ $message }}</p>
+                    @enderror
 
                     <!-- Country -->
                     <input type="text" name="shipping_country"

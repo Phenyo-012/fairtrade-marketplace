@@ -20,7 +20,8 @@ class Product extends Model
         'discount_percentage',
         'discount_ends_at',
         'free_shipping',
-        'is_archived'
+        'is_archived',
+        'shipping_size',
     ];
 
     protected $dates = ['deleted_at'];

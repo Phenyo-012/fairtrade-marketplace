@@ -82,6 +82,7 @@ class OrderController extends Controller
             'shipping_phone' => 'required|string|max:50',
             'shipping_address' => 'required|string',
             'shipping_city' => 'required|string|max:100',
+            'shipping_province' => 'required|string|in:' . implode(',', config('provinces')),
             'shipping_postal_code' => 'required|string|max:20',
             'shipping_country' => 'required|string|max:100',
         ]);
@@ -137,6 +138,7 @@ class OrderController extends Controller
                 'shipping_phone' => $request->shipping_phone,
                 'shipping_address' => $request->shipping_address,
                 'shipping_city' => $request->shipping_city,
+                'shipping_province' => $request->shipping_province,
                 'shipping_postal_code' => $request->shipping_postal_code,
                 'shipping_country' => $request->shipping_country,
             ]);

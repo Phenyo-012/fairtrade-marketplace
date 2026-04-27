@@ -137,6 +137,8 @@
                         <p>{{ $order->shipping_address }}</p>
                         <label class="text-md text-gray-500">City:</label>
                         <p>{{ $order->shipping_city }}, {{ $order->shipping_postal_code }}</p>
+                        <label class="text-md text-gray-500">Province:</label>
+                        <p>{{ $order->shipping_province }}</p>
                         <label class="text-md text-gray-500">Country:</label>
                         <p>{{ $order->shipping_country }}</p>
 

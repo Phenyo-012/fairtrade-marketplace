@@ -89,7 +89,7 @@ class SellerProfileController extends Controller
         $request->validate([
             'store_name' => 'required|string|max:255',
             'about' => 'nullable|string',
-            'logo' => 'nullable|image|max:2048'
+            'logo' => 'nullable|image|max:2048',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -99,9 +99,9 @@ class SellerProfileController extends Controller
         $seller->update([
             'store_name' => $request->store_name,
             'about' => $request->about,
-
             'pickup_address' => $request->pickup_address,
             'pickup_city' => $request->pickup_city,
+            'pickup_province' => $request->pickup_province,
             'pickup_postal_code' => $request->pickup_postal_code,
             'pickup_country' => $request->pickup_country,
         ]);

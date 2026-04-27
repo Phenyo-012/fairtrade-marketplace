@@ -20,6 +20,7 @@ class SellerProfile extends Model
         'pickup_address',
         'pickup_city',
         'pickup_postal_code',
+        'pickup_province',
         'pickup_country',
 
     ];

@@ -24,10 +24,12 @@ class Order extends Model
         'shipping_phone',
         'shipping_address',
         'shipping_city',
+        'shipping_province',
         'shipping_postal_code',
         'shipping_country',
         'payment_method',
         'payment_reference',
+        'shipping_fee',
     ];
 
     protected $casts = [

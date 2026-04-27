@@ -96,11 +96,7 @@
 
         </div>
 
-        <!-- 
-        ========================
-            ITEMS
-        ======================== 
-        -->
+        <!-- ITEMS -->
         <div class="bg-white p-6 rounded-xl shadow mb-6">
 
             <h3 class="font-bold mb-4">Items</h3>
@@ -196,11 +192,7 @@
 
         </div>
 
-        <!-- 
-        ========================    
-            SHIPPING DETAILS
-        ======================== 
-        -->
+        <!-- SHIPPING DETAILS -->
         <div class="bg-white p-6 rounded-xl shadow mb-6">       
             <h3 class="font-bold mb-3">Shipping Details</h3>
 
@@ -212,6 +204,8 @@
             <p>{{ $order->shipping_address }}</p>
             <label class="text-md text-gray-500">City:</label>
             <p>{{ $order->shipping_city }}, {{ $order->shipping_postal_code }}</p>
+            <label class="text-md text-gray-500">Province:</label>
+            <p>{{ $order->shipping_province }}</p>
             <label class="text-md text-gray-500">Country:</label>
             <p>{{ $order->shipping_country }}</p>
 
@@ -222,22 +216,36 @@
             @endif
         </div>
 
-        <!-- 
-        ========================
-            TOTAL
-        ======================== 
-        -->
+        <!-- TOTAL -->
         <div class="bg-white p-6 rounded-xl shadow mb-6">
 
-            <p class="text-lg font-bold">
-                Total: R{{ number_format($order->total_amount, 2) }}
-            </p>
+            @php
+                $itemsTotal = $order->orderItems->sum('subtotal');
+                $shippingFee = $order->shipping_fee ?? 0;
+            @endphp
+
+            <h3 class="font-bold mb-4">Payment Summary</h3>
+
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Items Total</span>
+                    <span>R{{ number_format($itemsTotal, 2) }}</span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Shipping Fee</span>
+                    <span>R{{ number_format($shippingFee, 2) }}</span>
+                </div>
+
+                <div class="border-t pt-3 mt-3 flex justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span>R{{ number_format($order->total_amount, 2) }}</span>
+                </div>
+            </div>
 
         </div>
 
-        <!-- ========================
-            ACTIONS
-        ======================== -->
+        <!-- ACTIONS -->
         <div class="flex flex-wrap gap-4">
 
             @if($order->dispute)

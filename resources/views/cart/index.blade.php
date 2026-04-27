@@ -121,11 +121,6 @@
                     </div>
                     @endif
 
-                    <div class="flex justify-between">
-                        <span>Shipping</span>
-                        <span class="font-semibold">R{{ number_format($shipping ?? 0, 2) }}</span>
-                    </div>
-
                     <div class="border-t border-gray-200 pt-3 flex justify-between font-bold text-gray-800">
                         <span>Total</span>
                         <span>R{{ number_format($total + ($shipping ?? 0) - ($discount ?? 0), 2) }}</span>

@@ -48,6 +48,16 @@
                         <input type="text" name="pickup_city" class="w-full border p-2 mt-2 rounded-xl" placeholder="City" required>
                     </div>
 
+                    <select name="pickup_province" class="w-full border rounded-xl p-2 mb-4" required>
+                        <option value="">Select Province</option>
+
+                        @foreach(config('provinces') as $province)
+                            <option value="{{ $province }}" {{ old('pickup_province', $sellerProfile->pickup_province ?? '') === $province ? 'selected' : '' }}>
+                                {{ $province }}
+                            </option>
+                        @endforeach
+                    </select>
+
                     <div class="mb-4">
                         <input type="text" name="pickup_postal_code" class="w-full border p-2 mt-2 rounded-xl" placeholder="Postal Code" required> 
                     </div>

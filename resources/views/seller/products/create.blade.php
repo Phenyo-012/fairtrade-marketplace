@@ -64,13 +64,13 @@
                 @enderror
             </div>
 
-            <input name="name" placeholder="Name" class="border p-2 w-full mb-2 mt-4 rounded-xl">
+            <input name="name" placeholder="Name" class="border p-2 w-full mb-4 mt-4 rounded-xl">
 
-            <textarea name="description" placeholder="Description" class="border p-2 w-full mb-2 rounded-xl"></textarea>
+            <textarea name="description" placeholder="Description" class="border p-2 w-full mb-4 rounded-xl"></textarea>
 
-            <input name="price" type="number" step="0.01" placeholder="Price" class="border p-2 w-full mb-2 rounded-xl">
+            <input name="price" type="number" step="0.01" placeholder="Price" class="border p-2 w-full mb-4 rounded-xl">
 
-            <input name="stock_quantity" type="number" placeholder="Stock" class="border p-2 w-full mb-2 rounded-xl">
+            <input name="stock_quantity" type="number" placeholder="Stock" class="border p-2 w-full mb-4 rounded-xl">
 
             <select name="category" class="w-full border rounded-xl p-2 mb-4">
                 <option value="">Select Category</option>
@@ -83,7 +83,13 @@
                 @endforeach
             </select>
 
-            <select name="condition" class="border p-2 w-full mb-4 rounded-xl">
+            <select name="shipping_size" class="border p-2 w-full mb-4 rounded-xl" required>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
+
+            <select name="condition" class="border p-2 w-full mb-4 rounded-xl" required>
                 <option value="new">New</option>
                 <option value="second_hand">Second Hand</option>
             </select>

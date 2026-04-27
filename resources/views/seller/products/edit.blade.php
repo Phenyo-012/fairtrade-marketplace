@@ -17,17 +17,24 @@
             @csrf
             @method('PUT')
 
-            <input name="name" value="{{ $product->name }}" class="border border-gray-400 p-2 w-full mb-2 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">
+            <label class="block text-sm font-medium">Product Name</label>
+            <input name="name" value="{{ $product->name }}" class="border border-gray-400 p-2 w-full mb-4 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">
 
+            <label class="block text-sm font-medium">Product Description</label>
             <textarea name="description"
-                class="border border-gray-400 p-2 w-full mb-2 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">{{ $product->description }}</textarea>
+                class="border border-gray-400 p-2 w-full mb-4 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">
+                {{ $product->description }}
+            </textarea>
 
+            <label class="block text-sm font-medium">Product Price</label>
             <input name="price" value="{{ $product->price }}"
-                class="border border-gray-400 p-2 w-full mb-2 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">
+                class="border border-gray-400 p-2 w-full mb-4 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">
 
+            <label class="block text-sm font-medium">Stock Quantity</label>
             <input name="stock_quantity" value="{{ $product->stock_quantity }}"
-                class="border border-gray-400 p-2 w-full mb-2 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">
+                class="border border-gray-400 p-2 w-full mb-4 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">
 
+            <label class="block text-sm font-medium">Product Category</label>
             <select name="category" class="w-full border-gray-400 rounded-xl p-2 mb-4 focus:ring-blue-300 focus:outline-none" required>
                 <option value="">Select Category</option>
 
@@ -38,6 +45,19 @@
                         @endforeach
                     </optgroup>
                 @endforeach
+            </select>
+
+            <label class="block text-sm font-medium">Shipment Size</label>
+            <select name="shipping_size" class="border p-2 w-full mb-4 rounded-xl" required>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
+
+            <label class="block text-sm font-medium">Product Condition</label>
+            <select name="condition" class="border p-2 w-full mb-4 rounded-xl" required>
+                <option value="new">New</option>
+                <option value="second_hand">Second Hand</option>
             </select>
 
             <!-- DISCOUNT -->
@@ -63,7 +83,7 @@
                 <label>Free Shipping</label>
             </div>
 
-            <button class="px-4 py-2 bg-gray-200 text-black border border-black rounded-3xl hover:bg-blue-300 transition shadow-md">
+            <button class="px-4 py-2 bg-white text-black border border-black rounded-3xl hover:bg-blue-300 transition shadow-md">
                 Update
             </button>
 
