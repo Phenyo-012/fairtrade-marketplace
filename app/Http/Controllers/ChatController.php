@@ -62,6 +62,10 @@ class ChatController extends Controller
 
     public function send(Request $request, Conversation $conversation)
     {
+        if (!in_array(auth()->id(), [$conversation->user_one_id, $conversation->user_two_id])) {
+            abort(403);
+        }
+
         $request->validate([
             'message' => 'required|string|max:1000'
         ]);
@@ -88,6 +92,12 @@ class ChatController extends Controller
 
     public function report(Request $request, Message $message)
     {
+
+        if ($message->conversation->user_one_id !== auth()->id() &&
+            $message->conversation->user_two_id !== auth()->id()) {
+            abort(403);
+        }
+
         \App\Models\ChatReport::create([
             'message_id' => $message->id,
             'reported_by' => auth()->id(),

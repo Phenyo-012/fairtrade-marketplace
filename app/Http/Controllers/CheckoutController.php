@@ -330,7 +330,8 @@ class CheckoutController extends Controller
             ->get();
 
         if ($orders->isEmpty()) {
-            abort(404);
+            return redirect()->route('orders.my')
+                ->with('error', 'No valid orders found.');
         }
 
         return view('checkout.success', compact('orders'));

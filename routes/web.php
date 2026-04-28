@@ -44,9 +44,6 @@ use App\Http\Controllers\SellerCourierController;
         ->name('home');
 
     Route::get('/marketplace', [MarketplaceController::class, 'index'])
-        ->name('marketplace');
-
-    Route::get('/marketplace', [MarketplaceController::class, 'index'])
         ->name('marketplace.index');
 
     Route::get('/products/{product}', [MarketplaceController::class, 'show']);
@@ -116,15 +113,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/disputes/{dispute}', [DisputeController::class, 'show'])
         ->name('disputes.show');
-    
-    Route::get('/seller/disputes', [\App\Http\Controllers\SellerDisputeController::class, 'index'])
-        ->name('seller.disputes.index');
-
-    Route::get('/seller/disputes/{dispute}', [\App\Http\Controllers\SellerDisputeController::class, 'show'])
-        ->name('seller.disputes.show');
-
-    Route::post('/seller/disputes/{dispute}/respond', [\App\Http\Controllers\SellerDisputeController::class, 'respond'])
-        ->name('seller.disputes.respond');
 
     // Reviews
     Route::get('/orders/{order}/review', [ReviewController::class,'create'])
@@ -358,6 +346,16 @@ Route::middleware(['auth','role:seller', 'seller.approved'])->group(function () 
     // Seller Dashboard
     Route::get('/seller/dashboard', [SellerDashboardController::class, 'index'])
         ->name('seller.dashboard');
+
+    // SELLER DISPUTE ROUTES
+    Route::get('/seller/disputes', [\App\Http\Controllers\SellerDisputeController::class, 'index'])
+        ->name('seller.disputes.index');
+
+    Route::get('/seller/disputes/{dispute}', [\App\Http\Controllers\SellerDisputeController::class, 'show'])
+        ->name('seller.disputes.show');
+
+    Route::post('/seller/disputes/{dispute}/respond', [\App\Http\Controllers\SellerDisputeController::class, 'respond'])
+        ->name('seller.disputes.respond');
 
     // Product Manager
     Route::resource('seller/products', SellerProductController::class)

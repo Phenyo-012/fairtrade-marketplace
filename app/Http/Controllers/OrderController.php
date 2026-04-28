@@ -11,9 +11,7 @@ use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-    // ========================
-    // GENERIC ORDERS LIST
-    // ========================
+    // ORDERS LIST
     public function index()
     {
         $orders = auth()->user()
@@ -25,9 +23,7 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    // ========================
     // BUYER ORDERS
-    // ========================
     public function myOrders(Request $request)
     {
         $query = Order::where('buyer_id', auth()->id())
@@ -48,9 +44,7 @@ class OrderController extends Controller
         return view('orders.my-orders', compact('orders'));
     }
 
-    // ========================
     // SHOW ORDER
-    // ========================
     public function show(Order $order)
     {
         if ($order->buyer_id !== auth()->id()) {
@@ -67,16 +61,12 @@ class OrderController extends Controller
         return view('orders.show', compact('order'));
     }
 
-    // ========================
     // CHECKOUT (FROM CART)
-    // ========================
     public function store(Request $request)
     {
         $user = auth()->user();
 
-        // ========================
         // VALIDATION (IMPORTANT)
-        // ========================
         $request->validate([
             'shipping_name' => 'required|string|max:255',
             'shipping_phone' => 'required|string|max:50',
@@ -110,10 +100,6 @@ class OrderController extends Controller
                     throw new \Exception("Invalid product in cart.");
                 }
 
-                if (!$item->product->is_active || !$item->product->is_approved) {
-                    throw new \Exception("Invalid product in cart.");
-                }
-
                 if ($item->product->stock_quantity < $item->quantity) {
                     throw new \Exception("Not enough stock for {$item->product->name}");
                 }
@@ -123,9 +109,7 @@ class OrderController extends Controller
 
             $deliveryCode = strtoupper(Str::random(8));
 
-            // ========================
             // CREATE ORDER
-            // ========================
             $order = Order::create([
                 'buyer_id' => $user->id,
                 'total_amount' => $total,
@@ -147,9 +131,7 @@ class OrderController extends Controller
                 throw new \Exception("Order could not be created.");
             }
 
-            // ========================
             // CREATE ORDER ITEMS
-            // ========================
             foreach ($cartItems as $item) {
 
                 $order->orderItems()->create([
@@ -164,9 +146,7 @@ class OrderController extends Controller
                 $item->product->decrement('stock_quantity', $item->quantity);
             }
 
-            // ========================
             // CLEAR CART
-            // ========================
             CartItem::where('user_id', $user->id)->delete();
 
             DB::commit();
@@ -180,7 +160,7 @@ class OrderController extends Controller
 
             report($e);
 
-            return back()->with('error', 'Failed to place order. Please try again.' . $e->getMessage());
+            return back()->with('error', 'Failed to place order. Please try again.');
         }
     }
 

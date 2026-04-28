@@ -76,7 +76,8 @@ class SellerCourierController extends Controller
         $couriers = $this->couriers();
 
         if (!array_key_exists($courier, $couriers)) {
-            abort(404);
+            return redirect()->route('seller.orders.index')
+                ->with('error', 'Invalid courier selected.');
         }
 
         return view('seller.orders.couriers.show', [
@@ -93,7 +94,8 @@ class SellerCourierController extends Controller
         $couriers = $this->couriers();
 
         if (!array_key_exists($courier, $couriers)) {
-            abort(404);
+            return redirect()->route('seller.orders.index')
+                ->with('error', 'Invalid courier selected.');
         }
 
         if (!$order->can_seller_ship) {

@@ -70,8 +70,9 @@ class MarketplaceController extends Controller
 
     public function show(Product $product)
     {
-        if (!$product->is_approved || !$product->is_active) {
-            abort(404);
+        if (!$product->is_approved || !$product->is_active || $product->is_archived) {
+            return redirect()->route('marketplace.index')
+                ->with('error', 'This product is no longer available.');
         }
 
         $product->load([
@@ -166,10 +167,6 @@ class MarketplaceController extends Controller
         })
         ->distinct('order_id')
         ->count('order_id');
-
-        if (!$product->is_approved || !$product->is_active || $product->is_archived) {
-            abort(404);
-        }
 
         return view('marketplace.show', compact(
             'product',
