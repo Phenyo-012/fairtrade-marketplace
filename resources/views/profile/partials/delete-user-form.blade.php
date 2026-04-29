@@ -6,7 +6,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            Deleting your account will permanently remove all your data including orders, chats, and profile information.
+            Once your account is deleted, you will no longer be able to access it. Your historical orders, reviews, disputes, and platform records will be retained for audit and safety purposes.
         </p>
     </header>
 

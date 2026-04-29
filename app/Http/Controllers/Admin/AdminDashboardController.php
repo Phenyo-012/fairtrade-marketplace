@@ -83,7 +83,7 @@ class AdminDashboardController extends Controller
             ->filter(fn($order) => $order->canBeCompletedByAdmin());
 
         return view('admin.dashboard', [
-            'totalUsers' => User::count(),
+            'totalUsers' => User::where('is_archived', false)->count(),
             'totalOrders' => $totalOrders,
             'totalProducts' => Product::count(),
             'pendingProducts' => Product::where('is_approved', false)->count(),

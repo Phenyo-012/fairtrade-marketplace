@@ -31,7 +31,7 @@
 
         <!-- RECENT ORDERS -->
         <div class="bg-white p-6 rounded-xl shadow">
-            <h3 class="font-bold mb-4">Recent Orders</h3>
+            <h3 class="font-bold mb-4">Recent Products Ordered</h3>
 
             @foreach($orders as $item)
                 <div class="flex justify-between border-b py-2">
@@ -39,6 +39,11 @@
                     <span>R{{ number_format($item->subtotal, 2) }}</span>
                 </div>
             @endforeach
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="mt-6">
+            {{ $orders->links() }}
         </div>
 
     </div>

@@ -25,8 +25,18 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
+
+        if ($request->user()->is_archived) {
+            Auth::guard('web')->logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()->withErrors([
+                'email' => 'This account has been archived and cannot be accessed.',
+            ]);
+        }
 
         // Redirect based on role
         if (Auth::user()->sellerProfile) {

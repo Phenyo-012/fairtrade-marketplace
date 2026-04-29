@@ -14,7 +14,7 @@ class SellerVerificationController extends Controller
 
    public function index(Request $request)
     {
-        $status = $request->get('status'); // pending | rejected | approved
+        $status = $request->get('status'); // pending | rejected | approved | archived
 
         $query = SellerProfile::with('user');
 
@@ -63,8 +63,7 @@ class SellerVerificationController extends Controller
             })
             ->with('product', 'order')
             ->latest()
-            ->take(20)
-            ->get();
+            ->paginate(20);
 
         // Earnings
         $earnings = OrderItem::whereHas('product', function ($q) use ($id) {

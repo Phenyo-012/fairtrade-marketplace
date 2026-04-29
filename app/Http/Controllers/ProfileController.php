@@ -58,11 +58,32 @@ class ProfileController extends Controller
 
         Auth::logout();
 
-        $user->delete();
+        if ($user->sellerProfile) {
+            $user->sellerProfile->update([
+                'verification_status' => 'archived',
+            ]);
+
+            $user->sellerProfile->products()->update([
+                'is_active' => false,
+                'is_archived' => true,
+            ]);
+        }
+
+        $user->update([
+            'is_archived' => true,
+            'archived_at' => now(),
+
+            'archived_email' => $user->email,
+            'archived_phone' => $user->phone,
+
+            // frees original email and phone for new registrations
+            'email' => 'archived_user_' . $user->id . '_' . $user->email,
+            'phone' => 'archived_user_' . $user->id . '_' . $user->phone,
+        ]);
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return redirect('/');
     }
 }

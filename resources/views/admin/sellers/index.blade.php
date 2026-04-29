@@ -141,6 +141,11 @@
                         </form>
                         @endif
 
+                        <a href="{{ route('admin.sellers.show', $seller->id) }}"
+                            class="w-full block text-center bg-gray-100 text-black py-2 border border-gray-400 rounded-3xl hover:bg-blue-300 transition shadow-md">
+                                View Seller Stats
+                        </a>
+
                     </div>
 
                 </div>
