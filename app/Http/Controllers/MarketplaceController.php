@@ -12,6 +12,9 @@ class MarketplaceController extends Controller
         $query = Product::where('is_approved', true)
             ->where('is_active', true)
             ->where('is_archived', false)
+            ->whereHas('sellerProfile', function ($q) {
+                $q->where('verification_status', 'approved');
+            })
             ->with(['images', 'reviews']);
 
         // SEARCH
@@ -70,16 +73,17 @@ class MarketplaceController extends Controller
 
     public function show(Product $product)
     {
-        if (!$product->is_approved || !$product->is_active || $product->is_archived) {
-            return redirect()->route('marketplace.index')
-                ->with('error', 'This product is no longer available.');
-        }
 
         $product->load([
             'images',
             'reviews',
             'sellerProfile'
         ]);
+
+        if (!$product->is_approved || !$product->is_active || $product->is_archived || !$product->sellerProfile || $product->sellerProfile->verification_status !== 'approved') {
+            return redirect()->route('marketplace.index')
+                ->with('error', 'This product is no longer available.');
+        }
 
         $reviewsQuery = \App\Models\Review::with(['votes'])
             ->whereHas('orderItem', function ($q) use ($product) {

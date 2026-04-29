@@ -12,6 +12,11 @@ class StoreController extends Controller
 {
     public function show(SellerProfile $seller)
     {
+        if ($seller->verification_status !== 'approved') {
+            return redirect()->route('marketplace.index')
+                ->with('error', 'Store Not Available.');
+        }
+
         // Products
         $products = Product::where('seller_profile_id', $seller->id)
             ->where('is_approved', true)
@@ -34,7 +39,7 @@ class StoreController extends Controller
         $averageRating = round($reviews->avg('rating'), 1) ?? 0;
         $totalReviews = $reviews->count();
 
-        // OPTIONAL: separate paginated reviews for display
+        // separate paginated reviews for display
         $displayReviews = Review::whereIn('order_item_id', $orderItemIds)
             ->with('orderItem.product')
             ->latest()

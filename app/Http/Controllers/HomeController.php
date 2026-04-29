@@ -18,6 +18,8 @@ class HomeController extends Controller
         $featuredProducts = Product::where('is_approved', true)
             ->where('is_active', true)
             ->where('is_archived', false)
+            ->whereHas('sellerProfile', function ($q) {
+                $q->where('verification_status', 'approved');})
             ->with('images')
             ->latest()
             ->take(8)
