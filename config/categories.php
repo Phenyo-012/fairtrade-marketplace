@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Handmade & Artisan Goods' => [
+    'Handmade Goods' => [
         'Handmade decor',
         'Custom items',
         'Art',

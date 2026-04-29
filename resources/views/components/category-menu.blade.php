@@ -65,11 +65,11 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="translate-x-0"
         x-transition:leave-end="-translate-x-full"
-        class="fixed top-0 left-0 z-50 h-screen w-[90vw] max-w-[760px] bg-white shadow-2xl border-r rounded-3xl border-black/10 flex"
+        class="fixed top-0 left-0 z-50 h-screen w-screen max-w-[760px] bg-white shadow-2xl border-r rounded-3xl border-black/10 flex"
         style="display: none;">
 
         <!-- LEFT SIDE: MAIN CATEGORIES -->
-        <div class="w-1/3 bg-gray-50 border-r h-full overflow-y-auto">
+        <div class="w-1/2 bg-gray-50 border-r h-full overflow-y-auto">
 
             <!-- HEADER -->
             <div class="sticky top-0 bg-gray-50 z-10 p-4 border-b flex items-center justify-between">
@@ -94,14 +94,15 @@
                 <div
                     @mouseenter="active = main"
                     @click="active = main"
-                    class="p-4 cursor-pointer hover:bg-white flex justify-between items-center border-b transition"
+                    class="p-4 rounded-xl cursor-pointer hover:bg-white flex justify-between items-center border-b transition"
                     :class="active === main ? 'bg-white font-semibold' : ''">
 
                     <span x-text="main"></span>
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                        <path fill="none" stroke="#060606" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 6l6 6l-6 6"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                            <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                        </path>
                     </svg>
                 </div>
             </template>
@@ -109,7 +110,7 @@
         </div>
 
         <!-- RIGHT SIDE: SUBCATEGORIES -->
-        <div class="w-2/3 p-6 h-full overflow-y-auto">
+        <div class="w-1/2 p-6 h-full overflow-y-auto">
 
             <template x-if="!active">
                 <div class="h-full flex items-center justify-center text-gray-400 text-sm">

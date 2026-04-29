@@ -323,32 +323,62 @@
                     <a href="{{ route('profile.edit') }}"
                         class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                         <span>Profile</span>
-                        <span>›</span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                </path>
+                            </svg>
+                        </span>
                     </a>
 
                     <a href="{{ route('orders.my') }}"
                         class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                         <span>My Orders</span>
-                        <span>›</span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                </path>
+                            </svg>
+                        </span>
                     </a>
 
                     <a href="{{ route('chat.index') }}"
                         class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                         <span>Messages</span>
-                        <span>›</span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                    <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                </path>
+                            </svg>
+                        </span>
                     </a>
 
                     @if(Auth::user()->hasRole('buyer') && !Auth::user()->sellerProfile)
                         <a href="{{ route('buyer.dashboard') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Buyer Dashboard</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('seller.setup') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Sell on FairTrade</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
                     @endif
 
@@ -356,32 +386,62 @@
                         <a href="{{ route('seller.dashboard') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Seller Dashboard</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('seller.products.index') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>My Products</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('seller.orders.index') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Order Management</span>
-                            <span>›</span>
+                           <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('seller.disputes.index') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Disputes</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         @if(Auth::user()->sellerProfile && Auth::user()->sellerProfile->verification_status === 'approved')
                             <a href="{{ route('store.show', Auth::user()->sellerProfile->id) }}"
                                 class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                                 <span>My Store</span>
-                                <span>›</span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                            <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                        </path>
+                                    </svg>
+                                </span>
                             </a>
                         @endif
                     @endif
@@ -390,56 +450,110 @@
                         <a href="{{ route('admin.dashboard') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Admin Dashboard</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('admin.disputes') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Disputes</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('admin.products') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Products</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('admin.reviews') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Reviews</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('admin.sellers.index') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Seller Applications</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('admin.orders.index') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Seller Orders</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('admin.chats.index') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Chat Moderation</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         <a href="{{ route('admin.support.index') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                             <span>Support Tickets</span>
-                            <span>›</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
                         </a>
 
                         @if(Auth::user()->is_super_admin)
                             <a href="{{ route('admin.create') }}"
                                 class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
                                 <span>Create Admin User</span>
-                                <span>›</span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                            <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                        </path>
+                                    </svg>
+                                </span>
                             </a>
                         @endif
                     @endif
