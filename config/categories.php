@@ -6,7 +6,7 @@ return [
         'Custom items',
         'Art',
         'Crafts',
-        'Jewelry'
+        'Handmade Jewelry'
     ],
 
     'Fashion & Accessories' => [
@@ -62,6 +62,6 @@ return [
 
     'Children & Baby' => [
         'Toys',
-        'Clothing'
+        'Kids/Baby Clothing'
     ],
 ];

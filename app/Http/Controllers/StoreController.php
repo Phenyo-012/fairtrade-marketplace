@@ -21,6 +21,7 @@ class StoreController extends Controller
         $products = Product::where('seller_profile_id', $seller->id)
             ->where('is_approved', true)
             ->where('is_active', true)
+            ->where('is_archived', false)
             ->with('images')
             ->latest()
             ->paginate(12);

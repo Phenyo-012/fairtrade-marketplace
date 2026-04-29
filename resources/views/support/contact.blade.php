@@ -78,8 +78,7 @@
                     <div>
                         <label class="block text-sm font-medium mb-2">Message</label>
                         <textarea name="message" rows="7" class="w-full border border-gray-300 rounded-3xl p-3"
-                            placeholder="Describe the issue in as much detail as possible..." required>{{ old('message') }}
-                        </textarea>
+                            placeholder="Describe the issue in as much detail as possible..." required>{{ old('message') }}</textarea>
                         @error('message')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
