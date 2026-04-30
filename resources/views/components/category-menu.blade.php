@@ -76,15 +76,15 @@
                 <h2 class="font-bold text-lg">Categories</h2>
 
                 <button @click="open = false"
-                    class="text-2xl leading-none hover:text-red-500">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                    class="text-2xl leading-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                         viewBox="0 0 24 24">
-                        <path fill="none" stroke="#ff0505" stroke-linecap="round" 
+                        <path fill="none" stroke="#000000" stroke-linecap="round" 
                             stroke-linejoin="round" stroke-width="2" d="M5 5l7 7l7 
                             -7M12 12h0M5 19l7 -7l7 7">
-                                <animate fill="freeze" attributeName="d" dur="0.1s" 
-                                    values="M5 5l7 0l7 0M5 12h14M5 19l7 0l7 0;M5 5l7 7l7 
-                                    -7M12 12h0M5 19l7 -7l7 7"/>
+                            <animate fill="freeze" attributeName="d" dur="0.1s" 
+                            values="M5 5l7 0l7 0M5 12h14M5 19l7 0l7 0;M5 5l7 7l7 
+                            -7M12 12h0M5 19l7 -7l7 7"/>
                         </path>
                     </svg>
                 </button>

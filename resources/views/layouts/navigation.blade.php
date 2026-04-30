@@ -53,7 +53,7 @@
                 </a>
 
 
-                 <!-- SUPPORT ICON -->
+                <!-- SUPPORT ICON -->
                 <a href="{{ route('support.contact') }}" title="Contact Support" class="text-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="none" stroke="#060606" stroke-dasharray="62" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3c0.5 0 2.5
@@ -266,6 +266,17 @@
                             8.24 9 8.24 9M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 
                             4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9">
                             <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="30;0"/>
+                        </path>
+                    </svg>
+                </a>
+
+                <!-- SUPPORT ICON -->
+                <a href="{{ route('support.contact') }}" title="Contact Support" class="text-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="none" stroke="#060606" stroke-dasharray="62" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3c0.5 0 2.5
+                             4.5 2.5 5c0 1 -1.5 2 -2 3c-0.5 1 0.5 2 1.5 3c0.39 0.39 2 2 3 1.5c1 -0.5 2 -2 3 -2c0.5 0 5 2 5 2.5c0 2 -1.5 3.5 -3 4c-1.5 0.5 -2.5 0.5 
+                             -4.5 0c-2 -0.5 -3.5 -1 -6 -3.5c-2.5 -2.5 -3 -4 -3.5 -6c-0.5 -2 -0.5 -3 0 -4.5c0.5 -1.5 2 -3 4 -3Z">
+                            <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="62;0"/>
                         </path>
                     </svg>
                 </a>
