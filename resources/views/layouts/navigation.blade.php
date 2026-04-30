@@ -66,16 +66,47 @@
 
                 <!-- CART ICON -->
                 <a href="{{ route('cart.index') }}" title="Shopping cart" class="relative text-xl">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" 
-                            stroke-dasharray="230" stroke-dashoffset="230" d="M2.316 3.25a.75.75 0 1 0 0 1.5h1.181a.75.75 0 0 1 .743.646l1.254 8.917a2.25 2.25 
-                            0 0 0 2.228 1.937h10.344a.75.75 0 0 0 0-1.5H7.722a.75.75 0 0 1-.743-.646l-.12-.853h10.852a2.25 2.25 0 0 0 2.15-1.583l1.921-6.188a.75.75 
-                            0 0 0-.716-.972H5.516A2.25 2.25 0 0 0 3.498 3.25zm3.525 2.758h14.207l-1.62 5.215a.75.75 0 0 1-.717.527H6.648zM7.784 17.75a1.75 1.75 0 1 0 0 
-                            3.5a1.75 1.75 0 0 0 0-3.5m6.786 1.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0">
-                            <animate attributeName="stroke-dashoffset" values="260;0" dur="1.1s" fill="freeze"/>
-                            <animate attributeName="fill-opacity" begin="1.1s" dur="0.6s" to="1" fill="freeze"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <defs>
+                            <clipPath id="wipe">
+                            <rect x="0" y="24" width="24" height="0">
+                                <animate attributeName="y" from="24" to="0" dur="0.6s" begin="1s" fill="freeze"/>
+                                <animate attributeName="height" from="0" to="24" dur="0.6s" begin="1s" fill="freeze"/>
+                            </rect>
+                            </clipPath>
+                        </defs>
+
+                        <!-- Fill -->
+                        <path
+                            d="M1.566 4a.75.75 0 0 1 .75-.75h1.181a2.25 2.25 0 0 1 2.228 1.937l.061.435h13.965a2.25 2.25 0 0 1 2.063 3.148l-2.668 6.128a2.25 
+                            2.25 0 0 1-2.063 1.352H7.722a2.25 2.25 0 0 1-2.228-1.937L4.24 5.396a.75.75 0 0 0-.743-.646h-1.18a.75.75 0 0 1-.75-.75m4.431 3.122l.982 
+                            6.982a.75.75 0 0 0 .743.646h9.361a.75.75 0 0 0 .688-.45l2.667-6.13a.75.75 0 0 0-.687-1.048z"
+                            fill="currentColor" clip-path="url(#wipe)"/>
+
+                        <!-- Stroke -->
+                        <path
+                            d="M1.566 4a.75.75 0 0 1 .75-.75h1.181a2.25 2.25 0 0 1 2.228 1.937l.061.435h13.965a2.25 2.25 0 0 1 2.063 3.148l-2.668 6.128a2.25 2.25 
+                            0 0 1-2.063 1.352H7.722a2.25 2.25 0 0 1-2.228-1.937L4.24 5.396a.75.75 0 0 0-.743-.646h-1.18a.75.75 0 0 1-.75-.75"
+                            fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="200" stroke-dashoffset="200">
+                            <animate attributeName="stroke-dashoffset" values="200;0" dur="1s" fill="freeze"/>
+                        </path>
+
+                        <!-- Wheels -->
+                        <path d="M6.034 19.5a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0" fill="currentColor">
+                            <animateTransform attributeName="transform" type="scale" values="0;1.2;1" dur="0.4s" begin="1.2s" fill="freeze" additive="sum"
+                            transform-origin="7.784 21.25"/>
+                        </path>
+                        <path d="M16.32 17.75a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5" fill="currentColor">
+                            <animateTransform attributeName="transform" type="scale" values="0;1.2;1" dur="0.4s" begin="1.3s" fill="freeze" additive="sum" 
+                            transform-origin="18.07 19.5"/>
                         </path>
                     </svg>
+
+                    @if($cartCount > 0)
+                        <span class="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full px-1.5">
+                            {{ $cartCount }}
+                        </span>
+                    @endif
 
                 </a>
 
@@ -256,14 +287,39 @@
 
                 <!-- CART -->
                 <a href="{{ route('cart.index') }}" title="Cart" class="relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round" 
-                            stroke-dasharray="230" stroke-dashoffset="230" d="M2.316 3.25a.75.75 0 1 0 0 1.5h1.181a.75.75 0 0 1 .743.646l1.254 8.917a2.25 2.25 
-                            0 0 0 2.228 1.937h10.344a.75.75 0 0 0 0-1.5H7.722a.75.75 0 0 1-.743-.646l-.12-.853h10.852a2.25 2.25 0 0 0 2.15-1.583l1.921-6.188a.75.75 
-                            0 0 0-.716-.972H5.516A2.25 2.25 0 0 0 3.498 3.25zm3.525 2.758h14.207l-1.62 5.215a.75.75 0 0 1-.717.527H6.648zM7.784 17.75a1.75 1.75 0 1 0 0 
-                            3.5a1.75 1.75 0 0 0 0-3.5m6.786 1.75a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0">
-                            <animate attributeName="stroke-dashoffset" values="260;0" dur="1.1s" fill="freeze"/>
-                            <animate attributeName="fill-opacity" begin="1.1s" dur="0.6s" to="1" fill="freeze"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <defs>
+                            <clipPath id="wipe">
+                            <rect x="0" y="24" width="24" height="0">
+                                <animate attributeName="y" from="24" to="0" dur="0.6s" begin="1s" fill="freeze"/>
+                                <animate attributeName="height" from="0" to="24" dur="0.6s" begin="1s" fill="freeze"/>
+                            </rect>
+                            </clipPath>
+                        </defs>
+
+                        <!-- Fill -->
+                        <path
+                            d="M1.566 4a.75.75 0 0 1 .75-.75h1.181a2.25 2.25 0 0 1 2.228 1.937l.061.435h13.965a2.25 2.25 0 0 1 2.063 3.148l-2.668 6.128a2.25 
+                            2.25 0 0 1-2.063 1.352H7.722a2.25 2.25 0 0 1-2.228-1.937L4.24 5.396a.75.75 0 0 0-.743-.646h-1.18a.75.75 0 0 1-.75-.75m4.431 3.122l.982 
+                            6.982a.75.75 0 0 0 .743.646h9.361a.75.75 0 0 0 .688-.45l2.667-6.13a.75.75 0 0 0-.687-1.048z"
+                            fill="currentColor" clip-path="url(#wipe)"/>
+
+                        <!-- Stroke -->
+                        <path
+                            d="M1.566 4a.75.75 0 0 1 .75-.75h1.181a2.25 2.25 0 0 1 2.228 1.937l.061.435h13.965a2.25 2.25 0 0 1 2.063 3.148l-2.668 6.128a2.25 2.25 
+                            0 0 1-2.063 1.352H7.722a2.25 2.25 0 0 1-2.228-1.937L4.24 5.396a.75.75 0 0 0-.743-.646h-1.18a.75.75 0 0 1-.75-.75"
+                            fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="200" stroke-dashoffset="200">
+                            <animate attributeName="stroke-dashoffset" values="200;0" dur="1s" fill="freeze"/>
+                        </path>
+
+                        <!-- Wheels -->
+                        <path d="M6.034 19.5a1.75 1.75 0 1 1 3.5 0a1.75 1.75 0 0 1-3.5 0" fill="currentColor">
+                            <animateTransform attributeName="transform" type="scale" values="0;1.2;1" dur="0.4s" begin="1.2s" fill="freeze" additive="sum"
+                            transform-origin="7.784 21.25"/>
+                        </path>
+                        <path d="M16.32 17.75a1.75 1.75 0 1 0 0 3.5a1.75 1.75 0 0 0 0-3.5" fill="currentColor">
+                            <animateTransform attributeName="transform" type="scale" values="0;1.2;1" dur="0.4s" begin="1.3s" fill="freeze" additive="sum" 
+                            transform-origin="18.07 19.5"/>
                         </path>
                     </svg>
 
