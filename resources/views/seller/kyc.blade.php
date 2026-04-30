@@ -19,7 +19,7 @@
             <input type="file" name="selfie_document" required class="border p-2 w-full">
         </div>
 
-        <button class="bg-blue-600 text-white px-4 py-2 rounded-xl">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded-3xl">
             Submit Verification
         </button>
 

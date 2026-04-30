@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="max-w-4xl mx-auto mt-5">
+    <div class="max-w-4xl mx-auto py-5 px-4">
 
         <a href="{{ route('admin.reviews') }}" class="px-4 py-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

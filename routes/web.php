@@ -18,60 +18,62 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SellerOrderController;
 use App\Http\Controllers\ReviewVoteController;
 use App\Http\Controllers\StoreController;
-use App\Http\Controllers\SellerStoreController;
 use App\Http\Controllers\SellerProfileController;
 use App\Http\Controllers\Admin\SellerVerificationController;
-use App\Http\Controllers\Admin\ReviewModerationController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminOrderController;
-use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\Admin\SupportTicketController;
 use App\Http\Controllers\SellerCourierController;
-
-
-
+use App\Http\Controllers\BuyerDashboardController;
 
 /*
 |--------------------------------------------------------------------------
 | PUBLIC ROUTES
 |--------------------------------------------------------------------------
 */
-    Route::get('/', [HomeController::class, 'index'])
-        ->name('home');
 
-    Route::get('/marketplace', [MarketplaceController::class, 'index'])
-        ->name('marketplace.index');
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
 
-    Route::get('/products/{product}', [MarketplaceController::class, 'show']);
+Route::get('/marketplace', [MarketplaceController::class, 'index'])
+    ->name('marketplace.index');
 
-    // Courier
-    Route::get('/courier/confirm-delivery', [CourierController::class, 'showForm'])
-        ->name('courier.form');
+Route::get('/products/{product}', [MarketplaceController::class, 'show'])
+    ->name('marketplace.show');
 
-    Route::post('/courier/confirm-delivery', [CourierController::class, 'confirm'])
-        ->name('courier.confirm');
+// Courier
+Route::get('/courier/confirm-delivery', [CourierController::class, 'showForm'])
+    ->name('courier.form');
 
-    Route::post('/reviews/{review}/vote', [ReviewVoteController::class, 'vote'])
-        ->name('reviews.vote')
-        ->middleware('auth');
+Route::post('/courier/confirm-delivery', [CourierController::class, 'confirm'])
+    ->name('courier.confirm');
 
-   Route::get('/store/{seller}', [StoreController::class, 'show'])
-        ->name('store.show');
+// Review Voting
+Route::post('/reviews/{review}/vote', [ReviewVoteController::class, 'vote'])
+    ->name('reviews.vote')
+    ->middleware('auth');
 
-    // seller reviews page
-    Route::get('/store/{seller}/reviews', [StoreController::class, 'reviews'])
-        ->name('store.reviews');
+// Storefronts
+Route::get('/store/{seller}', [StoreController::class, 'show'])
+    ->name('store.show');
 
-    Route::view('/terms', 'legal.terms')->name('terms');
+Route::get('/store/{seller}/reviews', [StoreController::class, 'reviews'])
+    ->name('store.reviews');
 
-    Route::view('/privacy', 'legal.privacy')->name('privacy');
+// Legal Pages
+Route::view('/terms', 'legal.terms')
+    ->name('terms');
 
-    Route::view('/refund', 'legal.refund')->name('refund');
-        
+Route::view('/privacy', 'legal.privacy')
+    ->name('privacy');
+
+Route::view('/refund', 'legal.refund')
+    ->name('refund');
+
 /*
 |--------------------------------------------------------------------------
 | AUTHENTICATED USERS
@@ -80,29 +82,28 @@ use App\Http\Controllers\SellerCourierController;
 
 Route::middleware('auth')->group(function () {
 
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
 
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
-        
+
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
     // Orders
-    Route::post('/products/{product}/buy', [OrderController::class, 'store']);
+    Route::post('/products/{product}/buy', [OrderController::class, 'store'])
+        ->name('orders.buy');
 
     Route::get('/my-orders', [OrderController::class, 'myOrders'])
         ->name('orders.my');
 
-    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])
+        ->name('orders.show');
 
+    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])
+        ->name('orders.cancel');
 
     // Buyer Disputes
     Route::get('/orders/{order}/dispute', [DisputeController::class, 'create'])
@@ -115,7 +116,7 @@ Route::middleware('auth')->group(function () {
         ->name('disputes.show');
 
     // Reviews
-    Route::get('/orders/{order}/review', [ReviewController::class,'create'])
+    Route::get('/orders/{order}/review', [ReviewController::class, 'create'])
         ->name('reviews.create');
 
     Route::post('/review/{orderItem}', [ReviewController::class, 'store'])
@@ -125,11 +126,11 @@ Route::middleware('auth')->group(function () {
         ->name('review.bulkStore');
 
     // Shopping Cart
-    Route::post('/cart/{product}', [CartController::class, 'add'])
-        ->name('cart.add');
-
     Route::get('/cart', [CartController::class, 'index'])
         ->name('cart.index');
+
+    Route::post('/cart/{product}', [CartController::class, 'add'])
+        ->name('cart.add');
 
     Route::patch('/cart/{item}', [CartController::class, 'update'])
         ->name('cart.update');
@@ -140,10 +141,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart', [CartController::class, 'clear'])
         ->name('cart.clear');
 
-    // CHECKOUT
+    // Checkout
     Route::get('/checkout', [CheckoutController::class, 'index'])
         ->name('checkout.index');
-    
+
     Route::post('/checkout/review', [CheckoutController::class, 'review'])
         ->name('checkout.review');
 
@@ -162,26 +163,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/success/{orders}', [CheckoutController::class, 'success'])
         ->name('checkout.success');
 
-    // SELLER STORE SETUP
-    Route::get('/become-seller', [SellerProfileController::class, 'create'])
-        ->name('seller.setup');
-
-    Route::post('/become-seller', [SellerProfileController::class, 'store'])
-        ->name('seller.store');
-
-    // EDIT SELLER STORE
+    // Edit Seller Store
     Route::get('/seller/store/edit', [SellerProfileController::class, 'edit'])
         ->name('seller.store.edit');
 
     Route::post('/seller/store/update', [SellerProfileController::class, 'update'])
         ->name('seller.store.update');
 
-    // Pending Verification Page
+    // Seller Pending Verification Page
     Route::get('/seller/pending', function () {
         return view('seller.pending');
-    })->name('seller.pending')->middleware('auth');
+    })->name('seller.pending');
 
-    // WISHLIST 
+    // Seller Onboarding
+    Route::get('/seller/onboarding', [SellerProfileController::class, 'onboarding'])
+        ->name('seller.onboarding');
+
+    Route::post('/seller/onboarding/store', [SellerProfileController::class, 'storeStep'])
+        ->name('seller.onboarding.store');
+
+    Route::post('/seller/onboarding/kyc', [SellerProfileController::class, 'kycStep'])
+        ->name('seller.onboarding.kyc');
+
+    // Wishlist
     Route::get('/wishlist', [WishlistController::class, 'index'])
         ->name('wishlist.index');
 
@@ -191,30 +195,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])
         ->name('wishlist.destroy');
 
-    /* Route::get('/seller/verify', [SellerProfileController::class, 'showKyc'])
-        ->name('seller.kyc');
+    // Chat Routes
+    Route::get('/chat', [ChatController::class, 'index'])
+        ->name('chat.index');
 
-    Route::post('/seller/verify', [SellerProfileController::class, 'submitKyc'])
-        ->name('seller.kyc.submit'); */
-
-    // SELLER ONBOARDING
-    Route::get('/seller/onboarding', [SellerProfileController::class, 'onboarding'])
-        ->name('seller.onboarding');
-
-    Route::post('/seller/onboarding/store', [SellerProfileController::class, 'storeStep']);
-
-    Route::post('/seller/onboarding/kyc', [SellerProfileController::class, 'kycStep']);
-
-    // CHAT ROUTES
     Route::get('/chat/start/{seller}', [ChatController::class, 'start'])
         ->name('chat.start');
 
     Route::get('/chat/{conversation}', [ChatController::class, 'show'])
         ->name('chat.show');
 
-    Route::get('/chat', [ChatController::class, 'index'])
-        ->name('chat.index');
-    
     Route::post('/chat/{conversation}/send', [ChatController::class, 'send'])
         ->name('chat.send');
 
@@ -224,18 +214,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/chat/block/{user}', [ChatController::class, 'block'])
         ->name('chat.block');
 
-    // ARCHIVE PRODUCTS
+    // Archive Products
     Route::patch('/products/{product}/archive', [ProductController::class, 'archive'])
         ->name('products.archive');
 
     Route::patch('/products/{product}/unarchive', [ProductController::class, 'unarchive'])
         ->name('products.unarchive');
 
-    // CANCEL ORDER 
-    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])
-        ->name('orders.cancel');
-
-    // CONTACT SUPPORT
+    // Contact Support
     Route::get('/contact-support', [SupportController::class, 'create'])
         ->name('support.contact');
 
@@ -249,11 +235,11 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // Admin Dashboard
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])
-    ->name('admin.dashboard');
+        ->name('admin.dashboard');
 
     // Product Approval
     Route::get('/products', [AdminProductController::class, 'index'])
@@ -288,9 +274,12 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::patch('/reviews/{review}/reject', [\App\Http\Controllers\Admin\ReviewModerationController::class, 'reject'])
         ->name('admin.reviews.reject');
 
-    // SELLER VERIFICATION
+    // Seller Verification
     Route::get('/sellers', [SellerVerificationController::class, 'index'])
         ->name('admin.sellers.index');
+
+    Route::get('/sellers/{seller}', [SellerVerificationController::class, 'show'])
+        ->name('admin.sellers.show');
 
     Route::post('/sellers/{seller}/approve', [SellerVerificationController::class, 'approve'])
         ->name('admin.sellers.approve');
@@ -298,35 +287,35 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
     Route::post('/sellers/{seller}/reject', [SellerVerificationController::class, 'reject'])
         ->name('admin.sellers.reject');
 
-    Route::get('/sellers/{seller}', [SellerVerificationController::class, 'show'])
-        ->name('admin.sellers.show');
-
-    Route::get('/admin/orders', [AdminOrderController::class, 'index'])
+    // Admin Orders
+    Route::get('/orders', [AdminOrderController::class, 'index'])
         ->name('admin.orders.index');
 
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])
         ->name('admin.orders.show');
 
-    Route::patch('/admin/orders/{order}/complete', [AdminOrderController::class, 'complete'])
+    Route::patch('/orders/{order}/complete', [AdminOrderController::class, 'complete'])
         ->name('admin.orders.complete');
 
-     Route::middleware('super.admin')->group(function () {
-        Route::get('/create-admin', [App\Http\Controllers\Admin\AdminUserController::class, 'create'])
+    // Super Admin
+    Route::middleware('super.admin')->group(function () {
+        Route::get('/create-admin', [\App\Http\Controllers\Admin\AdminUserController::class, 'create'])
             ->name('admin.create');
 
-        Route::post('/create-admin', [App\Http\Controllers\Admin\AdminUserController::class, 'store'])
+        Route::post('/create-admin', [\App\Http\Controllers\Admin\AdminUserController::class, 'store'])
             ->name('admin.store');
-     });
+    });
 
+    // Chat Moderation
     Route::get('/chats', [\App\Http\Controllers\Admin\AdminChatController::class, 'index'])
         ->name('admin.chats.index');
 
     Route::get('/chats/{conversation}', [\App\Http\Controllers\Admin\AdminChatController::class, 'show'])
         ->name('admin.chats.show');
 
-    // SUPPORT ROUTES
+    // Support Routes
     Route::get('/support-tickets', [SupportTicketController::class, 'index'])
-    ->name('admin.support.index');
+        ->name('admin.support.index');
 
     Route::get('/support-tickets/{ticket}', [SupportTicketController::class, 'show'])
         ->name('admin.support.show');
@@ -341,13 +330,13 @@ Route::middleware(['auth','admin'])->prefix('admin')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth','role:seller', 'seller.approved'])->group(function () {
+Route::middleware(['auth', 'role:seller', 'seller.approved'])->group(function () {
 
     // Seller Dashboard
     Route::get('/seller/dashboard', [SellerDashboardController::class, 'index'])
         ->name('seller.dashboard');
 
-    // SELLER DISPUTE ROUTES
+    // Seller Dispute Routes
     Route::get('/seller/disputes', [\App\Http\Controllers\SellerDisputeController::class, 'index'])
         ->name('seller.disputes.index');
 
@@ -361,6 +350,7 @@ Route::middleware(['auth','role:seller', 'seller.approved'])->group(function () 
     Route::resource('seller/products', SellerProductController::class)
         ->names('seller.products');
 
+    // Seller Orders
     Route::get('/seller/orders', [SellerOrderController::class, 'index'])
         ->name('seller.orders.index');
 
@@ -370,10 +360,11 @@ Route::middleware(['auth','role:seller', 'seller.approved'])->group(function () 
     Route::patch('/seller/orders/{order}/status', [SellerOrderController::class, 'updateStatus'])
         ->name('seller.orders.updateStatus');
 
-    Route::get('/seller/guide', [App\Http\Controllers\SellerGuideController::class, 'index'])
+    // Seller Guide
+    Route::get('/seller/guide', [\App\Http\Controllers\SellerGuideController::class, 'index'])
         ->name('seller.guide');
 
-    // COURIERS
+    // Couriers
     Route::get('/seller/orders/{order}/couriers', [SellerCourierController::class, 'index'])
         ->name('seller.orders.couriers');
 
@@ -382,14 +373,14 @@ Route::middleware(['auth','role:seller', 'seller.approved'])->group(function () 
 
     Route::post('/seller/orders/{order}/couriers/{courier}/book', [SellerCourierController::class, 'book'])
         ->name('seller.orders.couriers.book');
-
 });
 
 /*
 |--------------------------------------------------------------------------
 | SELLER APPLICATION ROUTES
 |--------------------------------------------------------------------------
-*/  
+*/
+
 Route::middleware(['auth', 'not.seller'])->group(function () {
 
     Route::get('/become-seller', [SellerProfileController::class, 'create'])
@@ -397,7 +388,6 @@ Route::middleware(['auth', 'not.seller'])->group(function () {
 
     Route::post('/become-seller', [SellerProfileController::class, 'store'])
         ->name('seller.store');
-
 });
 
 /*
@@ -406,11 +396,10 @@ Route::middleware(['auth', 'not.seller'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth','role:buyer'])->group(function () {
+Route::middleware(['auth', 'role:buyer'])->group(function () {
 
-    Route::get('/buyer/dashboard', function () {
-        return view('buyer.dashboard');})
+    Route::get('/buyer/dashboard', [BuyerDashboardController::class, 'index'])
         ->name('buyer.dashboard');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

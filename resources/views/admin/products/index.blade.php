@@ -66,7 +66,7 @@
                         <!-- Approve -->
                         <form method="POST" action="{{ route('admin.products.approve', $product->id) }}" class="flex-1">
                             @csrf
-                            <button class="w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition">
+                            <button class="px-4 py-2 bg-white text-black border border-black rounded-3xl hover:bg-green-600 transition shadow-md">
                                 Approve
                             </button>
                         </form>

@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="max-w-6xl mx-auto mt-5">
+    <div class="max-w-6xl mx-auto py-5 px-4">
 
         <a href="{{ route('admin.dashboard') }}" class="px-4 py-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -52,7 +52,7 @@
                 class="border p-2 rounded-3xl">
 
             <!-- BUTTONS -->
-            <button class="bg-blue-600 text-white rounded-3xl px-4">
+            <button class="bg-blue-600 text-white rounded-3xl px-4 py-2">
                 Filter
             </button>
 

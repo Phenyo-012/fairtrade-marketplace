@@ -82,8 +82,11 @@
 
             <!-- ANALYTICS -->
             <div class="bg-white p-6 rounded-xl shadow mb-10">
+                
                 <h3 class="font-bold mb-4">Revenue (Last 180 Days)</h3>
-                <canvas id="revenueChart"></canvas>
+                <div class="relative w-full h-[350px] sm:h-[400px] lg:h-[450px]">
+                    <canvas id="revenueChart"></canvas>
+                </div>
             </div>
 
             <!-- OPERATIONAL METRICS -->
@@ -171,7 +174,11 @@
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     }
                 ]
-            }
+            },
+            options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
         });
 
 

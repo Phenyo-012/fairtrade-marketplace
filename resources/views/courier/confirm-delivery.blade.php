@@ -37,7 +37,7 @@
                        placeholder="Enter delivery code">
             </div>
 
-            <button class="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition">
+            <button class="w-full bg-blue-600 text-white py-2 rounded-3xl hover:bg-blue-700 transition">
                 Confirm Delivery
             </button>
         </form>

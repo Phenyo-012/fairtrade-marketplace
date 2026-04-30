@@ -155,7 +155,11 @@
 
                             @if(Auth::user()->hasRole('seller'))
                                 <x-dropdown-link :href="route('seller.dashboard')">
-                                    Seller Dashboard
+                                    My Seller Dashboard
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('buyer.dashboard')">
+                                    My Buyer Dashboard
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('seller.products.index')">
@@ -452,7 +456,19 @@
                     @if(Auth::user()->hasRole('seller'))
                         <a href="{{ route('seller.dashboard') }}"
                             class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
-                            <span>Seller Dashboard</span>
+                            <span>My Seller Dashboard</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">
+                                        <animate fill="freeze" attributeName="stroke-dashoffset" dur="1s" values="10;0" />
+                                    </path>
+                                </svg>
+                            </span>
+                        </a>
+
+                        <a href="{{ route('buyer.dashboard') }}"
+                            class="flex justify-between items-center px-4 py-4 hover:bg-gray-50">
+                            <span>My Buyer Dashboard</span>
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                     <path fill="none" stroke="currentColor" stroke-dasharray="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12l-5 -5M15 12l-5 5">

@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="bg-gray-100 min-h-screen py-5">
+    <div class="bg-gray-100 min-h-screen py-3">
         
         <div class=" max-w-7xl mx-auto px-4">
 

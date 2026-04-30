@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="max-w-5xl mx-auto mt-5">
+    <div class="max-w-5xl mx-auto py-2 px-4">
 
           <!-- BACK TO DISPUTES INDEX -->
         <a href="{{ route('seller.disputes.index') }}" class="px-4 py-2">
@@ -31,7 +31,7 @@
                         placeholder="Explain your side..."
                         required></textarea>
 
-                    <button class="bg-green-600 text-white px-4 py-2 mt-2 rounded-xl">
+                    <button class="px-4 py-2 mt-2 bg-white text-black border border-black rounded-3xl hover:bg-green-600 transition shadow-md">
                         Submit Response
                     </button>
                 </form>

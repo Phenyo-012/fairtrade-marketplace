@@ -315,9 +315,9 @@ Instead of deletion, products can be **archived**.
 - Contact Support
 - Courier Support (SIMULATED)
 - Payment Support (SIMULATED)
+- Buyer dashboard
 
 ###  In Progress:
-- Buyer dashboard
 - Mobile device Optimization
 - UI refinements  
 

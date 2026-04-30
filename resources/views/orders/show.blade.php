@@ -250,7 +250,7 @@
 
             @if($order->dispute)
                 <a href="{{ route('disputes.show', $order->dispute) }}"
-                class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700">
+                class="px-4 py-2 bg-white text-black border border-black rounded-3xl hover:bg-blue-600 transition shadow-md">
                     View Dispute
                 </a>
 

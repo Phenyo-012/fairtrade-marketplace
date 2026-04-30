@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="max-w-3xl mx-auto mt-5 ">
+    <div class="max-w-3xl mx-auto py-3 px-4">
 
         <!-- BACK TO SELLER DASHBOARD -->
         <a href="{{ route('seller.dashboard') }}" class="mt-6 px-4 py-2">
@@ -72,7 +72,7 @@
                     <input type="file" name="logo" class="w-full p-2 rounded-xl">
                 </div>
 
-                <button class="bg-blue-600 text-white px-4 py-2 rounded-xl">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-3xl">
                     Update Store
                 </button>
             </form>

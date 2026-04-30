@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="max-w-2xl mx-auto mt-5">
+    <div class="max-w-2xl mx-auto py-2 px-4">
 
         <!-- BACK TO MY PRODUCTS -->
         <a href="{{ route('seller.products.index') }}" class="mt-6 px-4 py-2">
@@ -22,9 +22,7 @@
 
             <label class="block text-sm font-medium">Product Description</label>
             <textarea name="description"
-                class="border border-gray-400 p-2 w-full mb-4 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">
-                {{ $product->description }}
-            </textarea>
+                class="border border-gray-400 p-2 w-full mb-4 rounded-xl focus:ring focus:ring-blue-300 focus:outline-none">{{ $product->description }}</textarea>
 
             <label class="block text-sm font-medium">Product Price</label>
             <input name="price" value="{{ $product->price }}"

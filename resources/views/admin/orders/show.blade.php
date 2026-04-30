@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="max-w-5xl mx-auto mt-5">
+<div class="max-w-5xl mx-auto py-3 px-4">
 
      <a href="{{ route('admin.orders.index') }}" class="mt-6 px-4 py-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@
                 @csrf
                 @method('PATCH')
 
-                <button class="bg-green-600 text-white px-4 py-2 rounded-xl">
+                <button class="px-4 py-2 bg-white text-black border border-black rounded-3xl hover:bg-green-600 transition shadow-md">
                     Complete Order
                 </button>
             </form>

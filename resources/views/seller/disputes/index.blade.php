@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="max-w-5xl mx-auto mt-5">
+    <div class="max-w-5xl mx-auto py-2 px-4">
 
         <!-- BACK TO SELLER DASHBOARD -->
         <a href="{{ route('seller.dashboard') }}" class="px-4 py-2">

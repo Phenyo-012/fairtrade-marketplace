@@ -38,7 +38,7 @@
                         <span class="ms-2 text-sm text-gray-600">{{ __('Show Password') }}</span>
                     </label>
 
-                <button class="bg-black text-white px-4 py-2 rounded-xl w-full">
+                <button class="bg-black text-white px-4 py-2 rounded-3xl w-full">
                     Create Admin
                 </button>
             </form>

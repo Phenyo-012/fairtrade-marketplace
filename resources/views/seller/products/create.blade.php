@@ -2,7 +2,7 @@
 <script src="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.js"></script>
 <x-app-layout>
 
-    <div class="max-w-2xl mx-auto mt-5 mb-4">
+    <div class="max-w-2xl mx-auto py-2 px-4 mb-4">
 
         <!-- BACK TO MY PRODUCTS -->
         <a href="{{ route('seller.products.index') }}" class="mt-6 px-4 py-2">

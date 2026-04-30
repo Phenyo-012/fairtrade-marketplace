@@ -8,7 +8,7 @@
 @endphp
 
 <x-app-layout>
-    <div class="bg-gray-100 min-h-screen py-10">
+    <div class="bg-gray-100 min-h-screen py-10 px-4">
 
         <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow">
 
