@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
+    use HasFactory;
     
     protected $fillable = [
         'seller_profile_id',
@@ -21,6 +23,8 @@ class Product extends Model
         'discount_ends_at',
         'free_shipping',
         'is_archived',
+        'is_approved',
+        'is_active',
         'shipping_size',
     ];
 

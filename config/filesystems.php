@@ -60,6 +60,12 @@ return [
             'report' => false,
         ],
 
+        'testing' => [
+            'driver' => 'local',
+            'root' => storage_path('framework/testing/disks/testing'),
+            'throw' => false,
+        ],
+
     ],
 
     /*

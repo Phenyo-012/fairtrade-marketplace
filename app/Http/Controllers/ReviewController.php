@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Review;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ReviewController extends Controller
 {
-
     public function create(Order $order)
     {
         $order->load(['orderItems.reviews']);
@@ -24,17 +25,18 @@ class ReviewController extends Controller
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'nullable|string'
+            'comment' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
         ]);
 
-        $orderItem = \App\Models\OrderItem::with('order')->findOrFail($orderItemId);
+        $orderItem = OrderItem::with(['order', 'reviews'])->findOrFail($orderItemId);
 
-        //  ownership check
+        // ownership check
         if ($orderItem->order->buyer_id !== auth()->id()) {
             abort(403);
         }
 
-        //  NEW RULE
+        // delivery rule
         if (!$orderItem->order->canBeReviewed()) {
             return back()->with('error', 'You can only review after delivery.');
         }
@@ -50,14 +52,14 @@ class ReviewController extends Controller
             $path = $request->file('image')->store('reviews', 'public');
         }
 
-        \App\Models\Review::create([
+        Review::create([
             'order_id' => $orderItem->order_id,
             'order_item_id' => $orderItem->id,
             'buyer_id' => auth()->id(),
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'image' => $path ?? null,
-            'status' => 'pending'
+            'image' => $path,
+            'status' => 'pending',
         ]);
 
         Cache::forget('top_stores');
@@ -67,8 +69,6 @@ class ReviewController extends Controller
 
     public function bulkStore(Request $request)
     {
-       
-
         $request->validate([
             'items' => 'required|array',
             'items.*.order_item_id' => 'required|exists:order_items,id',
@@ -76,24 +76,17 @@ class ReviewController extends Controller
             'items.*.comment' => 'nullable|string',
             'items.*.image' => 'nullable|image|max:2048',
         ]);
-          
-        foreach ($request->items as $index => $item) {
 
-            $orderItem = \App\Models\OrderItem::with('order')->findOrFail($item['order_item_id']);
+        foreach ($request->items as $index => $item) {
+            $orderItem = OrderItem::with(['order', 'reviews'])->findOrFail($item['order_item_id']);
 
             // ownership check
             if ($orderItem->order->buyer_id !== auth()->id()) {
-                continue; // skip instead of aborting everything
+                continue;
             }
 
             // delivery rule
-            $order = $orderItem->order;
-
-            if (
-                $order->status !== 'delivered' &&
-                $order->status !== 'completed'
-            ) {
-                dump("SKIP {$orderItem->id} → order not delivered");
+            if (!$orderItem->order->canBeReviewed()) {
                 continue;
             }
 
@@ -102,8 +95,8 @@ class ReviewController extends Controller
                 continue;
             }
 
-            // handle image safely per index
             $path = null;
+
             if ($request->hasFile("items.$index.image")) {
                 $path = $request->file("items.$index.image")->store('reviews', 'public');
             }
@@ -115,11 +108,11 @@ class ReviewController extends Controller
                 'rating' => $item['rating'],
                 'comment' => $item['comment'] ?? null,
                 'image' => $path,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
         }
 
-        \Cache::forget('top_stores');
+        Cache::forget('top_stores');
 
         return back()->with('success', 'Reviews submitted successfully.');
     }

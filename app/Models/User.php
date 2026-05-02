@@ -27,6 +27,7 @@ class User extends Authenticatable
         'archived_at',
         'archived_email',
         'archived_phone',
+        'is_super_admin',
     ];
 
     /**
@@ -37,6 +38,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'is_super_admin' => 'boolean',
     ];
 
     /**
@@ -49,6 +51,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_super_admin' => 'boolean',
             'is_archived' => 'boolean',
             'archived_at' => 'datetime',
         ];

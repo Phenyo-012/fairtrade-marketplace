@@ -82,6 +82,21 @@ Route::view('/refund', 'legal.refund')
 
 Route::middleware('auth')->group(function () {
 
+    // Dashboard
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
+
+        if ($user->hasRole('admin') || $user->is_super_admin) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if ($user->hasRole('seller') && $user->sellerProfile?->verification_status === 'approved') {
+            return redirect()->route('seller.dashboard');
+        }
+
+        return redirect()->route('buyer.dashboard');
+    })->name('dashboard');
+
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');

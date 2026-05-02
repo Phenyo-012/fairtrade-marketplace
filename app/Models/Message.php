@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Conversation;
 
 class Message extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'conversation_id',
         'sender_id',

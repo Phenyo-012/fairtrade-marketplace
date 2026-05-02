@@ -26,7 +26,8 @@ class SellerDisputeController extends Controller
 
         // SECURITY: only seller of product can access
         $allowed = $dispute->order->orderItems->contains(function ($orderItem) use ($seller) {
-            return $orderItem->product->seller_profile_id === $seller->id;
+            return $orderItem->product
+                && $orderItem->product->seller_profile_id === $seller->id;
         });
 
         if (!$allowed) {
@@ -40,8 +41,10 @@ class SellerDisputeController extends Controller
     {
         $seller = auth()->user()->sellerProfile;
 
+        // SECURITY: only seller of product can respond
         $allowed = $dispute->order->orderItems->contains(function ($orderItem) use ($seller) {
-            return $orderItem->product->seller_profile_id === $seller->id;
+            return $orderItem->product
+                && $orderItem->product->seller_profile_id === $seller->id;
         });
 
         if (!$allowed) {
@@ -53,12 +56,12 @@ class SellerDisputeController extends Controller
         }
 
         $request->validate([
-            'response' => 'required|string|max:2000'
+            'seller_response' => 'required|string|max:2000',
         ]);
 
         $dispute->update([
-            'seller_response' => $request->response,
-            'seller_responded_at' => now()
+            'seller_response' => $request->seller_response,
+            'seller_responded_at' => now(),
         ]);
 
         return back()->with('success', 'Response submitted.');

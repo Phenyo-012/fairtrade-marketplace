@@ -106,7 +106,7 @@ class SellerProfileController extends Controller
         $data = $request->validate([
             'store_name' => 'required|string|max:255',
             'about' => 'required|string|max:1000',
-            'logo' => 'required|image|max:2048',
+            'logo' => 'nullable|image|max:2048',
             'pickup_address' => 'required|string|max:255',
             'pickup_city' => 'required|string|max:100',
             'pickup_province' => 'required|string|in:' . implode(',', config('provinces')),

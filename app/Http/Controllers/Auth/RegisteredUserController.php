@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -11,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
-use App\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -33,8 +33,8 @@ class RegisteredUserController extends Controller
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+            'phone' => ['required', 'string', 'max:20', 'unique:users,phone'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -47,15 +47,18 @@ class RegisteredUserController extends Controller
         ]);
 
         // Assign buyer role by default
-        $buyerRole = Role::where('name', 'buyer')->firstOrFail();
-        $user->roles()->attach($buyerRole->id);
+        $buyerRole = Role::firstOrCreate([
+            'name' => 'buyer',
+        ]);
+
+        $user->roles()->syncWithoutDetaching([
+            $buyerRole->id,
+        ]);
 
         event(new Registered($user));
 
-
-
         Auth::login($user);
 
-        return redirect(route('marketplace.index', absolute: false));
+        return redirect()->route('marketplace.index');
     }
 }
