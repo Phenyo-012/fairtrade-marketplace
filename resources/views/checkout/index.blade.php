@@ -136,15 +136,6 @@
                         <p class="text-red-500 text-sm">{{ $message }}</p>
                     @enderror
 
-                    <input type="text" name="shipping_country"
-                        value="{{ old('shipping_country') }}"
-                        placeholder="Country"
-                        class="w-full border border-gray-400 p-2 mt-2 rounded-xl"
-                        required>
-                    @error('shipping_country')
-                        <p class="text-red-500 text-sm">{{ $message }}</p>
-                    @enderror
-
                     <!-- Country -->
                     <input type="text" name="shipping_country"
                         value="{{ old('shipping_country') }}"

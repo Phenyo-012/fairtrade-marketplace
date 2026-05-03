@@ -458,12 +458,6 @@
                             View Store
                         </a>
 
-                        <!-- MESSAGE SELLER (FIXED) -->
-                        <a href="{{ url('/chat/start/' . $product->seller_profile_id) }}"
-                        class="flex-1 text-center bg-white hover:bg-blue-200 text-Black py-2 rounded-3xl text-sm border border-gray-400 shadow-md">
-                            Message Seller
-                        </a>
-
                     </div>
 
                 </div>

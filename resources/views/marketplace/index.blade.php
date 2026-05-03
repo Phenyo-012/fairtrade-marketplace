@@ -3,9 +3,9 @@
 @endphp
 <x-app-layout>
 
-   <div class="max-w-7xl mx-auto mt-10">
+   <div class="max-w-7xl mx-auto mt-10 px-5">
 
-      <!-- <h2 class="text-2xl font-bold mb-6">Marketplace</h2> -->
+      <h2 class="text-2xl font-bold mb-6">Marketplace</h2>
 
       <!-- FILTER BAR -->
       <form method="GET" class="mb-8 space-y-4 mt-6">
