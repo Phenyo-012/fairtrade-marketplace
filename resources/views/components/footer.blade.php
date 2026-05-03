@@ -7,7 +7,7 @@
             <!-- WEBSITE LOGO -->
             <div class="flex items-center justify-center mb-4">
                 <a href="{{ url('/') }}" class="text-2xl font-bold text-black mb-4 inline-block">
-                    <img src="{{ asset('images/fairTrade-logo2.png') }}"
+                    <img src="{{ asset('images/FairTrade-Logo2.png') }}"
                         alt="FairTrade Logo"
                         class="h-20 w-auto inline-block mr-2">
                 </a>

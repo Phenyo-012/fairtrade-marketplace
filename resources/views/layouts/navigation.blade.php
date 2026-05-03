@@ -16,7 +16,7 @@
 
                 <!-- LOGO -->
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('images/fairTrade-logo2.png') }}"
+                    <img src="{{ asset('images/FairTrade-Logo2.png') }}"
                         alt="FairTrade Logo"
                         class="block h-10 sm:h-12 md:h-16 w-auto mt-2 mb-2" />
                 </a>
