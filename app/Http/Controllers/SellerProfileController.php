@@ -141,8 +141,8 @@ class SellerProfileController extends Controller
         ]);
 
         $seller->update([
-            'id_document' => $request->file('id_document')->store('kyc', 's3'),
-            'selfie_document' => $request->file('selfie_document')->store('kyc', 's3'),
+            'id_document' => $request->file('id_document')->storePublicly('kyc', 's3'),
+            'selfie_document' => $request->file('selfie_document')->storePublicly('kyc', 's3'),
             'kyc_submitted' => true,
             'verification_status' => 'pending',
             'onboarding_step' => 3,
