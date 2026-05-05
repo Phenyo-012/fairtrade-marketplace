@@ -140,7 +140,7 @@ class Order extends Model
         }
 
         // Must be owned by current user
-        if ($order->buyer_id !== auth()->id()) {
+        if ((int) $order->buyer_id !== (int) auth()->id()) {
             return false;
         }
 
@@ -153,7 +153,6 @@ class Order extends Model
 
         return true;
     }
-
     public function canBeCompletedByAdmin()
     {
         if ($this->status !== 'delivered') {

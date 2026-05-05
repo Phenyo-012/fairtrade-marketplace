@@ -12,10 +12,17 @@ class ReviewController extends Controller
 {
     public function create(Order $order)
     {
-        $order->load(['orderItems.reviews']);
+        if ((int) $order->buyer_id !== (int) auth()->id()) {
+            abort(403);
+        }
+
+        $order->load([
+            'orderItems.product.images',
+            'orderItems.reviews',
+        ]);
 
         $itemsToReview = $order->orderItems->filter(function ($item) {
-            return !$item->reviews->where('buyer_id', auth()->id())->count();
+            return $item->canBeReviewed();
         });
 
         return view('reviews.create', compact('order', 'itemsToReview'));
@@ -26,30 +33,12 @@ class ReviewController extends Controller
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'comment' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
         ]);
 
         $orderItem = OrderItem::with(['order', 'reviews'])->findOrFail($orderItemId);
 
-        // ownership check
-        if ($orderItem->order->buyer_id !== auth()->id()) {
-            abort(403);
-        }
-
-        // delivery rule
-        if (!$orderItem->order->canBeReviewed()) {
-            return back()->with('error', 'You can only review after delivery.');
-        }
-
-        // prevent duplicates
-        if ($orderItem->reviews()->where('buyer_id', auth()->id())->exists()) {
-            return back()->with('error', 'You already reviewed this product.');
-        }
-
-        $path = null;
-
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('reviews', 's3');
+        if (!$orderItem->canBeReviewed()) {
+            return back()->with('error', 'You can only review this product after delivery and only once.');
         }
 
         Review::create([
@@ -58,7 +47,6 @@ class ReviewController extends Controller
             'buyer_id' => auth()->id(),
             'rating' => $request->rating,
             'comment' => $request->comment,
-            'image' => $path,
             'status' => 'pending',
         ]);
 
@@ -74,31 +62,15 @@ class ReviewController extends Controller
             'items.*.order_item_id' => 'required|exists:order_items,id',
             'items.*.rating' => 'required|integer|min:1|max:5',
             'items.*.comment' => 'nullable|string',
-            'items.*.image' => 'nullable|image|max:2048',
         ]);
 
-        foreach ($request->items as $index => $item) {
+        $created = 0;
+
+        foreach ($request->items as $item) {
             $orderItem = OrderItem::with(['order', 'reviews'])->findOrFail($item['order_item_id']);
 
-            // ownership check
-            if ($orderItem->order->buyer_id !== auth()->id()) {
+            if (!$orderItem->canBeReviewed()) {
                 continue;
-            }
-
-            // delivery rule
-            if (!$orderItem->order->canBeReviewed()) {
-                continue;
-            }
-
-            // prevent duplicates
-            if ($orderItem->reviews()->where('buyer_id', auth()->id())->exists()) {
-                continue;
-            }
-
-            $path = null;
-
-            if ($request->hasFile("items.$index.image")) {
-                $path = $request->file('image')->storePublicly('reviews', 's3');
             }
 
             Review::create([
@@ -107,12 +79,17 @@ class ReviewController extends Controller
                 'buyer_id' => auth()->id(),
                 'rating' => $item['rating'],
                 'comment' => $item['comment'] ?? null,
-                'image' => $path,
                 'status' => 'pending',
             ]);
+
+            $created++;
         }
 
         Cache::forget('top_stores');
+
+        if ($created === 0) {
+            return back()->with('error', 'No reviews were submitted. The order may not be reviewable or all items may already be reviewed.');
+        }
 
         return back()->with('success', 'Reviews submitted successfully.');
     }

@@ -1,5 +1,27 @@
 <x-app-layout>
 
+@if(session('success'))
+    <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-6">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-6">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-6">
+        <ul class="list-disc ml-5 text-sm">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <div class="bg-gray-100 min-h-screen py-10">
     <div class="max-w-4xl mx-auto px-4">
 
