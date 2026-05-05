@@ -47,8 +47,6 @@
                 @foreach($products as $product)
 
                     @php
-                        use Illuminate\Support\Facades\Storage;
-
                         $image = $product->images->first();
                         $sellerStatus = $product->sellerProfile->verification_status ?? 'missing';
                     @endphp

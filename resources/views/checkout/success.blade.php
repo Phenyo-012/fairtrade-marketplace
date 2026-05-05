@@ -43,7 +43,6 @@
                         <div class="flex items-center gap-4 border-b py-3">
                               @php 
                                 $price = displayPrice($item); 
-                                use Illuminate\Support\Facades\Storage;
                             @endphp
 
                             <!-- IMAGE -->

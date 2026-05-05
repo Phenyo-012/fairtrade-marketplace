@@ -55,8 +55,6 @@
                         <div class="flex items-center justify-between border-b py-4 gap-4">
 
                            @php
-                                use Illuminate\Support\Facades\Storage;
-
                                 $image = $item->product?->images?->first();
                             @endphp
 

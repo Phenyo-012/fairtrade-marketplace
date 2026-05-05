@@ -29,8 +29,6 @@
 
                     @foreach($items as $item)
                         @php 
-                            use Illuminate\Support\Facades\Storage;
-
                             $image = $item->product->images->first(); 
                             $product = $item->product;
                             $price = finalPrice($product);
