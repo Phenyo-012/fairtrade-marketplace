@@ -120,31 +120,26 @@ class Order extends Model
         return now()->gt($this->delivered_at->addHours(24));
     }
 
-    public function canBeReviewed()
+    public function canBeReviewed(): bool
     {
-        // Must belong to a valid order
+        // Must have an order
         if (!$this->order) {
             return false;
         }
 
         $order = $this->order;
 
-        // Order must be delivered or completed
-        if (!in_array($order->status, ['delivered', 'completed'])) {
-            return false;
-        }
-
-        // Must have delivery timestamp
-        if (!$order->delivered_at) {
-            return false;
-        }
-
-        // Must be owned by current user
+        // Buyer must own the order
         if ((int) $order->buyer_id !== (int) auth()->id()) {
             return false;
         }
 
-        // Prevent duplicate review per item per user
+        // Order must be delivered or completed
+        if (!in_array($order->status, ['delivered', 'completed'], true)) {
+            return false;
+        }
+
+        // Prevent duplicate review for this item by this buyer
         if ($this->reviews()
             ->where('buyer_id', auth()->id())
             ->exists()) {
@@ -153,6 +148,7 @@ class Order extends Model
 
         return true;
     }
+
     public function canBeCompletedByAdmin()
     {
         if ($this->status !== 'delivered') {
