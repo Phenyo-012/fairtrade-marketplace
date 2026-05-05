@@ -10,25 +10,23 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $fillable = [
-    'order_id',
-    'product_id',
-    'product_name',
-    'quantity',
-    'unit_price',
-    'subtotal',
-    'original_price'
+        'order_id',
+        'product_id',
+        'product_name',
+        'quantity',
+        'unit_price',
+        'subtotal',
+        'original_price',
     ];
 
     public function product()
     {
-        return $this->belongsTo(\App\Models\Product::class)
+        return $this->belongsTo(Product::class)
             ->withTrashed()
-            ->withDefault(function () {
-                return new \App\Models\Product([
-                    'product_name' => 'Deleted Product',
-                    'unit_price' => 0
-                ]);
-            });
+            ->withDefault([
+                'name' => 'Deleted Product',
+                'price' => 0,
+            ]);
     }
 
     public function order()
@@ -44,5 +42,34 @@ class OrderItem extends Model
     public function getIsDiscountedAttribute()
     {
         return $this->original_price && $this->original_price > $this->unit_price;
+    }
+
+    public function canBeReviewed(): bool
+    {
+        if (!$this->order) {
+            return false;
+        }
+
+        $order = $this->order;
+
+        if ((int) $order->buyer_id !== (int) auth()->id()) {
+            return false;
+        }
+
+        if (!in_array($order->status, ['delivered', 'completed'], true)) {
+            return false;
+        }
+
+        if (!$order->delivered_at) {
+            return false;
+        }
+
+        if ($this->reviews()
+            ->where('buyer_id', auth()->id())
+            ->exists()) {
+            return false;
+        }
+
+        return true;
     }
 }
