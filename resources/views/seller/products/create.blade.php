@@ -20,11 +20,6 @@
 
             <div class="mt-4">
                 <label class="block mb-2 font-medium">Product Images:</label>
-                <p class="text-red-600 mb-3">
-                    Ensure you select and edit the correct images, 
-                    as you will not be able to edit or delete the images once the product is created! 
-                    Ensure that you DO NOT upload images with transparent backgrounds! 
-                </p>
 
                 <input
                     type="file" id="imageInput" name="images[]" accept="image/*" 

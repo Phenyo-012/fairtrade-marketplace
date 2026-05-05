@@ -113,6 +113,8 @@ class SellerProductController extends Controller
             'stock_quantity' => 'required|integer',
             'category' => 'nullable|string',
             'condition' => 'nullable|string',
+            'cropped_images' => 'nullable|array|max:5',
+            'cropped_images.*' => 'nullable|string',
         ]);
 
         $discountEndsAt = null;
@@ -132,6 +134,41 @@ class SellerProductController extends Controller
             'discount_ends_at' => $discountEndsAt,
             'free_shipping' => $request->has('free_shipping'),
         ]);
+
+        if ($request->filled('cropped_images')) {
+
+            foreach ($product->images as $oldImage) {
+                if ($oldImage->image_path) {
+                    \Illuminate\Support\Facades\Storage::disk('s3')->delete($oldImage->image_path);
+                }
+
+                $oldImage->delete();
+            }
+
+            foreach ($request->cropped_images as $base64Image) {
+                if (!$base64Image) {
+                    continue;
+                }
+
+                $image = preg_replace('/^data:image\/\w+;base64,/', '', $base64Image);
+                $image = str_replace(' ', '+', $image);
+
+                $imageName = 'products/product_' . time() . '_' . uniqid() . '.jpg';
+
+                \Illuminate\Support\Facades\Storage::disk('s3')->put(
+                    $imageName,
+                    base64_decode($image),
+                    [
+                        'visibility' => 'public',
+                        'ContentType' => 'image/jpeg',
+                    ]
+                );
+
+                $product->images()->create([
+                    'image_path' => $imageName,
+                ]);
+            }
+        }
 
         return redirect()->route('seller.products.index')
             ->with('success', 'Product updated.');
