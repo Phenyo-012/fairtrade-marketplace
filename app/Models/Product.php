@@ -30,6 +30,14 @@ class Product extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    protected $casts = [
+        'discount_ends_at' => 'datetime',
+        'free_shipping' => 'boolean',
+        'is_archived' => 'boolean',
+        'is_approved' => 'boolean',
+        'is_active' => 'boolean',
+    ];
     
     use SoftDeletes;
 

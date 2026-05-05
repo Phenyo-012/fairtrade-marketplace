@@ -59,7 +59,7 @@
             <div class="flex items-center gap-4 border-b py-3">
 
                 @php 
-                    $image = $product?->images?->first();
+                    $image = $item->product?->images?->first();;
                 @endphp
 
                 <!-- PRODUCT IMAGE -->

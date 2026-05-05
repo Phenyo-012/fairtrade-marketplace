@@ -217,7 +217,7 @@
 
                 @if($product->discount_ends_at)
                     <p class="text-xs text-gray-500 mb-4">
-                        Current discount ends: {{ $product->discount_ends_at->format('d M Y H:i') }}
+                        Current discount ends: {{ \Carbon\Carbon::parse($product->discount_ends_at)->format('d M Y H:i') }}
                     </p>
                 @endif
             </div>
