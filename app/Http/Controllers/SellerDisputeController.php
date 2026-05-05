@@ -41,18 +41,24 @@ class SellerDisputeController extends Controller
     {
         $seller = auth()->user()->sellerProfile;
 
-        // SECURITY: only seller of product can respond
-        $allowed = $dispute->order->orderItems->contains(function ($orderItem) use ($seller) {
-            return $orderItem->product
-                && $orderItem->product->seller_profile_id === $seller->id;
-        });
+        if (!$seller) {
+            abort(403);
+        }
+
+        $dispute->load('order.orderItems.product');
+
+        $allowed = $dispute->order
+            && $dispute->order->orderItems->contains(function ($orderItem) use ($seller) {
+                return $orderItem->product
+                    && (int) $orderItem->product->seller_profile_id === (int) $seller->id;
+            });
 
         if (!$allowed) {
             abort(403);
         }
 
         if ($dispute->seller_response) {
-            return back()->with('error', 'You already responded.');
+            return back()->with('error', 'You have already responded to this dispute.');
         }
 
         $request->validate([
@@ -64,6 +70,6 @@ class SellerDisputeController extends Controller
             'seller_responded_at' => now(),
         ]);
 
-        return back()->with('success', 'Response submitted.');
+        return back()->with('success', 'Response submitted successfully.');
     }
 }

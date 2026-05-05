@@ -22,6 +22,10 @@ class Dispute extends Model
         'seller_responded_at'
     ];
 
+    protected $casts = [
+        'seller_responded_at' => 'datetime',
+    ];
+
     public function order()
     {
         return $this->belongsTo(Order::class);
