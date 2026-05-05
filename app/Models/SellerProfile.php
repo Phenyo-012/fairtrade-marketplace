@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SellerProfile extends Model
@@ -50,5 +51,10 @@ class SellerProfile extends Model
             'id',
             'id'
         );
+    }
+
+    public function getLogoUrlAttribute()
+    {
+        return \App\Support\ImageUrl::make($this->logo, 'default-store.png');
     }
 }

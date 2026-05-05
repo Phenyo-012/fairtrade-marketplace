@@ -58,10 +58,13 @@
 
             <div class="flex items-center gap-4 border-b py-3">
 
+                @php 
+                    use Illuminate\Support\Facades\Storage; 
+                    $image = $product?->images?->first();
+                @endphp
+
                 <!-- PRODUCT IMAGE -->
-                <img src="{{ $item->product->images->first()
-                    ? asset('storage/'.$item->product->images->first()->image_path)
-                    : '/placeholder.png' }}"
+                <img src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
                     class="w-16 h-16 object-cover rounded-xl">
 
                 <div class="flex-1">

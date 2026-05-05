@@ -14,8 +14,10 @@
                     ? $isSeller->store_name
                     : $other->first_name . ' ' . $other->last_name;
 
+                use Illuminate\Support\Facades\Storage;
+
                 $avatar = $isSeller && $isSeller->logo
-                    ? asset('storage/' . $isSeller->logo)
+                    ? \App\Support\ImageUrl::make($isSeller->logo, 'default-store.png')
                     : ($other->profile_photo_url ?? asset('images/default-user.png'));
 
                 $lastMessage = $conversation->lastMessage;

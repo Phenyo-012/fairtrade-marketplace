@@ -9,6 +9,11 @@ class SellerStoreController extends Controller
     public function edit()
     {
         $seller = auth()->user()->sellerProfile;
+
+        if (!$seller) {
+            abort(403);
+        }
+
         return view('seller.store.edit', compact('seller'));
     }
 
@@ -16,21 +21,21 @@ class SellerStoreController extends Controller
     {
         $seller = auth()->user()->sellerProfile;
 
-        $request->validate([
+        if (!$seller) {
+            abort(403);
+        }
+
+        $data = $request->validate([
             'store_name' => 'required|string|max:255',
             'about' => 'nullable|string',
-            'logo' => 'nullable|image'
+            'logo' => 'nullable|image|max:2048',
         ]);
 
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('logos', 'public');
-            $seller->logo = $path;
+            $data['logo'] = $request->file('logo')->storePublicly('logos', 's3');
         }
 
-        $seller->update([
-            'store_name' => $request->store_name,
-            'about' => $request->about
-        ]);
+        $seller->update($data);
 
         return back()->with('success', 'Store updated');
     }

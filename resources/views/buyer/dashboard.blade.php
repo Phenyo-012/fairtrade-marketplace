@@ -146,14 +146,15 @@
                                 <div class="border rounded-xl p-3 hover:shadow transition">
 
                                     @php
+                                        use Illuminate\Support\Facades\Storage;
                                         $image = $item->product?->images?->first();
                                     @endphp
 
                                     <a href="{{ $item->product ? url('/products/' . $item->product->id) : '#' }}">
-                                        <img src="{{ $image ? asset('storage/' . $image->image_path) : '/placeholder.png' }}"
-                                             class="w-full h-36 object-cover rounded-xl mb-3">
+                                        <img src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
+                                            class="w-full h-36 object-cover rounded-xl mb-3"
+                                            alt="{{ $product?->name ?? 'Product image' }}">
                                     </a>
-
                                     <p class="font-semibold text-sm">
                                         {{ $item->product_name ?? $item->product->name ?? 'Deleted Product' }}
                                     </p>

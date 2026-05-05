@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
@@ -57,9 +58,7 @@ class Product extends Model
     {
         $image = $this->images->first();
 
-        return $image
-            ? asset('storage/' . $image->image_path)
-            : '/placeholder.png';
+        return \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png');
     }
 
     public function orderItems()

@@ -54,19 +54,25 @@
                     @foreach($order->orderItems as $item)
                         <div class="flex items-center justify-between border-b py-4 gap-4">
 
+                           @php
+                                use Illuminate\Support\Facades\Storage;
+
+                                $image = $item->product?->images?->first();
+                            @endphp
+
                             <!-- LEFT: IMAGE + INFO -->
                             <div class="flex items-center gap-4">
 
                                 <!-- PRODUCT IMAGE -->
-                                @if($item->product->images && $item->product->images->count())
+                                @if($image)
                                     <img 
-                                        src="{{ asset('storage/' . $item->product->images->first()->image_path) }}"
+                                        src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
                                         alt="{{ $item->product->name }}"
                                         class="w-16 h-16 object-cover rounded-lg"
                                     >
                                 @else
                                     <img 
-                                        src="/placeholder.png"
+                                        src="{{ asset('placeholder.png') }}"
                                         alt="No image"
                                         class="w-16 h-16 object-cover rounded-lg"
                                     >

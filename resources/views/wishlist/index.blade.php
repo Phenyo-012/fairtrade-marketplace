@@ -26,14 +26,14 @@
 
                 @foreach($items as $item)
                     @php 
-                        $image = $item->product->images->first(); 
+                        $image = $product?->images?->first();
                     @endphp
 
                     <div class="bg-white rounded-xl shadow p-4 relative">
 
                         <a href="/products/{{ $item->product->id }}">
 
-                            <img src="{{ $image ? asset('storage/' . $image->image_path) : '/placeholder.png' }}"
+                            <img src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
                                 class="w-full h-auto object-cover rounded-xl mb-2">
 
                             <p class="font-semibold text-sm">

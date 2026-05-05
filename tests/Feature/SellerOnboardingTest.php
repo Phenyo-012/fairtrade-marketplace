@@ -88,7 +88,7 @@ class SellerOnboardingTest extends TestCase
 
     public function test_seller_can_submit_kyc_step(): void
     {
-        Storage::fake('public');
+        Storage::fake('s3');
 
         $user = User::factory()->create();
 

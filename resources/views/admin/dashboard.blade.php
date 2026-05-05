@@ -126,7 +126,7 @@
                         <h4 class="font-semibold mb-2">Suspicious Sellers</h4>
                         @foreach($badSellers as $seller)
                             <p class="text-red-600">
-                                ⚠ {{ $seller->store_name }} ({{ $seller->disputes }} disputes)
+                                {{ $seller->store_name }} ({{ $seller->disputes }} disputes)
                             </p>
                         @endforeach
                     </div>
@@ -135,7 +135,7 @@
                         <h4 class="font-semibold mb-2">Suspicious Buyers</h4>
                         @foreach($badBuyers as $buyer)
                             <p class="text-red-600">
-                                ⚠ {{ $buyer->name }} ({{ $buyer->disputes }} disputes)
+                                {{ $buyer->name }} ({{ $buyer->disputes }} disputes)
                             </p>
                         @endforeach
                     </div>

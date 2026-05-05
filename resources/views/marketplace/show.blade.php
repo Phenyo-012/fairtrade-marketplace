@@ -16,16 +16,21 @@
                     <!-- MAIN IMAGE CONTAINER -->
                     <div class="relative w-full max-w-[649px] aspect-[649/648] bg-white rounded-2xl shadow overflow-hidden mx-auto">
 
+                        @php
+                            $mainImage = $product->images->first();
+                        @endphp
+
                         <div class="w-full h-auto overflow-hidden">
-                            @if($product->images->isEmpty())
-                                <img src="/placeholder.png"
+                            @if(!$mainImage)
+                                <img src="{{ \App\Support\ImageUrl::make($product->images->first()->image_path ?? null, 'placeholder.png') }}"
                                     class="w-full h-full object-cover"
-                                    alt="no image">
+                                    alt="No image">
                             @else
                                 <img id="mainImage"
-                                    src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+                                    src="{{ $mainImage->url }}"
                                     class="w-full h-full object-cover transition duration-1000 cursor-zoom-in"
-                                    onclick="openLightbox(currentIndex)">
+                                    onclick="openLightbox(currentIndex)"
+                                    alt="{{ $product->name }}">
                             @endif
                         </div>
 
@@ -47,9 +52,10 @@
                     <div class="flex gap-3 mt-4 overflow-x-auto">
                         @foreach($product->images as $index => $image)
                             <img 
-                                src="{{ asset('storage/' . $image->image_path) }}"
+                                src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
                                 class="w-20 h-20 object-cover rounded-lg cursor-pointer border hover:border-gray-400 transition"
-                                onclick="changeImage({{ $index }})">
+                                onclick="changeImage({{ $index }})"
+                                alt="{{ $product->name }} thumbnail {{ $index + 1 }}">
                         @endforeach
                     </div>
 
@@ -367,8 +373,9 @@
                         <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
 
                             @if(optional($product->sellerProfile)->logo)
-                                <img src="{{ asset('storage/' . $product->sellerProfile->logo) }}"
-                                    class="w-full h-full object-cover">
+                                <img src="{{ \App\Support\ImageUrl::make($product->sellerProfile->logo ?? null, 'default-store.png') }}"
+                                    class="w-full h-full object-cover"
+                                    alt="{{ $product->sellerProfile->store_name }}">
                             @else
                                 <div class="w-full h-full flex items-center justify-center text-xs text-gray-500">
                                     No Logo
@@ -481,8 +488,9 @@
                         <div class="p-2">
                             <!-- PRODUCT IMAGE-->
                             @if($image)
-                                <img src="{{ asset('storage/' . $image->image_path) }}"
-                                    class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
+                                <img src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
+                                    class="w-full h-80 object-cover rounded-xl mb-3 transition-transform"
+                                    alt="{{ $item->name }}">
                             @else
                                 <div class="w-full h-80 object-cover flex items-center justify-center rounded-xl mb-3 transition-transform">
                                         No Image
@@ -595,12 +603,14 @@
     </div>
 
     <script>
-        let images = @json($product->images->pluck('image_path')->map(fn($img) => asset('storage/' . $img)));
+        let images = @json(
+            $product->images->pluck('image_path')->map(fn($img) => \App\Support\ImageUrl::make($img))->values()
+        );
         let currentIndex = 0;
         let autoPlayInterval = null;
 
         function updateImage() {
-            if(images.length>0) {
+            if(images.length > 0) {
                 document.getElementById('mainImage').src = images[currentIndex];
             }
         }
@@ -637,6 +647,7 @@
         function startCarousel() {
             autoPlayInterval = setInterval(nextImage, 5000); // 5s
         }
+
         function stopCarousel() {
             clearInterval(autoPlayInterval);
         }

@@ -29,16 +29,20 @@
 
                     @foreach($items as $item)
                         @php 
+                            use Illuminate\Support\Facades\Storage;
+
                             $image = $item->product->images->first(); 
                             $product = $item->product;
                             $price = finalPrice($product);
                         @endphp
 
                         <div class="bg-white rounded-xl shadow p-4 flex flex-col md:flex-row gap-4">
+                            
                             <!-- Image -->
                             <div class="w-24 h-24 flex-shrink-0 overflow-hidden rounded-xl">
-                                <img src="{{ $image ? asset('storage/' . $image->image_path) : '/placeholder.png' }}"
-                                    class="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform">
+                                <img src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
+                                    class="w-full h-full object-cover rounded-xl hover:scale-105 transition-transform"
+                                    alt="{{ $item->product?->name ?? 'Cart item image' }}">
                             </div>
 
                             <!-- Product Info -->

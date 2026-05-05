@@ -53,7 +53,6 @@
 
             <!-- EMPTY STATE -->
             <div class="bg-white p-10 rounded-2xl shadow text-center">
-                <div class="text-4xl mb-3">✅</div>
 
                 <h3 class="text-xl font-bold text-gray-900">
                     All products reviewed
@@ -91,13 +90,13 @@
                                 <!-- IMAGE -->
                                 <div class="w-24 h-24 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
                                     @if($image)
-                                        <img src="{{ asset('storage/' . $image->image_path) }}"
-                                             alt="{{ $product->name }}"
-                                             class="w-full h-full object-cover">
+                                        <img src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
+                                            alt="{{ $product->name }}"
+                                            class="w-full h-full object-cover">
                                     @else
-                                        <img src="/placeholder.png"
-                                             alt="No image"
-                                             class="w-full h-full object-cover">
+                                        <img src="{{ asset('placeholder.png') }}"
+                                            alt="No image"
+                                            class="w-full h-full object-cover">
                                     @endif
                                 </div>
 

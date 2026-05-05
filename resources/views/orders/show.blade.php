@@ -110,14 +110,20 @@
 
                     <!-- CLICKABLE IMAGE -->
                     <a href="/products/{{ $item->product->id }}" class="block w-20 h-20 rounded-xl overflow-hidden">
-                        @if($item->product->images->count())
+                        @php
+                            $image = $item->product?->images?->first();
+                        @endphp
+
+                        @if($image)
                             <img 
-                                src="{{ asset('storage/' . $item->product->images->first()->image_path) }}"
+                                src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
                                 class="w-20 h-20 object-cover rounded-xl hover:scale-105 transition"
-                            >
+                                alt="{{ $item->product->name }}">
                         @else
-                            <img src="/placeholder.png"
-                                class="w-20 h-20 object-cover rounded-xl">
+                            <img 
+                                src="{{ asset('placeholder.png') }}"
+                                class="w-20 h-20 object-cover rounded-xl"
+                                alt="No image">
                         @endif
                     </a>
 

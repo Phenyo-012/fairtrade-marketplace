@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SellerProfile;
 use App\Models\Role;
+use Illuminate\Support\Facades\Storage;
 
 class SellerProfileController extends Controller
 {
@@ -25,7 +26,7 @@ class SellerProfileController extends Controller
             return redirect()->route('seller.onboarding');
         }
 
-        $sellerProfile = SellerProfile::create([
+        SellerProfile::create([
             'user_id' => $user->id,
             'store_name' => 'Untitled Store',
             'about' => null,
@@ -76,7 +77,7 @@ class SellerProfileController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('logos', 'public');
+            $data['logo'] = $request->file('logo')->storePublicly('logos', 's3');
         }
 
         $seller->update($data);
@@ -115,7 +116,7 @@ class SellerProfileController extends Controller
         ]);
 
         if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('logos', 'public');
+            $data['logo'] = $request->file('logo')->storePublicly('logos', 's3');
         }
 
         $data['onboarding_step'] = 2;
@@ -140,8 +141,8 @@ class SellerProfileController extends Controller
         ]);
 
         $seller->update([
-            'id_document' => $request->file('id_document')->store('kyc', 'public'),
-            'selfie_document' => $request->file('selfie_document')->store('kyc', 'public'),
+            'id_document' => $request->file('id_document')->store('kyc', 's3'),
+            'selfie_document' => $request->file('selfie_document')->store('kyc', 's3'),
             'kyc_submitted' => true,
             'verification_status' => 'pending',
             'onboarding_step' => 3,

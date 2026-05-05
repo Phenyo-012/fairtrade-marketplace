@@ -34,12 +34,12 @@
         <div class="relative bg-white rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden flex flex-col">
 
             <!-- Image -->
-            <div class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
+            <div class="w-full h-80 rounded-xl mb-3 transition-transform overflow-hidden">
                 @if($product->images->count())
-                    <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+                    <img src="{{ \App\Support\ImageUrl::make($product->images->first()->image_path ?? null, 'placeholder.png') }}"
                         class="w-full h-full object-cover">
                 @else
-                    <div class="w-full h-80 object-cover flex items-center justify-center rounded-xl mb-3 transition-transform">
+                    <div class="w-full h-80 flex items-center justify-center rounded-xl mb-3 transition-transform">
                         No Image
                     </div>
                 @endif

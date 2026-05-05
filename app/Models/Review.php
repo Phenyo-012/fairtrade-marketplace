@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Review extends Model
@@ -44,5 +45,12 @@ class Review extends Model
     public function votes()
     {
         return $this->hasMany(\App\Models\ReviewVote::class);
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image
+            ? \App\Support\ImageUrl::make($this->image)
+            : null;
     }
 }

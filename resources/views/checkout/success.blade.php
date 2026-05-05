@@ -43,12 +43,14 @@
                         <div class="flex items-center gap-4 border-b py-3">
                               @php 
                                 $price = displayPrice($item); 
+                                use Illuminate\Support\Facades\Storage;
                             @endphp
 
                             <!-- IMAGE -->
                             @if($item->product->images->count())
-                                <img src="{{ asset('storage/'.$item->product->images->first()->image_path) }}"
-                                    class="w-16 h-16 object-cover rounded-xl">
+                                <img src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
+                                    class="w-16 h-16 object-cover rounded-xl"
+                                    alt="{{ $item->product?->name ?? 'Purchased product image' }}">
                             @else
                                 <img src="/placeholder.png"
                                     class="w-16 h-16 object-cover rounded-xl">

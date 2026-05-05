@@ -53,10 +53,13 @@
                 <!-- PRODUCTS PREVIEW -->
                 <div class="flex gap-2 mb-3">
                     @foreach($order->orderItems->take(3) as $item)
-                        <img src="{{ $item->product->images->first()
-                            ? asset('storage/'.$item->product->images->first()->image_path)
-                            : '/placeholder.png' }}"
-                            class="w-12 h-12 object-cover rounded-xl">
+                        @php
+                            $image = $item->product?->images?->first();
+                        @endphp
+
+                        <img src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
+                            class="w-12 h-12 object-cover rounded-xl"
+                            alt="{{ $item->product->name ?? 'Product image' }}">
                     @endforeach
                 </div>
 

@@ -47,6 +47,8 @@
                 @foreach($products as $product)
 
                     @php
+                        use Illuminate\Support\Facades\Storage;
+
                         $image = $product->images->first();
                         $sellerStatus = $product->sellerProfile->verification_status ?? 'missing';
                     @endphp
@@ -56,10 +58,9 @@
                         <!-- IMAGE -->
                         <div class="w-full h-48 mb-3 overflow-hidden rounded-xl bg-gray-100">
                             <img 
-                                src="{{ $image ? asset('storage/' . $image->image_path) : asset('placeholder.png') }}"
+                                src="{{ \App\Support\ImageUrl::make($image->image_path ?? null, 'placeholder.png') }}"
                                 class="w-full h-full object-cover"
-                                alt="{{ $product->name }}"
-                            >
+                                alt="{{ $product->name }}">
                         </div>
 
                         <!-- INFO -->

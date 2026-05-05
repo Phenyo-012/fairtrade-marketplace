@@ -109,7 +109,7 @@
                             </span>
                         @endif
 
-                        <img src="{{ $store->logo ? asset('storage/'.$store->logo) : '/default-store.png' }}"
+                        <img src="{{ \App\Support\ImageUrl::make($store->logo, 'default-store.png') }}"
                             class="h-16 w-16 rounded-full mx-auto mb-3 object-cover group-hover:scale-105 transition">
 
                         <p class="font-semibold text-gray-800 group-hover:text-blue-600">
@@ -133,7 +133,7 @@
 
                         <!-- IMAGE -->
                         @if($product->images->count())
-                            <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+                            <img src="{{ \App\Support\ImageUrl::make($product->images->first()->image_path ?? null, 'placeholder.png') }}"
                                 alt="{{ $product->name }}"
                                 class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
                         @else

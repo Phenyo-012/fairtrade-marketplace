@@ -57,8 +57,9 @@
                     <!-- LOGO -->
                     <div class="w-16 h-16 flex-shrink-0 overflow-hidden rounded-full bg-gray-100 border">
                         @if($seller->logo)
-                            <img src="{{ asset('storage/' . $seller->logo) }}"
-                                class="w-full h-full object-cover">
+                            <img src="{{ \App\Support\ImageUrl::make($seller->logo, 'default-store.png') }}"
+                                class="w-full h-full object-cover"
+                                alt="{{ $seller->store_name }}">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-gray-500 font-bold">
                                 {{ strtoupper(substr($seller->store_name, 0, 1)) }}

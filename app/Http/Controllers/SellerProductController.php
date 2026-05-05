@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -15,7 +13,7 @@ class SellerProductController extends Controller
     {
         if (auth()->user()->sellerProfile->verification_status !== 'approved') {
             abort(403);
-        }        
+        }
 
         $sellerProfile = auth()->user()->sellerProfile;
 
@@ -39,8 +37,7 @@ class SellerProductController extends Controller
             abort(403);
         }
 
-
-        $data = $request->validate([
+        $request->validate([
             'name' => 'required',
             'description' => 'required',
             'price' => 'required|numeric',
@@ -51,6 +48,12 @@ class SellerProductController extends Controller
             'cropped_images.*' => 'required|string',
         ]);
 
+        $discountEndsAt = null;
+
+        if ($request->filled('discount_percentage') && $request->filled('discount_hours')) {
+            $discountEndsAt = now()->addHours((int) $request->discount_hours);
+        }
+
         $product = Product::create([
             'seller_profile_id' => auth()->user()->sellerProfile->id,
             'name' => $request->name,
@@ -59,26 +62,58 @@ class SellerProductController extends Controller
             'stock_quantity' => $request->stock_quantity,
             'category' => $request->category,
             'condition' => $request->condition,
+            'discount_percentage' => $request->discount_percentage,
+            'discount_ends_at' => $discountEndsAt,
+            'free_shipping' => $request->has('free_shipping'),
+            'is_approved' => false,
             'is_active' => false,
+            'is_archived' => false,
         ]);
 
         // SAVE CROPPED IMAGES ONLY
         foreach ($request->cropped_images as $base64Image) {
-
-            $image = str_replace('data:image/jpeg;base64,', '', $base64Image);
+            $image = preg_replace('/^data:image\/\w+;base64,/', '', $base64Image);
             $image = str_replace(' ', '+', $image);
 
-            $imageName = 'product_' . time() . '_' . uniqid() . '.jpg';
+            $imageName = 'products/product_' . time() . '_' . uniqid() . '.jpg';
 
-            Storage::disk('public')->put(
-                'products/' . $imageName,
-                base64_decode($image)
-            );
+            Storage::disk('s3')->put($imageName, base64_decode($image), [
+                'visibility' => 'public',
+                'ContentType' => 'image/jpeg',
+            ]);
 
             $product->images()->create([
-                'image_path' => 'products/' . $imageName
+                'image_path' => $imageName,
             ]);
         }
+
+        return redirect()->route('seller.products.index')
+            ->with('success', 'Product created.');
+    }
+
+    public function edit(Product $product)
+    {
+        if ($product->seller_profile_id !== auth()->user()->sellerProfile->id) {
+            abort(403);
+        }
+
+        return view('seller.products.edit', compact('product'));
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        if ($product->seller_profile_id !== auth()->user()->sellerProfile->id) {
+            abort(403);
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'stock_quantity' => 'required|integer',
+            'category' => 'nullable|string',
+            'condition' => 'nullable|string',
+        ]);
 
         $discountEndsAt = null;
 
@@ -91,45 +126,15 @@ class SellerProductController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'stock_quantity' => $request->stock_quantity,
-
+            'category' => $request->category ?? $product->category,
+            'condition' => $request->condition ?? $product->condition,
             'discount_percentage' => $request->discount_percentage,
             'discount_ends_at' => $discountEndsAt,
             'free_shipping' => $request->has('free_shipping'),
         ]);
 
         return redirect()->route('seller.products.index')
-            ->with('success','Product created.');
-    }
-
-    public function edit(Product $product)
-    {
-        return view('seller.products.edit', compact('product'));
-    }
-
-    public function update(Request $request, Product $product)
-    {
-        $product->update($request->all());
-
-        $discountEndsAt = null;
-        $hours = (int) $request->discount_hours;
-
-        if ($request->filled('discount_percentage') && $request->filled('discount_hours')) {
-            $discountEndsAt = now()->addHours($hours);
-        }
-
-        $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock_quantity' => $request->stock_quantity,
-
-            'discount_percentage' => $request->discount_percentage,
-            'discount_ends_at' => $discountEndsAt,
-            'free_shipping' => $request->has('free_shipping'),
-        ]);
-
-        return redirect()->route('seller.products.index')
-            ->with('success','Product updated.');
+            ->with('success', 'Product updated.');
     }
 
     public function destroy(Product $product)
@@ -144,7 +149,7 @@ class SellerProductController extends Controller
             return back()->with('error', 'This product has orders and cannot be deleted. You can archive it instead.');
         }
 
-        $product->delete(); // soft delete
+        $product->delete();
 
         return back()->with('success', 'Product archived successfully.');
     }

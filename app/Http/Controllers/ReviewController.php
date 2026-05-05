@@ -49,7 +49,7 @@ class ReviewController extends Controller
         $path = null;
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('reviews', 'public');
+            $path = $request->file('image')->store('reviews', 's3');
         }
 
         Review::create([
@@ -98,7 +98,7 @@ class ReviewController extends Controller
             $path = null;
 
             if ($request->hasFile("items.$index.image")) {
-                $path = $request->file("items.$index.image")->store('reviews', 'public');
+                $path = $request->file('image')->storePublicly('reviews', 's3');
             }
 
             Review::create([

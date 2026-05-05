@@ -80,8 +80,12 @@
             <div class="p-2">
 
                <!-- IMAGE -->
-               @if($product->images->count())
-                  <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+               @php
+                  $mainImage = $product->images->first();
+               @endphp
+
+               @if($mainImage)
+                  <img src="{{ \App\Support\ImageUrl::make($product->images->first()->image_path ?? null, 'placeholder.png') }}"
                      alt="{{ $product->name }}"
                      class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
                @else

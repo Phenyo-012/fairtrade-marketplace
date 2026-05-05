@@ -19,7 +19,7 @@
                 <!-- LOGO -->
                 <div>
                     @if($seller->logo)
-                        <img src="{{ asset('storage/'.$seller->logo) }}"
+                        <img src="{{ \App\Support\ImageUrl::make($seller->logo, 'default-store.png') }}"
                             class="w-24 h-24 rounded-full object-cover">
                     @else
                         <div class="w-24 h-24 bg-gray-200 rounded-full"></div>
@@ -109,7 +109,7 @@
 
                             <!-- IMAGE -->
                             @if($product->images->count())
-                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}"
+                                <img src="{{ \App\Support\ImageUrl::make($product->images->first()->image_path ?? null, 'placeholder.png') }}"
                                     alt="{{ $product->name }}"
                                     class="w-full h-80 object-cover rounded-xl mb-3 transition-transform">
                             @else

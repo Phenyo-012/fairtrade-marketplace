@@ -110,12 +110,7 @@
                     {{ $review->comment }}
                 </p>
             </div>
-
-            @if($review->image)
-                <img src="{{ asset('storage/' . $review->image) }}"
-                    class="w-40 h-40 object-cover mt-4 rounded-xl">
-            @endif
-
+            
             @if($review->status === 'pending')
             <div class="flex gap-3 mt-6">
 
