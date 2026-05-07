@@ -42,7 +42,8 @@
                     @foreach($order->orderItems as $item)
                         <div class="flex items-center gap-4 border-b py-3">
                               @php 
-                                $price = displayPrice($item); 
+                                $price = displayPrice($item);
+                                $image = $item->product->images->first();  
                             @endphp
 
                             <!-- IMAGE -->

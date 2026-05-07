@@ -43,12 +43,14 @@
             <input type="date"
                 name="from"
                 value="{{ request('from') }}"
+                placeholder="DD/MM/YY"
                 class="border p-2 rounded-3xl">
 
             <!-- TO -->
             <input type="date"
                 name="to"
                 value="{{ request('to') }}"
+                placeholder="DD/MM/YY"
                 class="border p-2 rounded-3xl">
 
             <!-- BUTTONS -->
