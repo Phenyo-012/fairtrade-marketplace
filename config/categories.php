@@ -37,7 +37,7 @@ return [
     'Gaming & Entertainment' => [
         'Consoles',
         'Games',
-        'Accessories'
+        'Gaming Accessories'
     ],
 
     'Books & Learning' => [

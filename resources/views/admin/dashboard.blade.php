@@ -33,6 +33,9 @@
                 class="bg-white border border-gray-300 p-5 rounded-xl shadow-md hover:shadow-md hover:bg-green-100">
                     <p class="text-sm text-green-700">Seller Orders</p>
                     <h2 class="text-2xl font-bold">{{ $totalOrders }}</h2>
+                    <p class="text-xs text-gray-500 mt-1">
+                        This figure reflects the total amount of seller orders completed
+                    </p>
                 </a>
             </div>
 

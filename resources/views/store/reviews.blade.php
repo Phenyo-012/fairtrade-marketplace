@@ -99,14 +99,14 @@
                                         @endfor
                                         @break
                                     @default
-                                           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-                                            <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
-                                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
-                                                0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
-                                                <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
-                                                <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
-                                            </path>
-                                            </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                        <path fill="currentColor" fill-opacity="0" stroke="currentColor" stroke-dasharray="66" 
+                                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l2.35 5.76l6.21 
+                                            0.46l-4.76 4.02l1.49 6.04l-5.29 -3.28l-5.29 3.28l1.49 -6.04l-4.76 -4.02l6.21 -0.46Z">
+                                            <animate fill="freeze" attributeName="stroke-dashoffset" dur="1.11s" values="66;0"/>
+                                            <animate fill="freeze" attributeName="fill-opacity" begin="1.11s" dur="0.74s" to="1"/>
+                                        </path>
+                                        </svg>
                                 @endswitch
                             </p>
 
@@ -116,7 +116,7 @@
                         </div>
 
                         <p class="text-gray-700 mt-2">
-                            <p>Seller Comment:</p>
+                            <p>Buyer Comment:</p>
                             <p>{{ $review->comment }}</p>
                         </p>
                         <br>
