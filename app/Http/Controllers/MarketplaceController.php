@@ -39,7 +39,7 @@ class MarketplaceController extends Controller
             $query->where('price', '<=', $request->max_price);
         }
 
-        // OFFERS (future-ready)
+        // OFFERS
         if ($request->offer === 'free_shipping') {
             $query->where('free_shipping', true);
         }

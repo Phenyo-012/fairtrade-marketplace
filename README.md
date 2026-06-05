@@ -299,7 +299,7 @@ Instead of deletion, products can be **archived**.
 
 ## Current Status
 
-**Phase:** UI Enhancement & Mobile Optimization  
+**Phase:** Deployment   
 
 ###  Completed:
 - Core marketplace  
@@ -316,14 +316,14 @@ Instead of deletion, products can be **archived**.
 - Courier Support (SIMULATED)
 - Payment Support (SIMULATED)
 - Buyer dashboard
+- Mobile device Optimization
+- UI refinements
 
 ###  In Progress:
-- Mobile device Optimization
-- UI refinements  
+- 
 
 ###  Planned:
-- Beta Deployment
-- Use Case Testing
+- 
 
 ---
 
