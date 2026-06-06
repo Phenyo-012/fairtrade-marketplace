@@ -80,11 +80,13 @@ class MarketplaceController extends Controller
             'sellerProfile'
         ]);
 
+        // CHECK IF PRODUCT IS AVAILABLE
         if (!$product->is_approved || !$product->is_active || $product->is_archived || !$product->sellerProfile || $product->sellerProfile->verification_status !== 'approved') {
             return redirect()->route('marketplace.index')
                 ->with('error', 'This product is no longer available.');
         }
 
+        // FETCH REVIEWS WITH FILTERS AND SORTING
         $reviewsQuery = \App\Models\Review::with(['votes'])
             ->whereHas('orderItem', function ($q) use ($product) {
                 $q->where('product_id', $product->id);
@@ -148,6 +150,7 @@ class MarketplaceController extends Controller
 
         $ratingPercentages = [];
 
+        // CALCULATE PERCENTAGE FOR EACH RATING
         for ($i = 1; $i <= 5; $i++) {
             $count = $ratingCounts[$i] ?? 0;
             $ratingPercentages[$i] = $totalReviews > 0
@@ -157,12 +160,13 @@ class MarketplaceController extends Controller
 
         $seller = $product->sellerProfile;
 
+        // CALCULATE SELLER RATING AND TOTAL SALES
         $sellerRating = \App\Models\Review::whereHas('orderItem', function ($q) use ($product) {
             $q->whereHas('product', function ($q2) use ($product) {
                 $q2->where('seller_profile_id', $product->seller_profile_id);
             });
         })
-        ->avg('rating');
+        ->avg('rating'); // AVERAGE RATING FOR ALL PRODUCTS BY THIS SELLER
 
         $sellerRating = $sellerRating ? round($sellerRating, 1) : 0;
 

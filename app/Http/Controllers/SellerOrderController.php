@@ -86,9 +86,7 @@ class SellerOrderController extends Controller
             return back()->with('error', 'You can only mark this order as shipped after the buyer cancellation window has expired.');
         }
 
-        // ========================
         // WHEN SHIPPING
-        // ========================
         if ($newStatus === 'shipped') {
 
             $isLate = false;

@@ -26,10 +26,6 @@ class SellerDashboardController extends Controller
         // Orders (unique)
         $orders = $orderItems->pluck('order')->unique('id');
 
-        // ========================
-        // 💰 ESCROW + COMPLETED
-        // ========================
-
         // Items NOT completed = escrow
         $escrowItems = $orderItems->filter(function ($item) {
             return !in_array($item->order->status, ['completed', 'cancelled', 'disputed']);
@@ -40,19 +36,15 @@ class SellerDashboardController extends Controller
             return $item->order->status === 'completed';
         });
 
-        // 💰 ESCROW TOTAL
+        // ESCROW TOTAL
         $escrowBalance = $escrowItems->sum(function ($item) {
             return $item->subtotal;
         });
 
-        // 💰 TOTAL EARNED (completed only)
         $totalRevenue = $completedItems->sum(function ($item) {
             return $item->subtotal;
         });
 
-        // ========================
-        // STATS
-        // ========================
         $totalOrders = \App\Models\Order::where('seller_profile_id', $seller->id)
             ->where('status', 'completed')
             ->count();
@@ -60,9 +52,8 @@ class SellerDashboardController extends Controller
             ->where('is_archived', false)
             ->count();
 
-        // ========================
+
         // REVIEWS
-        // ========================
         $orderItemIds = $orderItems->pluck('id');
 
         $reviews = Review::whereIn('order_item_id', $orderItemIds)->get();
@@ -76,15 +67,12 @@ class SellerDashboardController extends Controller
 
         $isTopRated = ($averageRating >= 4.5 && $totalReviews >= 10);
 
-        // ========================
         // RECENT DATA
-        // ========================
         $recentOrders = $orders->sortByDesc('created_at')->take(5);
         $recentReviews = $reviews->sortByDesc('created_at')->take(5);
 
-        // ========================
+
         // CHARTS
-        // ========================
         $revenueData = $completedItems
             ->groupBy(fn ($item) => $item->order->created_at->format('Y-m-d'))
             ->map(fn ($items, $date) => [
@@ -101,9 +89,7 @@ class SellerDashboardController extends Controller
             ])
             ->values();
 
-        // ========================
         // TOP PRODUCTS
-        // ========================
         $topProducts = OrderItem::whereIn('product_id', $products)
             ->select('product_id', DB::raw('SUM(quantity) as total_sales'))
             ->groupBy('product_id')
@@ -112,25 +98,19 @@ class SellerDashboardController extends Controller
             ->take(5)
             ->get();
 
-        // ========================
         // LOW STOCK
-        // ========================
         $lowStockProducts = Product::where('seller_profile_id', $seller->id)
             ->where('stock_quantity', '<', 5)
              ->where('is_archived', false)
             ->get();
 
-        // ========================
         // COMMISSION
-        // ========================
         $commissionRate = 0.05;
 
         $platformEarnings = $totalRevenue * $commissionRate;
         $sellerEarnings = $totalRevenue - $platformEarnings;
 
-        // ========================
         // SHIPPING PERFORMANCE
-        // ========================
         $totalShipped = Order::whereHas('orderItems.product', function ($q) use ($seller) {
                 $q->where('seller_profile_id', $seller->id);
             })
@@ -165,7 +145,7 @@ class SellerDashboardController extends Controller
 
         return view('seller.dashboard', [
             'totalRevenue' => $totalRevenue,
-            'escrowBalance' => $escrowBalance, // ⭐ NEW
+            'escrowBalance' => $escrowBalance, 
             'totalOrders' => $totalOrders,
             'totalProducts' => $totalProducts,
             'totalReviews' => $totalReviews,

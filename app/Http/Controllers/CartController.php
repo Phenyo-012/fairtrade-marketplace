@@ -38,16 +38,19 @@ class CartController extends Controller
             ->first();
 
         if ($item) {
+            // CHECK IF NEW QUANTITY EXCEEDS STOCK
             $newQty = $item->quantity + $request->quantity;
 
             if ($newQty > $product->stock_quantity) {
                 return back()->with('error', 'Exceeds available stock');
             }
 
+            // UPDATE EXISTING CART ITEM QUANTITY
             $item->update([
                 'quantity' => $newQty
             ]);
         } else {
+            // CREATE NEW CART ITEM
             CartItem::create([
                 'user_id' => auth()->id(),
                 'product_id' => $product->id,

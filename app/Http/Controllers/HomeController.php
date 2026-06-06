@@ -12,9 +12,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // ========================
         // FEATURED PRODUCTS (LIVE QUERY)
-        // ========================
         $featuredProducts = Product::where('is_approved', true)
             ->where('is_active', true)
             ->where('is_archived', false)
@@ -25,9 +23,7 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        // ------------------------
         // SELLER SALES
-        // ------------------------
         $sellerSales = OrderItem::select(
                 'products.seller_profile_id',
                 DB::raw('SUM(order_items.quantity) as total_sales')
@@ -35,21 +31,20 @@ class HomeController extends Controller
             ->join('products', 'order_items.product_id', '=', 'products.id')
             ->groupBy('products.seller_profile_id');
 
-        // ------------------------
+
         // SELLER RATINGS
-        // ------------------------
         $sellerRatings = Review::select(
                 DB::raw('AVG(rating) as avg_rating'),
                 DB::raw('COUNT(*) as total_reviews'),
                 'products.seller_profile_id'
             )
+            // JOIN REVIEWS TO ORDER ITEMS TO PRODUCTS TO GET SELLER PROFILE ID
             ->join('order_items', 'reviews.order_item_id', '=', 'order_items.id')
             ->join('products', 'order_items.product_id', '=', 'products.id')
             ->groupBy('products.seller_profile_id');
 
-        // ------------------------
+
         // FINAL LEADERBOARD QUERY
-        // ------------------------
         $topStores = SellerProfile::select(
                 'seller_profiles.*',
                 DB::raw('COALESCE(sales.total_sales, 0) as total_sales'),
@@ -63,9 +58,11 @@ class HomeController extends Controller
                 ')
             )
             ->where('seller_profiles.verification_status', 'approved')
-            ->leftJoinSub($sellerSales, 'sales', function ($join) {
+            // LEFT JOIN SALES SUBQUERIES
+            ->leftJoinSub($sellerSales, 'sales', function ($join) { 
                 $join->on('seller_profiles.id', '=', 'sales.seller_profile_id');
             })
+            // LEFT JOIN RATINGS SUBQUERY
             ->leftJoinSub($sellerRatings, 'ratings', function ($join) {
                 $join->on('seller_profiles.id', '=', 'ratings.seller_profile_id');
             })

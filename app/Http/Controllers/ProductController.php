@@ -15,7 +15,7 @@ class ProductController extends Controller
         return view('products.create');
     }
 
-    //create a function to store the new product in the MySQL database
+    //create a function to store the new product in the database
     public function store(Request $request)
     {
         $request->validate([
@@ -42,6 +42,7 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Product created successfully.');
     }
 
+    // LIST SELLER'S PRODUCTS
     public function index()
     {
         $sellerProfile = auth()->user()->sellerProfile;
@@ -51,12 +52,15 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
+    // ARCHIVE PRODUCT
     public function archive(Product $product)
     {
+        // CHECK IF THE PRODUCT BELONGS TO THE AUTHENTICATED SELLER
         if ($product->seller_profile_id !== auth()->user()->sellerProfile->id) {
             abort(403);
         }
 
+        // ARCHIVE PRODUCT BY SETTING is_archived TO TRUE AND is_active TO FALSE
         $product->update([
             'is_archived' => true,
             'is_active' => false
@@ -65,6 +69,7 @@ class ProductController extends Controller
         return back()->with('success', 'Product archived.');
     }
 
+    // UNARCHIVE PRODUCT
     public function unarchive(Product $product)
     {
        if ($product->seller_profile_id !== auth()->user()->sellerProfile->id) {

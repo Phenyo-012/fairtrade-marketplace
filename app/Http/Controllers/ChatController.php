@@ -38,6 +38,7 @@ class ChatController extends Controller
 
     public function show(Conversation $conversation)
     {
+        // AUTHORIZATION CHECK
         if (!in_array(auth()->id(), [$conversation->user_one_id, $conversation->user_two_id])
             && !auth()->user()->hasRole('admin')) {
             abort(403);
@@ -51,6 +52,7 @@ class ChatController extends Controller
                 'read_at' => now()
             ]);
 
+        // LOAD MESSAGES WITH SENDER INFO
         $conversation->load([
             'messages' => function ($q) {
                 $q->orderBy('created_at', 'asc');
@@ -90,6 +92,7 @@ class ChatController extends Controller
         return back();
     }
 
+    // REPORT A MESSAGE
     public function report(Request $request, Message $message)
     {
 
@@ -109,6 +112,7 @@ class ChatController extends Controller
         return back()->with('success', 'Message reported');
     }
 
+    // BLOCK A USER
     public function block($userId)
     {
         \DB::table('user_blocks')->insertOrIgnore([
@@ -123,6 +127,7 @@ class ChatController extends Controller
     {
         $userId = auth()->id();
 
+        // FETCH CONVERSATIONS INVOLVING THE USER WITH RELATED DATA
         $conversations = \App\Models\Conversation::where(function ($q) use ($userId) {
                 $q->where('user_one_id', $userId)
                 ->orWhere('user_two_id', $userId);

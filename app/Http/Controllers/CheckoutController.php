@@ -30,6 +30,7 @@ class CheckoutController extends Controller
         return view('checkout.index', compact('items', 'total'));
     }
 
+    // PREPARE PAYMENT PAGE
     public function preparePayment()
     {
         $checkoutData = session('checkout_data');
@@ -44,6 +45,7 @@ class CheckoutController extends Controller
 
     public function showPayment()
     {
+        // ENSURE CHECKOUT DATA EXISTS
         $checkoutData = session('checkout_data');
 
         if (!$checkoutData) {
@@ -51,19 +53,23 @@ class CheckoutController extends Controller
                 ->with('error', 'Please complete checkout details first.');
         }
 
+        // RE-FETCH CART ITEMS TO ENSURE FRESH DATA FOR PAYMENT SUMMARY
         $items = CartItem::where('user_id', auth()->id())
             ->with('product')
             ->get();
 
+        // SAFEGUARD: IF CART IS EMPTY, REDIRECT BACK TO CART
         if ($items->isEmpty()) {
             return redirect()->route('cart.index')
                 ->with('error', 'Your cart is empty.');
         }
 
+        // CALCULATE TOTAL AGAIN FOR PAYMENT SUMMARY
         $total = $items->sum(fn ($item) =>
             $item->product->discounted_price * $item->quantity
         );
 
+        // PAYMENT PAGE
         return view('checkout.payment', [
             'paymentMethod' => $checkoutData['payment_method'],
             'total' => $total,
@@ -71,6 +77,7 @@ class CheckoutController extends Controller
         ]);
     }
 
+    // CONFIRM PAYMENT AND PLACE ORDER
     public function confirmPayment(Request $request)
     {
         $checkoutData = session('checkout_data');
@@ -85,6 +92,7 @@ class CheckoutController extends Controller
         return $this->store($request);
     }
 
+    // SHIPPING CALCULATIONS
     private function shippingRates()
     {
         return [
@@ -103,6 +111,7 @@ class CheckoutController extends Controller
         ];
     }
 
+    // DETERMINE IF SHIPPING IS LOCAL OR NATIONAL BASED ON SELLER AND BUYER PROVINCE
     private function getShippingZone($sellerProfile, $buyerProvince)
     {
         return strtolower($sellerProfile->pickup_province ?? '') === strtolower($buyerProvince)
@@ -110,6 +119,7 @@ class CheckoutController extends Controller
             : 'national';
     }
 
+    // CALCULATE SHIPPING FEE FOR AN ORDER ITEM BASED ON PRODUCT SHIPPING AND BUYER LOCATION
     private function calculateShippingForItem($item, $buyerProvince)
     {
         $product = $item->product;
@@ -118,7 +128,9 @@ class CheckoutController extends Controller
             return 0;
         }
 
+        // DETERMINE SHIPPING SIZE
         $size = $product->shipping_size ?? 'small';
+        // GET SELLER PROFILE TO DETERMINE SHIPPING ZONE
         $sellerProfile = $product->sellerProfile;
 
         $zone = $this->getShippingZone($sellerProfile, $buyerProvince);
@@ -147,6 +159,7 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
+        // CALCULATE SHIPPING AND TOTALS FOR REVIEW PAGE
         $breakdown = $items->map(function ($item) use ($data) {
             $unitPrice = $item->product->discounted_price;
             $subtotal = $unitPrice * $item->quantity;
@@ -161,8 +174,11 @@ class CheckoutController extends Controller
             ];
         });
 
+        // SUMMARIZE TOTALS FOR REVIEW PAGE
         $itemsTotal = $breakdown->sum('subtotal');
+        // NOTE: SHIPPING IS CALCULATED PER ITEM AND THEN SUMMED UP TO GRAND TOTAL
         $shippingTotal = $breakdown->sum('shipping_fee');
+        // GRAND TOTAL INCLUDES BOTH ITEMS AND SHIPPING
         $grandTotal = $itemsTotal + $shippingTotal;
 
         if ($data['payment_method'] === 'cod' && $grandTotal > 2000) {
@@ -171,6 +187,7 @@ class CheckoutController extends Controller
             ])->withInput();
         }
 
+        // STORE CHECKOUT DATA IN SESSION FOR LATER USE IN CONFIRMATION
         session()->put('checkout_data', $data);
         session()->put('checkout_breakdown', $breakdown->map(fn ($row) => [
             'product_id' => $row['item']->product_id,
@@ -200,6 +217,7 @@ class CheckoutController extends Controller
             'payment_method' => 'required|in:card,eft,ozow,cod',
         ]);
 
+        // RE-FETCH CART ITEMS TO ENSURE FRESH DATA FOR ORDER PLACEMENT
         $shippingBreakdown = collect(session('checkout_breakdown', []))
             ->keyBy('product_id');
 
@@ -226,8 +244,10 @@ class CheckoutController extends Controller
                 ->with('error', 'Cash on Delivery is only available for orders up to R2,000 including shipping.');
         }
 
+        // BEGIN TRANSACTION
         DB::beginTransaction();
 
+        // TRY-CATCH TO HANDLE ANY ISSUES DURING ORDER PLACEMENT
         try {
 
             // GROUP BY SELLER
@@ -276,11 +296,11 @@ class CheckoutController extends Controller
                     $product = $item->product;
 
                     if (!$product->is_active || !$product->is_approved) {
-                        throw new \Exception("Product unavailable: {$product->name}");
+                        throw new \Exception("Product unavailable: {$product->name}"); // SAFEGUARD: CHECK PRODUCT AVAILABILITY BEFORE PLACING ORDER
                     }
 
                     if ($product->stock_quantity < $item->quantity) {
-                        throw new \Exception("Not enough stock for {$product->name}");
+                        throw new \Exception("Not enough stock for {$product->name}"); // SAFEGUARD: CHECK STOCK QUANTITY BEFORE PLACING ORDER
                     }
 
                     $unitPrice = $product->discounted_price;
@@ -307,13 +327,17 @@ class CheckoutController extends Controller
 
             session()->forget(['checkout_data', 'checkout_breakdown']);
 
+            // COMMIT TRANSACTION AFTER SUCCESSFUL ORDER PLACEMENT AND STOCK UPDATES TO ENSURE DATA INTEGRITY
             DB::commit();
 
+            // REDIRECT TO SUCCESS PAGE WITH ORDER IDs FOR SUMMARY DISPLAY
             return redirect()->route('checkout.success', [
                 'orders' => implode(',', collect($orders)->pluck('id')->toArray())
             ])->with('success', 'Orders placed successfully!');
 
-        } catch (\Exception $e) {
+        } 
+        // ROLLBACK TRANSACTION IN CASE OF ANY EXCEPTIONS TO PREVENT PARTIAL ORDERS OR STOCK ISSUES
+        catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());
         }

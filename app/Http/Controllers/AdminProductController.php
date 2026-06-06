@@ -9,6 +9,7 @@ class AdminProductController extends Controller
 {
     public function index()
     {
+        // FETCH ALL PENDING OR INACTIVE PRODUCTS WITH RELATED IMAGES AND SELLER PROFILES
         $products = Product::with(['images', 'sellerProfile'])
             ->where(function ($query) {
                 $query->where('is_approved', false)
@@ -23,17 +24,21 @@ class AdminProductController extends Controller
 
     public function approve($id)
     {
+        // FETCH PRODUCT WITH SELLER PROFILE
         $product = Product::with('sellerProfile')->findOrFail($id);
 
+        // CHECK IF SELLER PROFILE EXISTS AND IS APPROVED
         if (!$product->sellerProfile) {
             return back()->with('error', 'This product has no seller profile.');
         }
 
+        // CHECK IF SELLER PROFILE IS APPROVED
         if ($product->sellerProfile->verification_status !== 'approved') {
             return back()->with('error', 'Cannot approve product because the seller is not approved.');
         }
 
-        $product->forceFill([
+        // APPROVE AND ACTIVATE PRODUCT
+        $product->forceFill([ // FORCE FILL TO BYPASS MASS ASSIGNMENT PROTECTION
             'is_approved' => true,
             'is_active' => true,
             'is_archived' => false,

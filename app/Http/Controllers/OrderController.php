@@ -128,7 +128,7 @@ class OrderController extends Controller
             ]);
 
             if (!$order) {
-                throw new \Exception("Order could not be created.");
+                throw new \Exception("Order could not be created."); // SAFEGUARD: CHECK IF ORDER WAS CREATED SUCCESSFULLY
             }
 
             // CREATE ORDER ITEMS
